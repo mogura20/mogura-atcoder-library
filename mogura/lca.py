@@ -4,10 +4,32 @@
 class MoguraLCA:
     """前処理O(n log n)、問い合わせO(log n)、領域O(n log n)。
 
-    入力例・結果:
-    >>> tree = MoguraLCA([[1], [0, 2], [1]])
-    >>> tree.depth
-    [0, 1, 2]
+    この入出力は使用方法を示す例。関数自体は標準入力を読みません。
+    無向木、頂点は1始まり。頂点1を根とする深さを出力。
+
+    入力形式:
+        N
+        u_1 v_1
+        ...
+        u_{N-1} v_{N-1}
+
+    入力例:
+        3
+        1 2
+        2 3
+
+    出力例:
+        0 1 2
+
+    読み込み・呼び出し例:
+        n = int(input())
+        graph = [[] for _ in range(n)]
+        for _ in range(n - 1):
+            u, v = map(int, input().split())
+            graph[u - 1].append(v - 1)
+            graph[v - 1].append(u - 1)
+        tree = MoguraLCA(graph)
+        print(*tree.depth)
 
     graphは連結な無向木の隣接リスト。rootで根を指定する。
     空の木・非連結入力はValueError。閉路検査は省略するため木を渡すこと。
@@ -17,10 +39,32 @@ class MoguraLCA:
     def __init__(self, graph, root=0):
         """連結な無向木をrootで根付けし、祖先の表を構築する。
 
-        入力例・結果:
-        >>> tree = MoguraLCA([[1], [0, 2], [1]])
-        >>> tree.depth
-        [0, 1, 2]
+        この入出力は使用方法を示す例。関数自体は標準入力を読みません。
+        無向木、頂点は1始まり。頂点1を根とする深さを出力。
+
+        入力形式:
+            N
+            u_1 v_1
+            ...
+            u_{N-1} v_{N-1}
+
+        入力例:
+            3
+            1 2
+            2 3
+
+        出力例:
+            0 1 2
+
+        読み込み・呼び出し例:
+            n = int(input())
+            graph = [[] for _ in range(n)]
+            for _ in range(n - 1):
+                u, v = map(int, input().split())
+                graph[u - 1].append(v - 1)
+                graph[v - 1].append(u - 1)
+            tree = MoguraLCA(graph)
+            print(*tree.depth)
         """
         n = len(graph)
         if n == 0:
@@ -48,10 +92,36 @@ class MoguraLCA:
     def ancestor(self, vertex, steps):
         """steps個上の祖先。根を越えたら-1。stepsは非負。
 
-        入力例・結果:
-        >>> tree = MoguraLCA([[1], [0, 2], [1]])
-        >>> tree.ancestor(2, 1), tree.ancestor(2, 3)
-        (1, -1)
+        この入出力は使用方法を示す例。関数自体は標準入力を読みません。
+        無向木。頂点は1始まり、頂点1を根とする。距離は辺数。
+
+        入力形式:
+            N
+            u_1 v_1
+            ...
+            u_{N-1} v_{N-1}
+            V K
+
+        入力例:
+            3
+            1 2
+            2 3
+            3 1
+
+        出力例:
+            2
+
+        読み込み・呼び出し例:
+            n = int(input())
+            graph = [[] for _ in range(n)]
+            for _ in range(n - 1):
+                u, v = map(int, input().split())
+                graph[u - 1].append(v - 1)
+                graph[v - 1].append(u - 1)
+            tree = MoguraLCA(graph)
+            v, steps = map(int, input().split())
+            answer = tree.ancestor(v - 1, steps)
+            print(-1 if answer == -1 else answer + 1)
         """
         assert 0 <= vertex < self.n and steps >= 0
         if steps > self.depth[vertex]:
@@ -67,10 +137,35 @@ class MoguraLCA:
     def lca(self, a, b):
         """頂点a,bの最小共通祖先を返す。
 
-        入力例・結果:
-        >>> tree = MoguraLCA([[1, 2], [0, 3], [0], [1]])
-        >>> tree.lca(1, 3), tree.lca(2, 3)
-        (1, 0)
+        この入出力は使用方法を示す例。関数自体は標準入力を読みません。
+        無向木。頂点は1始まり、頂点1を根とする。距離は辺数。
+
+        入力形式:
+            N
+            u_1 v_1
+            ...
+            u_{N-1} v_{N-1}
+            A B
+
+        入力例:
+            3
+            1 2
+            2 3
+            2 3
+
+        出力例:
+            2
+
+        読み込み・呼び出し例:
+            n = int(input())
+            graph = [[] for _ in range(n)]
+            for _ in range(n - 1):
+                u, v = map(int, input().split())
+                graph[u - 1].append(v - 1)
+                graph[v - 1].append(u - 1)
+            tree = MoguraLCA(graph)
+            a, b = map(int, input().split())
+            print(tree.lca(a - 1, b - 1) + 1)
         """
         assert 0 <= a < self.n and 0 <= b < self.n
         if self.depth[a] < self.depth[b]:
@@ -86,9 +181,34 @@ class MoguraLCA:
     def distance(self, a, b):
         """a,b間の辺数（重み付き距離ではない）。
 
-        入力例・結果:
-        >>> tree = MoguraLCA([[1], [0, 2], [1]])
-        >>> tree.distance(0, 2)
-        2
+        この入出力は使用方法を示す例。関数自体は標準入力を読みません。
+        無向木。頂点は1始まり、頂点1を根とする。距離は辺数。
+
+        入力形式:
+            N
+            u_1 v_1
+            ...
+            u_{N-1} v_{N-1}
+            A B
+
+        入力例:
+            3
+            1 2
+            2 3
+            1 3
+
+        出力例:
+            2
+
+        読み込み・呼び出し例:
+            n = int(input())
+            graph = [[] for _ in range(n)]
+            for _ in range(n - 1):
+                u, v = map(int, input().split())
+                graph[u - 1].append(v - 1)
+                graph[v - 1].append(u - 1)
+            tree = MoguraLCA(graph)
+            a, b = map(int, input().split())
+            print(tree.distance(a - 1, b - 1))
         """
         return self.depth[a] + self.depth[b] - 2 * self.depth[self.lca(a, b)]

@@ -4,10 +4,21 @@
 class MoguraWeightedDSU:
     """加法的な重み付きUnion-Find。操作は償却O(α(n))、領域O(n)。
 
-    入力例・結果:
-    >>> uf = MoguraWeightedDSU(3)
-    >>> uf.component_count, uf.diff(0, 1) is None
-    (3, True)
+    この入出力は使用方法を示す例。関数自体は標準入力を読みません。
+
+    入力形式:
+        N
+
+    入力例:
+        3
+
+    出力例:
+        3
+
+    読み込み・呼び出し例:
+        n = int(input())
+        uf = MoguraWeightedDSU(n)
+        print(uf.component_count)
 
     merge(a,b,delta)でpotential[b]-potential[a]=deltaを追加する。
     矛盾がなければTrue（既知の同じ制約もTrue）、矛盾ならFalse。
@@ -18,10 +29,21 @@ class MoguraWeightedDSU:
     def __init__(self, n):
         """n個の頂点と、親との差の重みを初期化する。
 
-        入力例・結果:
-        >>> uf = MoguraWeightedDSU(3)
-        >>> uf.component_count, uf.diff(0, 1) is None
-        (3, True)
+        この入出力は使用方法を示す例。関数自体は標準入力を読みません。
+
+        入力形式:
+            N
+
+        入力例:
+            3
+
+        出力例:
+            3
+
+        読み込み・呼び出し例:
+            n = int(input())
+            uf = MoguraWeightedDSU(n)
+            print(uf.component_count)
         """
         if n < 0:
             raise ValueError('nは非負')
@@ -34,12 +56,32 @@ class MoguraWeightedDSU:
     def leader(self, vertex):
         """頂点vertexが属する成分の代表頂点を返す。
 
-        入力例・結果:
-        >>> uf = MoguraWeightedDSU(3)
-        >>> uf.merge(0, 1, 5)
-        True
-        >>> uf.leader(1)
-        0
+        この入出力は使用方法を示す例。関数自体は標準入力を読みません。
+        頂点は1始まり。制約はpotential[b]-potential[a]=d。
+
+        入力形式:
+            N M
+            a_1 b_1 d_1
+            ...
+            a_M b_M d_M
+            V
+
+        入力例:
+            3 1
+            1 2 5
+            2
+
+        出力例:
+            1
+
+        読み込み・呼び出し例:
+            n, m = map(int, input().split())
+            uf = MoguraWeightedDSU(n)
+            for _ in range(m):
+                a, b, delta = map(int, input().split())
+                uf.merge(a - 1, b - 1, delta)
+            v = int(input())
+            print(uf.leader(v - 1) + 1)
         """
         assert 0 <= vertex < self.n
         path = []
@@ -57,10 +99,32 @@ class MoguraWeightedDSU:
     def merge(self, a, b, delta):
         """potential[b]-potential[a]=deltaを追加する。矛盾がなければTrue。
 
-        入力例・結果:
-        >>> uf = MoguraWeightedDSU(3)
-        >>> uf.merge(0, 1, 5), uf.merge(0, 1, 5), uf.merge(0, 1, 6)
-        (True, True, False)
+        この入出力は使用方法を示す例。関数自体は標準入力を読みません。
+        頂点は1始まり。制約はpotential[b]-potential[a]=d。既知の差5に対し6を追加するので矛盾。
+
+        入力形式:
+            N M
+            a_1 b_1 d_1
+            ...
+            a_M b_M d_M
+            A B D
+
+        入力例:
+            3 1
+            1 2 5
+            1 2 6
+
+        出力例:
+            No
+
+        読み込み・呼び出し例:
+            n, m = map(int, input().split())
+            uf = MoguraWeightedDSU(n)
+            for _ in range(m):
+                a, b, delta = map(int, input().split())
+                uf.merge(a - 1, b - 1, delta)
+            a, b, delta = map(int, input().split())
+            print("Yes" if uf.merge(a - 1, b - 1, delta) else "No")
         """
         root_a, root_b = self.leader(a), self.leader(b)
         if root_a == root_b:
@@ -78,24 +142,65 @@ class MoguraWeightedDSU:
     def same(self, a, b):
         """頂点a,bが同じ成分かをboolで返す。
 
-        入力例・結果:
-        >>> uf = MoguraWeightedDSU(3)
-        >>> uf.merge(0, 1, 5)
-        True
-        >>> uf.same(0, 1), uf.same(0, 2)
-        (True, False)
+        この入出力は使用方法を示す例。関数自体は標準入力を読みません。
+        頂点は1始まり。制約はpotential[b]-potential[a]=d。
+
+        入力形式:
+            N M
+            a_1 b_1 d_1
+            ...
+            a_M b_M d_M
+            A B
+
+        入力例:
+            3 1
+            1 2 5
+            1 2
+
+        出力例:
+            Yes
+
+        読み込み・呼び出し例:
+            n, m = map(int, input().split())
+            uf = MoguraWeightedDSU(n)
+            for _ in range(m):
+                a, b, delta = map(int, input().split())
+                uf.merge(a - 1, b - 1, delta)
+            a, b = map(int, input().split())
+            print("Yes" if uf.same(a - 1, b - 1) else "No")
         """
         return self.leader(a) == self.leader(b)
 
     def diff(self, a, b):
         """potential[b]-potential[a]を返す。非連結ならNone。
 
-        入力例・結果:
-        >>> uf = MoguraWeightedDSU(3)
-        >>> uf.merge(0, 1, 5)
-        True
-        >>> uf.diff(0, 1), uf.diff(1, 0), uf.diff(0, 2)
-        (5, -5, None)
+        この入出力は使用方法を示す例。関数自体は標準入力を読みません。
+        頂点は1始まり。制約はpotential[b]-potential[a]=d。差はpotential[B]-potential[A]。非連結ならUNKNOWN。
+
+        入力形式:
+            N M
+            a_1 b_1 d_1
+            ...
+            a_M b_M d_M
+            A B
+
+        入力例:
+            3 1
+            1 2 5
+            1 2
+
+        出力例:
+            5
+
+        読み込み・呼び出し例:
+            n, m = map(int, input().split())
+            uf = MoguraWeightedDSU(n)
+            for _ in range(m):
+                a, b, delta = map(int, input().split())
+                uf.merge(a - 1, b - 1, delta)
+            a, b = map(int, input().split())
+            difference = uf.diff(a - 1, b - 1)
+            print("UNKNOWN" if difference is None else difference)
         """
         if not self.same(a, b):
             return None
@@ -104,11 +209,31 @@ class MoguraWeightedDSU:
     def size(self, vertex):
         """頂点vertexが属する成分の頂点数を返す。
 
-        入力例・結果:
-        >>> uf = MoguraWeightedDSU(3)
-        >>> uf.merge(0, 1, 5)
-        True
-        >>> uf.size(1)
-        2
+        この入出力は使用方法を示す例。関数自体は標準入力を読みません。
+        頂点は1始まり。制約はpotential[b]-potential[a]=d。
+
+        入力形式:
+            N M
+            a_1 b_1 d_1
+            ...
+            a_M b_M d_M
+            V
+
+        入力例:
+            3 1
+            1 2 5
+            2
+
+        出力例:
+            2
+
+        読み込み・呼び出し例:
+            n, m = map(int, input().split())
+            uf = MoguraWeightedDSU(n)
+            for _ in range(m):
+                a, b, delta = map(int, input().split())
+                uf.merge(a - 1, b - 1, delta)
+            v = int(input())
+            print(uf.size(v - 1))
         """
         return -self.parent_or_size[self.leader(vertex)]

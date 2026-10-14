@@ -6,9 +6,34 @@ from collections import deque
 def mogura_dfs_orders(graph, sources=None):
     """(行きがけ順, 帰りがけ順, 親)を返す反復DFS。O(V+E)。
 
-    入力例・結果:
-    >>> mogura_dfs_orders([[1, 2], [3], [], []], 0)
-    ([0, 1, 3, 2], [3, 1, 2, 0], [-1, 0, 0, 1])
+    この入出力は使用方法を示す例。関数自体は標準入力を読みません。
+    有向辺。行きがけ順・帰りがけ順を出力。頂点は1始まり。
+
+    入力形式:
+        N M S
+        u_1 v_1
+        ...
+        u_M v_M
+
+    入力例:
+        4 3 1
+        1 2
+        1 3
+        2 4
+
+    出力例:
+        1 2 4 3
+        4 2 3 1
+
+    読み込み・呼び出し例:
+        n, m, start = map(int, input().split())
+        graph = [[] for _ in range(n)]
+        for _ in range(m):
+            u, v = map(int, input().split())
+            graph[u - 1].append(v - 1)
+        preorder, postorder, parent = mogura_dfs_orders(graph, start - 1)
+        print(*(v + 1 for v in preorder))
+        print(*(v + 1 for v in postorder))
 
     graph[v]=[to,...]。sources=Noneは全頂点を根候補にし非連結も探索。
     sourcesが整数ならその始点、iterableなら指定始点からだけ探索。
@@ -48,10 +73,32 @@ def mogura_dfs_orders(graph, sources=None):
 def mogura_zero_one_bfs(graph, sources):
     """辺重みが0/1の最短距離。(dist,parent)を返す。O(V+E)。
 
-    入力例・結果:
-    >>> graph = [[(1, 0), (2, 1)], [(2, 0)], [], []]
-    >>> mogura_zero_one_bfs(graph, 0)
-    ([0, 0, 0, inf], [-1, 0, 1, -1])
+    この入出力は使用方法を示す例。関数自体は標準入力を読みません。
+    有向辺、重みは0/1。入力の頂点は1始まり。
+
+    入力形式:
+        N M S
+        u_1 v_1 w_1
+        ...
+        u_M v_M w_M
+
+    入力例:
+        4 3 1
+        1 2 0
+        1 3 1
+        2 3 0
+
+    出力例:
+        0 0 0 INF
+
+    読み込み・呼び出し例:
+        n, m, start = map(int, input().split())
+        graph = [[] for _ in range(n)]
+        for _ in range(m):
+            u, v, weight = map(int, input().split())
+            graph[u - 1].append((v - 1, weight))
+        dist, parent = mogura_zero_one_bfs(graph, start - 1)
+        print(*("INF" if d == float("inf") else d for d in dist))
 
     graph[v]=[(to,weight),...]、始点は整数かiterable。未到達はinf。
     古い距離のキュー項目を無視する。到達辺の重みが0/1以外ならValueError。
@@ -85,11 +132,31 @@ def mogura_zero_one_bfs(graph, sources):
 def mogura_bellman_ford(n, edges, start):
     """負辺可。(dist,parent)を返す。O(VE+V+E)、領域O(V+E)。
 
-    入力例・結果:
-    >>> mogura_bellman_ford(4, [(0, 1, 2), (1, 2, -3)], 0)
-    ([0, 2, -1, inf], [-1, 0, 1, -1])
-    >>> mogura_bellman_ford(3, [(0, 1, 1), (1, 1, -1), (1, 2, 2)], 0)[0]
-    [0, -inf, -inf]
+    この入出力は使用方法を示す例。関数自体は標準入力を読みません。
+    有向辺。頂点は1始まり。負閉路の影響は表示時に-INFへ変換。
+
+    入力形式:
+        N M S
+        u_1 v_1 w_1
+        ...
+        u_M v_M w_M
+
+    入力例:
+        4 2 1
+        1 2 2
+        2 3 -3
+
+    出力例:
+        0 2 -1 INF
+
+    読み込み・呼び出し例:
+        n, m, start = map(int, input().split())
+        edges = []
+        for _ in range(m):
+            u, v, weight = map(int, input().split())
+            edges.append((u - 1, v - 1, weight))
+        dist, parent = mogura_bellman_ford(n, edges, start - 1)
+        print(*("INF" if d == float("inf") else "-INF" if d == -float("inf") else d for d in dist))
 
     edgesは有向辺(u,v,weight)。未到達はinf、始点から到達する負閉路の
     影響で最短距離が定まらない頂点は-inf（parentも-1）。
@@ -131,9 +198,33 @@ def mogura_bellman_ford(n, edges, start):
 def mogura_floyd_warshall(n, edges, directed=True):
     """全点対最短距離の行列。O(V³)、領域O(V²)。負辺・多重辺可。
 
-    入力例・結果:
-    >>> mogura_floyd_warshall(3, [(0, 1, 2), (1, 2, 3)])
-    [[0, 2, 5], [inf, 0, 3], [inf, inf, 0]]
+    この入出力は使用方法を示す例。関数自体は標準入力を読みません。
+    有向辺。入力の頂点は1始まり。各行が始点、各列が終点。
+
+    入力形式:
+        N M
+        u_1 v_1 w_1
+        ...
+        u_M v_M w_M
+
+    入力例:
+        3 2
+        1 2 2
+        2 3 3
+
+    出力例:
+        0 2 5
+        INF 0 3
+        INF INF 0
+
+    読み込み・呼び出し例:
+        n, m = map(int, input().split())
+        edges = []
+        for _ in range(m):
+            u, v, weight = map(int, input().split())
+            edges.append((u - 1, v - 1, weight))
+        for row in mogura_floyd_warshall(n, edges):
+            print(*("INF" if d == float("inf") else "-INF" if d == -float("inf") else d for d in row))
 
     未到達はinf。負閉路を経由して行ける組(u,v)は-inf。
     edges=(u,v,weight)、directed=Falseなら逆向きも追加する。

@@ -4,13 +4,27 @@
 class MoguraLazySegTree:
     """op, identity, mapping, composition, identity_actionを指定。
 
-    入力例・結果:
-    >>> seg = MoguraLazySegTree([2, 5], min, float('inf'),
-    ...                          lambda delta, value: value + delta,
-    ...                          lambda new, old: new + old, 0)
-    >>> seg.apply(0, 2, 3)  # 区間加算・区間最小値
-    >>> seg.all_prod()
-    5
+    この入出力は使用方法を示す例。関数自体は標準入力を読みません。
+    区間加算・区間最小値の設定例。
+
+    入力形式:
+        N
+        A_0 ... A_{N-1}
+
+    入力例:
+        2
+        2 5
+
+    出力例:
+        2
+
+    読み込み・呼び出し例:
+        n = int(input())
+        a = list(map(int, input().split()))
+        seg = MoguraLazySegTree(a, min, float("inf"),
+                                lambda delta, value: value + delta,
+                                lambda new, old: new + old, 0)
+        print(seg.all_prod())
 
     mapping(action, value): 区間集約値に更新を作用させた値。
     composition(new, old): oldを先に、newを後に作用させる合成。
@@ -24,13 +38,27 @@ class MoguraLazySegTree:
     def __init__(self, values, op, identity, mapping, composition, identity_action):
         """初期配列・集約演算・更新作用・作用の合成を指定して構築する。
 
-        入力例・結果:
-        >>> seg = MoguraLazySegTree([2, 5], min, float('inf'),
-        ...                          lambda delta, value: value + delta,
-        ...                          lambda new, old: new + old, 0)
-        >>> seg.apply(0, 2, 3)  # 区間加算・区間最小値
-        >>> seg.all_prod()
-        5
+        この入出力は使用方法を示す例。関数自体は標準入力を読みません。
+        区間加算・区間最小値の設定例。
+
+        入力形式:
+            N
+            A_0 ... A_{N-1}
+
+        入力例:
+            2
+            2 5
+
+        出力例:
+            2
+
+        読み込み・呼び出し例:
+            n = int(input())
+            a = list(map(int, input().split()))
+            seg = MoguraLazySegTree(a, min, float("inf"),
+                                    lambda delta, value: value + delta,
+                                    lambda new, old: new + old, 0)
+            print(seg.all_prod())
         """
         values = list(values)
         self.n = len(values)
@@ -61,13 +89,31 @@ class MoguraLazySegTree:
     def apply(self, left, right, action):
         """[left,right)へ作用actionを適用する。空区間は何もしない。
 
-        入力例・結果:
-        >>> seg = MoguraLazySegTree([2, 5], min, float('inf'),
-        ...                          lambda delta, value: value + delta,
-        ...                          lambda new, old: new + old, 0)
-        >>> seg.apply(0, 1, 10)  # [12, 5]に変化
-        >>> seg.all_prod()
-        5
+        この入出力は使用方法を示す例。関数自体は標準入力を読みません。
+        区間加算・区間最小値の設定。添字は0始まり、区間は[L,R)。
+
+        入力形式:
+            N
+            A_0 ... A_{N-1}
+            L R D
+
+        入力例:
+            2
+            2 5
+            0 1 10
+
+        出力例:
+            5
+
+        読み込み・呼び出し例:
+            n = int(input())
+            a = list(map(int, input().split()))
+            seg = MoguraLazySegTree(a, min, float("inf"),
+                                    lambda delta, value: value + delta,
+                                    lambda new, old: new + old, 0)
+            left, right, delta = map(int, input().split())
+            seg.apply(left, right, delta)
+            print(seg.all_prod())
         """
         assert 0 <= left <= right <= self.n
 
@@ -88,12 +134,30 @@ class MoguraLazySegTree:
     def prod(self, left, right):
         """半開区間[left,right)を指定した演算で集約する。
 
-        入力例・結果:
-        >>> seg = MoguraLazySegTree([2, 5], min, float('inf'),
-        ...                          lambda delta, value: value + delta,
-        ...                          lambda new, old: new + old, 0)
-        >>> seg.prod(0, 1), seg.prod(0, 2)
-        (2, 2)
+        この入出力は使用方法を示す例。関数自体は標準入力を読みません。
+        区間加算・区間最小値の設定。添字は0始まり、区間は[L,R)。
+
+        入力形式:
+            N
+            A_0 ... A_{N-1}
+            L R
+
+        入力例:
+            2
+            2 5
+            0 1
+
+        出力例:
+            2
+
+        読み込み・呼び出し例:
+            n = int(input())
+            a = list(map(int, input().split()))
+            seg = MoguraLazySegTree(a, min, float("inf"),
+                                    lambda delta, value: value + delta,
+                                    lambda new, old: new + old, 0)
+            left, right = map(int, input().split())
+            print(seg.prod(left, right))
         """
         assert 0 <= left <= right <= self.n
 
@@ -112,24 +176,57 @@ class MoguraLazySegTree:
     def all_prod(self):
         """全要素の集約値を返す。
 
-        入力例・結果:
-        >>> seg = MoguraLazySegTree([2, 5], min, float('inf'),
-        ...                          lambda delta, value: value + delta,
-        ...                          lambda new, old: new + old, 0)
-        >>> seg.all_prod()
-        2
+        この入出力は使用方法を示す例。関数自体は標準入力を読みません。
+        区間加算・区間最小値の設定。添字は0始まり、区間は[L,R)。
+
+        入力形式:
+            N
+            A_0 ... A_{N-1}
+
+        入力例:
+            2
+            2 5
+
+        出力例:
+            2
+
+        読み込み・呼び出し例:
+            n = int(input())
+            a = list(map(int, input().split()))
+            seg = MoguraLazySegTree(a, min, float("inf"),
+                                    lambda delta, value: value + delta,
+                                    lambda new, old: new + old, 0)
+            print(seg.all_prod())
         """
         return self.data[1]
 
     def get(self, index):
         """添字indexの要素を返す。
 
-        入力例・結果:
-        >>> seg = MoguraLazySegTree([2, 5], min, float('inf'),
-        ...                          lambda delta, value: value + delta,
-        ...                          lambda new, old: new + old, 0)
-        >>> seg.get(1)
-        5
+        この入出力は使用方法を示す例。関数自体は標準入力を読みません。
+        区間加算・区間最小値の設定。添字は0始まり、区間は[L,R)。
+
+        入力形式:
+            N
+            A_0 ... A_{N-1}
+            I
+
+        入力例:
+            2
+            2 5
+            1
+
+        出力例:
+            5
+
+        読み込み・呼び出し例:
+            n = int(input())
+            a = list(map(int, input().split()))
+            seg = MoguraLazySegTree(a, min, float("inf"),
+                                    lambda delta, value: value + delta,
+                                    lambda new, old: new + old, 0)
+            index = int(input())
+            print(seg.get(index))
         """
         assert 0 <= index < self.n
         return self.prod(index, index + 1)
@@ -137,13 +234,31 @@ class MoguraLazySegTree:
     def set(self, index, value):
         """添字indexの要素をvalueに代入する。
 
-        入力例・結果:
-        >>> seg = MoguraLazySegTree([2, 5], min, float('inf'),
-        ...                          lambda delta, value: value + delta,
-        ...                          lambda new, old: new + old, 0)
-        >>> seg.set(0, 9)  # [9, 5]に変化
-        >>> seg.all_prod()
-        5
+        この入出力は使用方法を示す例。関数自体は標準入力を読みません。
+        区間加算・区間最小値の設定。添字は0始まり、区間は[L,R)。
+
+        入力形式:
+            N
+            A_0 ... A_{N-1}
+            I X
+
+        入力例:
+            2
+            2 5
+            0 9
+
+        出力例:
+            5
+
+        読み込み・呼び出し例:
+            n = int(input())
+            a = list(map(int, input().split()))
+            seg = MoguraLazySegTree(a, min, float("inf"),
+                                    lambda delta, value: value + delta,
+                                    lambda new, old: new + old, 0)
+            index, value = map(int, input().split())
+            seg.set(index, value)
+            print(seg.all_prod())
         """
         assert 0 <= index < self.n
 

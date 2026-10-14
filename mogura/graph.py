@@ -7,9 +7,31 @@ from heapq import heappop, heappush
 def mogura_bfs(graph, sources):
     """単一/複数始点の重みなし最短距離。O(V+E)、領域O(V)。
 
-    入力例・結果:
-    >>> mogura_bfs([[1], [2], [], []], 0)
-    ([0, 1, 2, -1], [-1, 0, 1, -1])
+    この入出力は使用方法を示す例。関数自体は標準入力を読みません。
+    有向辺。入力の頂点は1始まり。頂点1..Nの距離を出力し、未到達は-1。
+
+    入力形式:
+        N M S
+        u_1 v_1
+        ...
+        u_M v_M
+
+    入力例:
+        4 2 1
+        1 2
+        2 3
+
+    出力例:
+        0 1 2 -1
+
+    読み込み・呼び出し例:
+        n, m, start = map(int, input().split())
+        graph = [[] for _ in range(n)]
+        for _ in range(m):
+            u, v = map(int, input().split())
+            graph[u - 1].append(v - 1)
+        dist, parent = mogura_bfs(graph, start - 1)
+        print(*dist)
 
     graph[v] = [行き先, ...]。sourcesは頂点番号または頂点の iterable。
     戻り値は(dist, parent)。到達不能はdist=-1、始点のparentも-1。
@@ -37,10 +59,32 @@ def mogura_bfs(graph, sources):
 def mogura_dijkstra(graph, sources):
     """非負重みの最短距離。graph[v]=[(to, weight), ...]。
 
-    入力例・結果:
-    >>> graph = [[(1, 2), (2, 8)], [(2, 3)], [], []]
-    >>> mogura_dijkstra(graph, 0)
-    ([0, 2, 5, inf], [-1, 0, 1, -1])
+    この入出力は使用方法を示す例。関数自体は標準入力を読みません。
+    有向辺。入力の頂点は1始まり。未到達は表示時にINFへ変換。
+
+    入力形式:
+        N M S
+        u_1 v_1 w_1
+        ...
+        u_M v_M w_M
+
+    入力例:
+        4 3 1
+        1 2 2
+        1 3 8
+        2 3 3
+
+    出力例:
+        0 2 5 INF
+
+    読み込み・呼び出し例:
+        n, m, start = map(int, input().split())
+        graph = [[] for _ in range(n)]
+        for _ in range(m):
+            u, v, weight = map(int, input().split())
+            graph[u - 1].append((v - 1, weight))
+        dist, parent = mogura_dijkstra(graph, start - 1)
+        print(*("INF" if d == float("inf") else d for d in dist))
 
     sourcesは頂点番号または頂点の iterable（各始点の初期距離は0）。
     戻り値(dist,parent)。到達不能はfloat('inf')、始点parent=-1。
@@ -74,9 +118,26 @@ def mogura_dijkstra(graph, sources):
 def mogura_restore_path(parent, target):
     """parentを辿って始点からtargetまで復元。O(経路長)。
 
-    入力例・結果:
-    >>> mogura_restore_path([-1, 0, 1], 2)
-    [0, 1, 2]
+    この入出力は使用方法を示す例。関数自体は標準入力を読みません。
+    Tと親Pは1始まり。始点の親は-1。Tが到達可能と確認済みの例。
+
+    入力形式:
+        N T
+        P_1 ... P_N
+
+    入力例:
+        3 3
+        -1 1 2
+
+    出力例:
+        1 2 3
+
+    読み込み・呼び出し例:
+        n, target = map(int, input().split())
+        p = list(map(int, input().split()))
+        parent = [v - 1 if v != -1 else -1 for v in p]
+        path = mogura_restore_path(parent, target - 1)
+        print(*(v + 1 for v in path))
 
     前提: BFS/Dijkstraが返すような循環のないparent。
     到達不能かどうかは呼ぶ前にdistで判定すること。
@@ -94,11 +155,34 @@ def mogura_restore_path(parent, target):
 def mogura_toposort(graph):
     """Kahn法。O(V+E)。DAGなら全頂点の順序、閉路があればNone。
 
-    入力例・結果:
-    >>> mogura_toposort([[1], [2], []])
-    [0, 1, 2]
-    >>> mogura_toposort([[1], [0]]) is None  # 閉路
-    True
+    この入出力は使用方法を示す例。関数自体は標準入力を読みません。
+    有向辺。入力・出力の頂点は1始まり。
+
+    入力形式:
+        N M
+        u_1 v_1
+        ...
+        u_M v_M
+
+    入力例:
+        3 2
+        1 2
+        2 3
+
+    出力例:
+        1 2 3
+
+    読み込み・呼び出し例:
+        n, m = map(int, input().split())
+        graph = [[] for _ in range(n)]
+        for _ in range(m):
+            u, v = map(int, input().split())
+            graph[u - 1].append(v - 1)
+        order = mogura_toposort(graph)
+        if order is None:
+            print("CYCLE")
+        else:
+            print(*(v + 1 for v in order))
 
     同順位の順序は保証しない。辞書順最小が必要ならqueueをheapへ変更。
     """
@@ -121,10 +205,36 @@ def mogura_toposort(graph):
 def mogura_scc(graph):
     """反復版Kosaraju法。O(V+E)、領域O(V+E)、深い再帰なし。
 
-    入力例・結果:
-    >>> groups, ids = mogura_scc([[1], [0, 2], []])
-    >>> [sorted(group) for group in groups], ids
-    ([[0, 1], [2]], [0, 0, 1])
+    この入出力は使用方法を示す例。関数自体は標準入力を読みません。
+    成分数と各成分の頂点を出力。頂点は1始まり。
+
+    入力形式:
+        N M
+        u_1 v_1
+        ...
+        u_M v_M
+
+    入力例:
+        3 3
+        1 2
+        2 1
+        2 3
+
+    出力例:
+        2
+        1 2
+        3
+
+    読み込み・呼び出し例:
+        n, m = map(int, input().split())
+        graph = [[] for _ in range(n)]
+        for _ in range(m):
+            u, v = map(int, input().split())
+            graph[u - 1].append(v - 1)
+        groups, ids = mogura_scc(graph)
+        print(len(groups))
+        for group in groups:
+            print(*(v + 1 for v in sorted(group)))
 
     戻り値(groups, component_id)。異なる成分間の辺u→vについて
     component_id[u] < component_id[v]となるトポロジカル順。

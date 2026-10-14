@@ -7,10 +7,39 @@ from mogura.dsu import MoguraDSU
 def mogura_kruskal(n, edges):
     """(total_weight, chosen_edges, component_count)を返す。
 
-    入力例・結果:
-    >>> total, edges, count = mogura_kruskal(3, [(0, 1, 2), (1, 2, 1), (0, 2, 5)])
-    >>> total, edges, count
-    (3, [(1, 2, 1), (0, 1, 2)], 1)
+    この入出力は使用方法を示す例。関数自体は標準入力を読みません。
+    無向辺、頂点は1始まり。重み和と成分数を出力。
+
+    入力形式:
+        N M
+        u_1 v_1 w_1
+        ...
+        u_M v_M w_M
+
+    入力例:
+        3 3
+        1 2 2
+        2 3 1
+        1 3 5
+
+    出力例:
+        3
+        1
+
+    読み込み・呼び出し例:
+        n, m = map(int, input().split())
+        edges = []
+        graph = [[] for _ in range(n)]
+        for _ in range(m):
+            u, v, weight = map(int, input().split())
+            u -= 1
+            v -= 1
+            edges.append((u, v, weight))
+            graph[u].append((v, weight))
+            graph[v].append((u, weight))
+        total, chosen, components = mogura_kruskal(n, edges)
+        print(total)
+        print(components)
 
     edges=(u,v,weight)、入力を並べ替えない。負辺・多重辺・自己ループ可。
     O(V+E log(E+2))。連結ならchosen_edgesはn-1本。空なら(0,[],0)。
@@ -29,11 +58,39 @@ def mogura_kruskal(n, edges):
 def mogura_prim(graph):
     """Kruskalと同じ戻り値。graph[v]=[(to,weight),...]は無向。
 
-    入力例・結果:
-    >>> graph = [[(1, 2), (2, 5)], [(0, 2), (2, 1)], [(0, 5), (1, 1)]]
-    >>> total, edges, count = mogura_prim(graph)
-    >>> total, edges, count
-    (3, [(0, 1, 2), (1, 2, 1)], 1)
+    この入出力は使用方法を示す例。関数自体は標準入力を読みません。
+    無向辺、頂点は1始まり。重み和と成分数を出力。
+
+    入力形式:
+        N M
+        u_1 v_1 w_1
+        ...
+        u_M v_M w_M
+
+    入力例:
+        3 3
+        1 2 2
+        2 3 1
+        1 3 5
+
+    出力例:
+        3
+        1
+
+    読み込み・呼び出し例:
+        n, m = map(int, input().split())
+        edges = []
+        graph = [[] for _ in range(n)]
+        for _ in range(m):
+            u, v, weight = map(int, input().split())
+            u -= 1
+            v -= 1
+            edges.append((u, v, weight))
+            graph[u].append((v, weight))
+            graph[v].append((u, weight))
+        total, chosen, components = mogura_prim(graph)
+        print(total)
+        print(components)
 
     各成分からPrimを実行。O(V+E log(E+2))、領域O(V+E)。
     辺は両方向追加すること。負辺も可。辺集合の順序は保証しない。

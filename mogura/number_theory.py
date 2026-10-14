@@ -6,9 +6,21 @@ from math import isqrt
 def mogura_sieve(limit):
     """limit以下の素数リスト。O(limit log log limit)、領域O(limit)。
 
-    入力例・結果:
-    >>> mogura_sieve(10)
-    [2, 3, 5, 7]
+    この入出力は使用方法を示す例。関数自体は標準入力を読みません。
+    N以下の素数。
+
+    入力形式:
+        N
+
+    入力例:
+        10
+
+    出力例:
+        2 3 5 7
+
+    読み込み・呼び出し例:
+        limit = int(input())
+        print(*mogura_sieve(limit))
     """
     if limit < 2:
         return []
@@ -24,9 +36,24 @@ def mogura_sieve(limit):
 def mogura_factorize(number):
     """正整数を{素因数:指数}に分解。試し割りO(sqrt(number))。
 
-    入力例・結果:
-    >>> mogura_factorize(60)
-    {2: 2, 3: 1, 5: 1}
+    この入出力は使用方法を示す例。関数自体は標準入力を読みません。
+    各行に素因数と指数を出力。
+
+    入力形式:
+        N
+
+    入力例:
+        60
+
+    出力例:
+        2 2
+        3 1
+        5 1
+
+    読み込み・呼び出し例:
+        n = int(input())
+        for prime, exponent in mogura_factorize(n).items():
+            print(prime, exponent)
 
     1なら{}。大量の問い合わせ・巨大な整数には適さない。
     """
@@ -47,10 +74,22 @@ def mogura_factorize(number):
 def mogura_extgcd(a, b):
     """(g,x,y)を返す。g=gcd(a,b)>=0、a*x+b*y=g。負数・0も可。
 
-    入力例・結果:
-    >>> g, x, y = mogura_extgcd(12, 18)
-    >>> g, 12 * x + 18 * y
-    (6, 6)
+    この入出力は使用方法を示す例。関数自体は標準入力を読みません。
+    例ではgcdだけ出力。戻り値x,yはA*x+B*y=gを満たす。
+
+    入力形式:
+        A B
+
+    入力例:
+        12 18
+
+    出力例:
+        6
+
+    読み込み・呼び出し例:
+        a, b = map(int, input().split())
+        g, x, y = mogura_extgcd(a, b)
+        print(g)
     """
     old_r, remainder = a, b
     old_x, x, old_y, y = 1, 0, 0, 1
@@ -67,10 +106,25 @@ def mogura_extgcd(a, b):
 class MoguraComb:
     """階乗・逆階乗によるnCr/nPr。前計算O(limit+log mod)、問合せO(1)。
 
-    入力例・結果:
-    >>> comb = MoguraComb(10, mod=998244353)
-    >>> comb.ncr(5, 2)
-    10
+    この入出力は使用方法を示す例。関数自体は標準入力を読みません。
+    Mまで前計算し、N個からR個を選ぶ組合せ数を出力。
+
+    入力形式:
+        M MOD
+        N R
+
+    入力例:
+        10 998244353
+        5 2
+
+    出力例:
+        10
+
+    読み込み・呼び出し例:
+        limit, mod = map(int, input().split())
+        n, r = map(int, input().split())
+        comb = MoguraComb(limit, mod)
+        print(comb.ncr(n, r))
 
     前提: modは素数、0 <= limit < mod。素数判定は行わない。
     例: comb=MoguraComb(200000, 998244353); comb.ncr(5,2) -> 10
@@ -80,10 +134,25 @@ class MoguraComb:
     def __init__(self, limit, mod=998244353):
         """limitまでの階乗と逆階乗を素数modで前計算する。
 
-        入力例・結果:
-        >>> comb = MoguraComb(10, mod=998244353)
-        >>> comb.ncr(5, 2)
-        10
+        この入出力は使用方法を示す例。関数自体は標準入力を読みません。
+        Mまで前計算し、N個からR個を選ぶ組合せ数を出力。
+
+        入力形式:
+            M MOD
+            N R
+
+        入力例:
+            10 998244353
+            5 2
+
+        出力例:
+            10
+
+        読み込み・呼び出し例:
+            limit, mod = map(int, input().split())
+            n, r = map(int, input().split())
+            comb = MoguraComb(limit, mod)
+            print(comb.ncr(n, r))
         """
         if mod < 2 or not 0 <= limit < mod:
             raise ValueError("素数modと0 <= limit < modを指定してください")
@@ -99,10 +168,25 @@ class MoguraComb:
     def ncr(self, n, r):
         """n個からr個を選ぶ組合せ数をmodで返す。
 
-        入力例・結果:
-        >>> comb = MoguraComb(10)
-        >>> comb.ncr(5, 2), comb.ncr(5, 6)
-        (10, 0)
+        この入出力は使用方法を示す例。関数自体は標準入力を読みません。
+        MODは素数、N<=M<MOD。
+
+        入力形式:
+            M MOD
+            N R
+
+        入力例:
+            10 998244353
+            5 2
+
+        出力例:
+            10
+
+        読み込み・呼び出し例:
+            limit, mod = map(int, input().split())
+            n, r = map(int, input().split())
+            comb = MoguraComb(limit, mod)
+            print(comb.ncr(n, r))
         """
         if n < 0 or r < 0 or r > n:
             return 0
@@ -113,10 +197,25 @@ class MoguraComb:
     def npr(self, n, r):
         """n個からr個を順に選ぶ順列数をmodで返す。
 
-        入力例・結果:
-        >>> comb = MoguraComb(10)
-        >>> comb.npr(5, 2)
-        20
+        この入出力は使用方法を示す例。関数自体は標準入力を読みません。
+        MODは素数、N<=M<MOD。
+
+        入力形式:
+            M MOD
+            N R
+
+        入力例:
+            10 998244353
+            5 2
+
+        出力例:
+            20
+
+        読み込み・呼び出し例:
+            limit, mod = map(int, input().split())
+            n, r = map(int, input().split())
+            comb = MoguraComb(limit, mod)
+            print(comb.npr(n, r))
         """
         if n < 0 or r < 0 or r > n:
             return 0

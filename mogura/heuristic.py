@@ -10,11 +10,23 @@ def mogura_anneal(initial, score, propose, copy_state, iterations=10000,
                   time_limit=None, start_temp=100.0, end_temp=0.1, seed=0):
     """(best_state,best_score,stats)を返す。評価は大きいほど良い。
 
-    入力例・結果:
-    >>> best, value, stats = mogura_anneal(0, lambda x: x, lambda x, rng: x + 1,
-    ...                                  copy_state=lambda x: x, iterations=3)
-    >>> best, value, stats['iterations']
-    (3, 3, 3)
+    この入出力は使用方法を示す例。関数自体は標準入力を読みません。
+    動作説明用に、値を1増やす近傍・値そのものを評価とする。実問題では変更する。
+
+    入力形式:
+        X K
+
+    入力例:
+        0 3
+
+    出力例:
+        3 3
+
+    読み込み・呼び出し例:
+        initial, iterations = map(int, input().split())
+        best, value, stats = mogura_anneal(initial, lambda x: x, lambda x, rng: x + 1,
+                                          copy_state=lambda x: x, iterations=iterations)
+        print(best, value)
 
     score(state): 有限数の評価値。
     propose(state,rng): 元を変更せず候補を返す。候補の合法性は呼び出し側。
@@ -66,12 +78,24 @@ def mogura_beam_search(initial, expand, evaluate, is_complete, final_score=None,
                        key=None, width=100, max_depth=100, time_limit=None):
     """(best_complete,score,stats)を返す。完成解なしは(None,None,stats)。
 
-    入力例・結果:
-    >>> best, value, stats = mogura_beam_search(0, lambda x: [x + 1, x + 2],
-    ...                                       lambda x: x, lambda x: x >= 3,
-    ...                                       width=2, max_depth=3)
-    >>> best, value
-    (4, 4)
+    この入出力は使用方法を示す例。関数自体は標準入力を読みません。
+    動作説明用に、1または2を加算してG以上で完成とする。評価は大きいほど良い。
+
+    入力形式:
+        G
+
+    入力例:
+        3
+
+    出力例:
+        4 4
+
+    読み込み・呼び出し例:
+        goal = int(input())
+        best, value, stats = mogura_beam_search(0, lambda x: [x + 1, x + 2],
+                                               lambda x: x, lambda x: x >= goal,
+                                               width=2, max_depth=goal)
+        print(best, value)
 
     expand(state)は新しい子状態のiterable。元の状態を変更しないこと。
     evaluateは途中順位、final_scoreは完成解の評価（省略時evaluate）。

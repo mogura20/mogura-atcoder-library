@@ -6,11 +6,27 @@ from bisect import bisect_left, bisect_right
 def mogura_lis(values, strict=True):
     """(長さ, 元配列の添字列)を返すLIS。O(n log n)、領域O(n)。
 
-    入力例・結果:
-    >>> a = [3, 1, 2, 4]
-    >>> length, indices = mogura_lis(a)
-    >>> length, [a[i] for i in indices]
-    (3, [1, 2, 4])
+    この入出力は使用方法を示す例。関数自体は標準入力を読みません。
+    長さと、復元した値の列を出力する。
+
+    入力形式:
+        N
+        A_0 A_1 ... A_{N-1}
+
+    入力例:
+        4
+        3 1 2 4
+
+    出力例:
+        3
+        1 2 4
+
+    読み込み・呼び出し例:
+        n = int(input())
+        a = list(map(int, input().split()))
+        length, indices = mogura_lis(a)
+        print(length)
+        print(*(a[i] for i in indices))
 
     strict=Trueは狭義増加、Falseは非減少。空なら(0,[])。
     値の列は[values[i] for i in indices]で取得。同長の解の選択は未保証。
@@ -38,9 +54,26 @@ def mogura_lis(values, strict=True):
 def mogura_lcs(left, right):
     """(長さ, 共通部分列の要素リスト)を返す。O(nm)時間・領域。
 
-    入力例・結果:
-    >>> mogura_lcs('abc', 'ac')
-    (2, ['a', 'c'])
+    この入出力は使用方法を示す例。関数自体は標準入力を読みません。
+
+    入力形式:
+        S
+        T
+
+    入力例:
+        abc
+        ac
+
+    出力例:
+        2
+        ac
+
+    読み込み・呼び出し例:
+        s = input().strip()
+        t = input().strip()
+        length, sequence = mogura_lcs(s, t)
+        print(length)
+        print("".join(sequence))
 
     文字列も列も可。文字列へ戻す場合は''.join(sequence)。
     デバッグ出力なし。長さだけ必要なら2行DPへの変更で領域を削減できる。
@@ -66,12 +99,30 @@ def mogura_lcs(left, right):
 def mogura_hamiltonian_cost(cost, start=None, cycle=False):
     """全頂点を1回ずつ訪問する最小コスト。O(n²2^n)、領域O(n2^n)。
 
-    入力例・結果:
-    >>> cost = [[0, 2, 5], [2, 0, 1], [5, 1, 0]]
-    >>> mogura_hamiltonian_cost(cost)  # 始点自由、戻らない
-    3
-    >>> mogura_hamiltonian_cost(cost, start=0, cycle=True)
-    8
+    この入出力は使用方法を示す例。関数自体は標準入力を読みません。
+    1行目は始点自由のpath、2行目は都市1から出て戻るTSPの最小コスト。
+
+    入力形式:
+        N
+        C_0,0 ... C_0,N-1
+        ...
+        C_N-1,0 ... C_N-1,N-1
+
+    入力例:
+        3
+        0 2 5
+        2 0 1
+        5 1 0
+
+    出力例:
+        3
+        8
+
+    読み込み・呼び出し例:
+        n = int(input())
+        cost = [list(map(int, input().split())) for _ in range(n)]
+        print(mogura_hamiltonian_cost(cost))
+        print(mogura_hamiltonian_cost(cost, start=0, cycle=True))
 
     cost[u][v]は直接移動のコスト。辺なしはfloat('inf')。負辺も可。
     start=Noneは任意始点の最短Hamiltonian path。start指定で始点固定。
@@ -106,11 +157,28 @@ def mogura_hamiltonian_cost(cost, start=None, cycle=False):
 def mogura_interval_dp(n, merge_cost, singleton=None):
     """区間を分割して最小化するDPテーブル。O(n³)時間、O(n²)領域。
 
-    入力例・結果:
-    >>> prefix = [0, 10, 30, 60]
-    >>> dp = mogura_interval_dp(3, lambda l, m, r: prefix[r] - prefix[l])
-    >>> dp[0][3]  # [10, 20, 30]を1つに併合
-    90
+    この入出力は使用方法を示す例。関数自体は標準入力を読みません。
+    隣接する石を併合する追加コストが区間和である例。
+
+    入力形式:
+        N
+        A_0 A_1 ... A_{N-1}
+
+    入力例:
+        3
+        10 20 30
+
+    出力例:
+        90
+
+    読み込み・呼び出し例:
+        n = int(input())
+        a = list(map(int, input().split()))
+        prefix = [0]
+        for value in a:
+            prefix.append(prefix[-1] + value)
+        dp = mogura_interval_dp(n, lambda l, m, r: prefix[r] - prefix[l])
+        print(dp[0][n])
 
     dp[l][r]は[l,r)の最小コスト。merge_cost(l,m,r)を追加コストとして
     dp[l][m]+dp[m][r]+merge_cost(l,m,r)を最小化する。
@@ -135,11 +203,27 @@ def mogura_interval_dp(n, merge_cost, singleton=None):
 def mogura_grid_path_count(grid, blocked='#', mod=1000000007):
     """左上→右下へ右/下だけ移動する経路数。O(HW)、領域O(W)。
 
-    入力例・結果:
-    >>> mogura_grid_path_count(['..', '..'])
-    2
-    >>> mogura_grid_path_count(['.#', '..'])
-    1
+    この入出力は使用方法を示す例。関数自体は標準入力を読みません。
+    右・下に移動する。#は壁、.は通行可能。
+
+    入力形式:
+        H W
+        S_0
+        ...
+        S_{H-1}
+
+    入力例:
+        2 2
+        .#
+        ..
+
+    出力例:
+        1
+
+    読み込み・呼び出し例:
+        h, w = map(int, input().split())
+        grid = [input().strip() for _ in range(h)]
+        print(mogura_grid_path_count(grid))
 
     blockedと等しいマスは通れない。他の値は通行可。mod=Noneなら整数。
     空グリッド・幅0は0。不揃いな行はValueError。
@@ -169,10 +253,37 @@ def mogura_grid_path_count(grid, blocked='#', mod=1000000007):
 def mogura_tree_independent_set(graph, weights, root=0):
     """木の最大重み独立集合。(最適値, 選択頂点)を返す。O(n)。
 
-    入力例・結果:
-    >>> value, vertices = mogura_tree_independent_set([[1], [0, 2], [1]], [3, 5, 4])
-    >>> value, sorted(vertices)
-    (7, [0, 2])
+    この入出力は使用方法を示す例。関数自体は標準入力を読みません。
+    入力・出力の頂点は1始まり。重み和と選択した頂点を出力。
+
+    入力形式:
+        N
+        W_1 ... W_N
+        u_1 v_1
+        ...
+        u_{N-1} v_{N-1}
+
+    入力例:
+        3
+        3 5 4
+        1 2
+        2 3
+
+    出力例:
+        7
+        1 3
+
+    読み込み・呼び出し例:
+        n = int(input())
+        weights = list(map(int, input().split()))
+        graph = [[] for _ in range(n)]
+        for _ in range(n - 1):
+            u, v = map(int, input().split())
+            graph[u - 1].append(v - 1)
+            graph[v - 1].append(u - 1)
+        value, selected = mogura_tree_independent_set(graph, weights)
+        print(value)
+        print(*(v + 1 for v in sorted(selected)))
 
     graphは連結な無向木、weightsは頂点重み。負の重み・空の選択も可。
     反復の木DPと復元なので再帰不要。同点の解は選ばない側を優先。
@@ -213,11 +324,30 @@ def mogura_tree_independent_set(graph, weights, root=0):
 def mogura_expected_steps(goal, outcomes):
     """前進してgoal以上へ到達するまでの期待試行回数。O(goal*K)。
 
-    入力例・結果:
-    >>> mogura_expected_steps(3, [(1, 1.0)])  # 必ず1進む
-    3.0
-    >>> mogura_expected_steps(2, [(1, 0.5), (2, 0.5)])
-    1.5
+    この入出力は使用方法を示す例。関数自体は標準入力を読みません。
+    p_iは確率。例では1または2だけ等確率で前進する。
+
+    入力形式:
+        G K
+        d_1 p_1
+        ...
+        d_K p_K
+
+    入力例:
+        2 2
+        1 0.5
+        2 0.5
+
+    出力例:
+        1.500000
+
+    読み込み・呼び出し例:
+        goal, k = map(int, input().split())
+        outcomes = []
+        for _ in range(k):
+            step, probability = input().split()
+            outcomes.append((int(step), float(probability)))
+        print(f"{mogura_expected_steps(goal, outcomes):.6f}")
 
     outcomes=[(正の移動量, 確率), ...]。確率和は1、計算はfloat。
     goal<=0なら0。自己ループ・後退・一般の確率過程には対応しない。

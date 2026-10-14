@@ -6,10 +6,22 @@ from collections import deque
 class MoguraBipartiteMatching:
     """BFS増加路法。深い再帰なし。最大化O(L*(L+R+E))、領域O(L+R+E)。
 
-    入力例・結果:
-    >>> matching = MoguraBipartiteMatching(2, 3)
-    >>> matching.maximum_matching(), matching.pairs()
-    (0, [])
+    この入出力は使用方法を示す例。関数自体は標準入力を読みません。
+    左右の頂点数を指定。まだ辺がないため最大マッチング数は0。
+
+    入力形式:
+        L R
+
+    入力例:
+        2 3
+
+    出力例:
+        0
+
+    読み込み・呼び出し例:
+        left_size, right_size = map(int, input().split())
+        matching = MoguraBipartiteMatching(left_size, right_size)
+        print(matching.maximum_matching())
 
     左0..left_size-1、右0..right_size-1。add_edge(left,right)で辺追加。
     maximum_matching()の戻り値は総ペア数。繰り返し呼び出し・辺追加も可。
@@ -20,10 +32,22 @@ class MoguraBipartiteMatching:
     def __init__(self, left_size, right_size):
         """左右それぞれの頂点数を指定し、辺のない二部グラフを作る。
 
-        入力例・結果:
-        >>> matching = MoguraBipartiteMatching(2, 3)
-        >>> matching.maximum_matching(), matching.pairs()
-        (0, [])
+        この入出力は使用方法を示す例。関数自体は標準入力を読みません。
+        左右の頂点数を指定。まだ辺がないため最大マッチング数は0。
+
+        入力形式:
+            L R
+
+        入力例:
+            2 3
+
+        出力例:
+            0
+
+        読み込み・呼び出し例:
+            left_size, right_size = map(int, input().split())
+            matching = MoguraBipartiteMatching(left_size, right_size)
+            print(matching.maximum_matching())
         """
         if min(left_size, right_size) < 0:
             raise ValueError('頂点数は非負')
@@ -34,11 +58,26 @@ class MoguraBipartiteMatching:
     def add_edge(self, left, right):
         """左頂点leftから右頂点rightへの辺を追加する。
 
-        入力例・結果:
-        >>> matching = MoguraBipartiteMatching(2, 2)
-        >>> matching.add_edge(0, 1)
-        >>> matching.maximum_matching()
-        1
+        この入出力は使用方法を示す例。関数自体は標準入力を読みません。
+        左右の頂点はそれぞれ1始まり。辺追加後の最大ペア数。
+
+        入力形式:
+            L R
+            A B
+
+        入力例:
+            2 2
+            1 2
+
+        出力例:
+            1
+
+        読み込み・呼び出し例:
+            left_size, right_size = map(int, input().split())
+            a, b = map(int, input().split())
+            matching = MoguraBipartiteMatching(left_size, right_size)
+            matching.add_edge(a - 1, b - 1)
+            print(matching.maximum_matching())
         """
         assert 0 <= left < self.left_size and 0 <= right < self.right_size
         self.graph[left].append(right)
@@ -46,12 +85,31 @@ class MoguraBipartiteMatching:
     def maximum_matching(self):
         """マッチングを最大化し、現在の総ペア数を返す。
 
-        入力例・結果:
-        >>> matching = MoguraBipartiteMatching(2, 2)
-        >>> for a, b in [(0, 0), (0, 1), (1, 0)]:
-        ...     matching.add_edge(a, b)
-        >>> matching.maximum_matching(), matching.maximum_matching()
-        (2, 2)
+        この入出力は使用方法を示す例。関数自体は標準入力を読みません。
+        左右の頂点はそれぞれ1始まり。最大ペア数を出力。
+
+        入力形式:
+            L R M
+            a_1 b_1
+            ...
+            a_M b_M
+
+        入力例:
+            2 2 3
+            1 1
+            1 2
+            2 1
+
+        出力例:
+            2
+
+        読み込み・呼び出し例:
+            left_size, right_size, m = map(int, input().split())
+            matching = MoguraBipartiteMatching(left_size, right_size)
+            for _ in range(m):
+                left, right = map(int, input().split())
+                matching.add_edge(left - 1, right - 1)
+            print(matching.maximum_matching())
         """
         for start in range(self.left_size):
             if self.match_left[start] != -1:
@@ -85,12 +143,31 @@ class MoguraBipartiteMatching:
     def pairs(self):
         """現在のマッチングを(left,right)の一覧として返す。
 
-        入力例・結果:
-        >>> matching = MoguraBipartiteMatching(2, 2)
-        >>> matching.add_edge(0, 1)
-        >>> count = matching.maximum_matching()
-        >>> matching.pairs()
-        [(0, 1)]
+        この入出力は使用方法を示す例。関数自体は標準入力を読みません。
+        ペアを1始まりで出力。pairs自体は探索せず、現在のペア一覧を取得する。
+
+        入力形式:
+            L R M
+            a_1 b_1
+            ...
+            a_M b_M
+
+        入力例:
+            2 2 1
+            1 2
+
+        出力例:
+            1 2
+
+        読み込み・呼び出し例:
+            left_size, right_size, m = map(int, input().split())
+            matching = MoguraBipartiteMatching(left_size, right_size)
+            for _ in range(m):
+                left, right = map(int, input().split())
+                matching.add_edge(left - 1, right - 1)
+            count = matching.maximum_matching()
+            for left, right in matching.pairs():
+                print(left + 1, right + 1)
         """
         return [(left, right) for left, right in enumerate(self.match_left) if right != -1]
 
@@ -98,11 +175,22 @@ class MoguraBipartiteMatching:
 class MoguraHopcroftKarp(MoguraBipartiteMatching):
     """最短増加路を層ごとにまとめて処理。O((V+E)√V)、領域O(V+E)。
 
-    入力例・結果:
-    >>> matching = MoguraHopcroftKarp(2, 3)
-    >>> matching.add_edge(0, 2)
-    >>> matching.maximum_matching(), matching.pairs()
-    (1, [(0, 2)])
+    この入出力は使用方法を示す例。関数自体は標準入力を読みません。
+    左右の頂点数を指定。まだ辺がないため最大マッチング数は0。
+
+    入力形式:
+        L R
+
+    入力例:
+        2 3
+
+    出力例:
+        0
+
+    読み込み・呼び出し例:
+        left_size, right_size = map(int, input().split())
+        matching = MoguraHopcroftKarp(left_size, right_size)
+        print(matching.maximum_matching())
 
     APIはMoguraBipartiteMatchingと同じ。反復DFSで再帰上限に依存しない。
     大きな二部グラフはこちらを選ぶ。多重辺も可、辺削除には未対応。
@@ -111,12 +199,31 @@ class MoguraHopcroftKarp(MoguraBipartiteMatching):
     def maximum_matching(self):
         """マッチングを最大化し、現在の総ペア数を返す。
 
-        入力例・結果:
-        >>> matching = MoguraHopcroftKarp(2, 2)
-        >>> for a, b in [(0, 0), (0, 1), (1, 0)]:
-        ...     matching.add_edge(a, b)
-        >>> matching.maximum_matching(), matching.maximum_matching()
-        (2, 2)
+        この入出力は使用方法を示す例。関数自体は標準入力を読みません。
+        左右の頂点はそれぞれ1始まり。最大ペア数を出力。
+
+        入力形式:
+            L R M
+            a_1 b_1
+            ...
+            a_M b_M
+
+        入力例:
+            2 2 3
+            1 1
+            1 2
+            2 1
+
+        出力例:
+            2
+
+        読み込み・呼び出し例:
+            left_size, right_size, m = map(int, input().split())
+            matching = MoguraHopcroftKarp(left_size, right_size)
+            for _ in range(m):
+                left, right = map(int, input().split())
+                matching.add_edge(left - 1, right - 1)
+            print(matching.maximum_matching())
         """
         infinity = self.left_size + self.right_size + 1
         while True:

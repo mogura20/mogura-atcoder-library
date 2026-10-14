@@ -4,9 +4,27 @@
 def mogura_compress(values):
     """O(n log n)。戻り値(encoded, ordered, rank)。
 
-    入力例・結果:
-    >>> mogura_compress([30, 10, 30])
-    ([1, 0, 1], [10, 30], {10: 0, 30: 1})
+    この入出力は使用方法を示す例。関数自体は標準入力を読みません。
+    1行目は圧縮した添字、2行目は重複を除いた元の値。
+
+    入力形式:
+        N
+        A_0 A_1 ... A_{N-1}
+
+    入力例:
+        3
+        30 10 30
+
+    出力例:
+        1 0 1
+        10 30
+
+    読み込み・呼び出し例:
+        n = int(input())
+        a = list(map(int, input().split()))
+        encoded, ordered, rank = mogura_compress(a)
+        print(*encoded)
+        print(*ordered)
 
     encoded: 入力順の圧縮座標、ordered: ソート済み重複なしの元の値、
     rank: 元の値→圧縮座標の辞書。比較可能かつhash可能な値が対象。
@@ -22,12 +40,25 @@ def mogura_compress(values):
 def mogura_prefix_sum(values):
     """O(n)。先頭に0を置いた累積和。区間和はprefix[r]-prefix[l]。
 
-    入力例・結果:
-    >>> p = mogura_prefix_sum([2, 5, 1])
-    >>> p
-    [0, 2, 7, 8]
-    >>> p[3] - p[1]  # [1, 3)の和
-    6
+    この入出力は使用方法を示す例。関数自体は標準入力を読みません。
+    先頭の0を含む累積和を出力する。
+
+    入力形式:
+        N
+        A_0 A_1 ... A_{N-1}
+
+    入力例:
+        3
+        2 3 1
+
+    出力例:
+        0 2 5 6
+
+    読み込み・呼び出し例:
+        n = int(input())
+        a = list(map(int, input().split()))
+        prefix = mogura_prefix_sum(a)
+        print(*prefix)
     """
     prefix = [0]
     for value in values:
@@ -38,9 +69,22 @@ def mogura_prefix_sum(values):
 def mogura_bisect_int(ok, ng, predicate):
     """整数のめぐる式二分探索。predicateが真の境界okを返す。
 
-    入力例・結果:
-    >>> mogura_bisect_int(10, -1, lambda x: x * x >= 20)
-    5
+    この入出力は使用方法を示す例。関数自体は標準入力を読みません。
+    Kは非負。X²>=Kとなる最小の非負整数Xを求める例。
+
+    入力形式:
+        K
+
+    入力例:
+        20
+
+    出力例:
+        5
+
+    読み込み・呼び出し例:
+        k = int(input())
+        answer = mogura_bisect_int(k + 1, -1, lambda x: x * x >= k)
+        print(answer)
 
     前提: ok側が真、ng側が偽、間で真偽が一度だけ切り替わる。
     ok<ng/ok>ng両対応。端点のpredicateは呼ばないので番兵を使える。

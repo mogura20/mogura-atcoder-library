@@ -7,9 +7,20 @@ from math import isqrt
 def mogura_divisors(number):
     """正整数の約数を昇順で返す。O(√N)、領域O(約数数)。
 
-    入力例・結果:
-    >>> mogura_divisors(12)
-    [1, 2, 3, 4, 6, 12]
+    この入出力は使用方法を示す例。関数自体は標準入力を読みません。
+
+    入力形式:
+        N
+
+    入力例:
+        12
+
+    出力例:
+        1 2 3 4 6 12
+
+    読み込み・呼び出し例:
+        n = int(input())
+        print(*mogura_divisors(n))
     """
     if number <= 0:
         raise ValueError('正整数が必要です')
@@ -25,10 +36,24 @@ def mogura_divisors(number):
 class MoguraOsaK:
     """最小素因数を前計算して大量の素因数分解に対応する。
 
-    入力例・結果:
-    >>> osa = MoguraOsaK(100)
-    >>> osa.factorize(12)
-    {2: 2, 3: 1}
+    この入出力は使用方法を示す例。関数自体は標準入力を読みません。
+    Mまで前計算し、Nを分解する。
+
+    入力形式:
+        M N
+
+    入力例:
+        100 12
+
+    出力例:
+        2 2
+        3 1
+
+    読み込み・呼び出し例:
+        limit, n = map(int, input().split())
+        osa = MoguraOsaK(limit)
+        for prime, exponent in osa.factorize(n).items():
+            print(prime, exponent)
 
     前計算O(M log log M)、領域O(M)、factorizeはO(log n)。
     factorizeは既存mogura_factorizeと同じ{素因数:指数}を返す。
@@ -38,10 +63,24 @@ class MoguraOsaK:
     def __init__(self, limit):
         """limitまでの最小素因数を前計算する。
 
-        入力例・結果:
-        >>> osa = MoguraOsaK(100)
-        >>> osa.factorize(12)
-        {2: 2, 3: 1}
+        この入出力は使用方法を示す例。関数自体は標準入力を読みません。
+        Mまで前計算し、Nを分解する。
+
+        入力形式:
+            M N
+
+        入力例:
+            100 12
+
+        出力例:
+            2 2
+            3 1
+
+        読み込み・呼び出し例:
+            limit, n = map(int, input().split())
+            osa = MoguraOsaK(limit)
+            for prime, exponent in osa.factorize(n).items():
+                print(prime, exponent)
         """
         if limit < 1:
             raise ValueError('limitは1以上')
@@ -56,9 +95,25 @@ class MoguraOsaK:
     def factorize(self, number):
         """numberを{素因数:指数}へ分解する。1なら空辞書。
 
-        入力例・結果:
-        >>> MoguraOsaK(100).factorize(60)
-        {2: 2, 3: 1, 5: 1}
+        この入出力は使用方法を示す例。関数自体は標準入力を読みません。
+        Mまで前計算する。1<=N<=M。
+
+        入力形式:
+            M N
+
+        入力例:
+            100 60
+
+        出力例:
+            2 2
+            3 1
+            5 1
+
+        読み込み・呼び出し例:
+            limit, n = map(int, input().split())
+            osa = MoguraOsaK(limit)
+            for prime, exponent in osa.factorize(n).items():
+                print(prime, exponent)
         """
         if not 1 <= number <= self.limit:
             raise ValueError('1 <= number <= limitが必要です')
@@ -72,9 +127,22 @@ class MoguraOsaK:
     def factor_list(self, number):
         """numberの素因数を重複を含む昇順リストで返す。
 
-        入力例・結果:
-        >>> MoguraOsaK(100).factor_list(60)
-        [2, 2, 3, 5]
+        この入出力は使用方法を示す例。関数自体は標準入力を読みません。
+        Mまで前計算する。1<=N<=M。
+
+        入力形式:
+            M N
+
+        入力例:
+            100 60
+
+        出力例:
+            2 2 3 5
+
+        読み込み・呼び出し例:
+            limit, n = map(int, input().split())
+            osa = MoguraOsaK(limit)
+            print(*osa.factor_list(n))
         """
         return [prime for prime, exponent in self.factorize(number).items() for _ in range(exponent)]
 
@@ -82,9 +150,21 @@ class MoguraOsaK:
 def mogura_ceil_div(numerator, denominator):
     """整数のceil(a/b)。負数にも対応しfloatに変換しない。b=0は例外。
 
-    入力例・結果:
-    >>> mogura_ceil_div(7, 3), mogura_ceil_div(-7, 3)
-    (3, -2)
+    この入出力は使用方法を示す例。関数自体は標準入力を読みません。
+    Bは0以外。
+
+    入力形式:
+        A B
+
+    入力例:
+        7 3
+
+    出力例:
+        3
+
+    読み込み・呼び出し例:
+        a, b = map(int, input().split())
+        print(mogura_ceil_div(a, b))
     """
     return -(-numerator // denominator)
 
@@ -92,9 +172,21 @@ def mogura_ceil_div(numerator, denominator):
 def mogura_base_digits(number, base):
     """非負整数をbase進法の桁リスト（上位から）へ。0は[0]。
 
-    入力例・結果:
-    >>> mogura_base_digits(10, 3)
-    [1, 0, 1]
+    この入出力は使用方法を示す例。関数自体は標準入力を読みません。
+    上位からのB進法の桁を空白区切りで出力。
+
+    入力形式:
+        N B
+
+    入力例:
+        10 3
+
+    出力例:
+        1 0 1
+
+    読み込み・呼び出し例:
+        n, base = map(int, input().split())
+        print(*mogura_base_digits(n, base))
 
     base>=2。10以上の桁も整数として返すので文字への変換は呼び出し側。
     """
@@ -110,11 +202,23 @@ def mogura_base_digits(number, base):
 def mogura_team_sizes(total, teams, labeled=False):
     """正の人数配分をタプルで逐次列挙する。人の割当ての列挙ではない。
 
-    入力例・結果:
-    >>> list(mogura_team_sizes(4, 2))
-    [(1, 3), (2, 2)]
-    >>> list(mogura_team_sizes(4, 2, labeled=True))
-    [(1, 3), (2, 2), (3, 1)]
+    この入出力は使用方法を示す例。関数自体は標準入力を読みません。
+    人数配分のみ。チームを区別しない非減少の配分を列挙。
+
+    入力形式:
+        N T
+
+    入力例:
+        4 2
+
+    出力例:
+        1 3
+        2 2
+
+    読み込み・呼び出し例:
+        n, teams = map(int, input().split())
+        for sizes in mogura_team_sizes(n, teams):
+            print(*sizes)
 
     labeled=False: 非減少な整数分割。True: 順序を区別する整数組成。
     例: (4,2) -> [(1,3),(2,2)]、labeled=Trueでは(3,1)も返す。

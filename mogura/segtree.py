@@ -1,3 +1,4 @@
+# Source: https://github.com/mogura20/mogura-atcoder-library/blob/92672adf53b8e2d9409cc822a203867ca24ae4bc/mogura/segtree.py
 """mogura library: 任意の結合的演算を指定できるセグメント木。"""
 
 

@@ -1,3 +1,4 @@
+# Source: https://github.com/mogura20/mogura-atcoder-library/blob/92672adf53b8e2d9409cc822a203867ca24ae4bc/mogura/number_theory.py
 """mogura library: 素数・素因数分解・拡張Euclid・組合せ。"""
 
 from math import isqrt

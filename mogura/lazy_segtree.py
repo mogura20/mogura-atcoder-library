@@ -1,3 +1,4 @@
+# Source: https://github.com/mogura20/mogura-atcoder-library/blob/92672adf53b8e2d9409cc822a203867ca24ae4bc/mogura/lazy_segtree.py
 """mogura library: 演算と更新作用を差し替えられる遅延セグメント木。"""
 
 

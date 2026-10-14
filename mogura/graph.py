@@ -1,3 +1,4 @@
+# Source: https://github.com/mogura20/mogura-atcoder-library/blob/92672adf53b8e2d9409cc822a203867ca24ae4bc/mogura/graph.py
 """mogura library: 隣接リストによるグラフ。頂点は0..n-1。"""
 
 from collections import deque

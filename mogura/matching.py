@@ -1,3 +1,4 @@
+# Source: https://github.com/mogura20/mogura-atcoder-library/blob/92672adf53b8e2d9409cc822a203867ca24ae4bc/mogura/matching.py
 """mogura: 左右の頂点番号を別々に扱う最大二部マッチング。"""
 
 from collections import deque

@@ -1,3 +1,4 @@
+# Source: https://github.com/mogura20/mogura-atcoder-library/blob/92672adf53b8e2d9409cc822a203867ca24ae4bc/mogura/interactive.py
 """mogura: 対話問題の問合せを実通信とローカル模擬で切り替える。"""
 
 import sys

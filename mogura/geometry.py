@@ -1,3 +1,4 @@
+# Source: https://github.com/mogura20/mogura-atcoder-library/blob/92672adf53b8e2d9409cc822a203867ca24ae4bc/mogura/geometry.py
 """mogura: 2次元幾何。線分交差は整数座標で誤差なく判定する。"""
 
 from math import cos, sin, radians

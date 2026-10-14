@@ -1,4 +1,4 @@
-# Source: https://github.com/mogura20/mogura-atcoder-library/blob/92672adf53b8e2d9409cc822a203867ca24ae4bc/examples/lazy_recipes.py
+# Source: https://github.com/mogura20/mogura-atcoder-library/blob/7d3ec971580db281f0653bafa17523fe1b75bcb4/examples/lazy_recipes.py
 """mogura: 遅延セグメント木の設定例。必要な設定だけコピーして使う。
 
 python3 -m examples.lazy_recipesで結果を確認できる。

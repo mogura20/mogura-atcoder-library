@@ -1,4 +1,4 @@
-# Source: https://github.com/mogura20/mogura-atcoder-library/blob/92672adf53b8e2d9409cc822a203867ca24ae4bc/mogura/weighted_dsu.py
+# Source: https://github.com/mogura20/mogura-atcoder-library/blob/7d3ec971580db281f0653bafa17523fe1b75bcb4/mogura/weighted_dsu.py
 """mogura: 差の制約 potential[b] - potential[a] = delta を管理する。"""
 
 

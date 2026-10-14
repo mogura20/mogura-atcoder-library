@@ -1,47 +1,86 @@
 # Source: https://github.com/mogura20/mogura-atcoder-library/blob/7d3ec971580db281f0653bafa17523fe1b75bcb4/mogura/segtree.py
-"""mogura library: 任意の結合的演算を指定できるセグメント木。"""
+"""mogura: 点更新のRMQ(min)・RSQ(sum)・区間GCD。区間は[l,r)。"""
+
+from math import gcd
 
 
 class MoguraSegTree:
-    """op(a,b)と単位元identityを指定。構築O(n)、set/prodはO(log n)。
+    """点代入・点加算と区間集約。構築O(n)、操作O(log n)、領域O(n)。
 
-    この入出力は使用方法を示す例。クラス自体は標準入力を読みません。
-    添字は0始まり、区間は[L,R)。区間最小値の設定。
+    初期化はMoguraSegTree(a, mode="min" / "sum" / "gcd" / "max")。
+    set(i,x)はA[i]=x、add(i,d)はA[i]+=d、query(l,r)は[l,r)の集約。
+    mode="min"がRMQ、mode="sum"がRSQ、mode="gcd"が区間GCD。
+    すべて添字0始まり、半開区間。区間更新にはMoguraRangeSegTreeを使う。
 
     入力形式:
-        N
+        MODE
+        N Q
         A_0 ... A_{N-1}
-        I X
+        query_1
+        ...
+        query_Q
+        ※ MODEはmin/sum/gcd/max。
+        ※ queryは「0 I X」(点代入)、「1 I D」(点加算)、
+           「2 L R」(区間取得)。
 
     入力例:
-        3
-        4 2 7
-        1 9
+        sum
+        5 5
+        2 4 6 8 10
+        2 0 5
+        0 2 3
+        2 1 4
+        1 0 5
+        2 0 2
 
     出力例:
-        4
+        30
+        15
+        11
 
     読み込み・呼び出し例:
-        n = int(input())
+        mode = input().strip()
+        n, q = map(int, input().split())
         a = list(map(int, input().split()))
-        seg = MoguraSegTree(a, min, float("inf"))
-        index, value = map(int, input().split())
-        seg.set(index, value)
-        print(seg.all_prod())
+        seg = MoguraSegTree(a, mode=mode)
+        for _ in range(q):
+            kind, x, y = map(int, input().split())
+            if kind == 0:
+                seg.set(x, y)
+            elif kind == 1:
+                seg.add(x, y)
+            else:
+                print(seg.query(x, y))
 
-    opには結合則が必要（交換則は不要）。identityは左右の単位元。
-    使用例: seg = MoguraSegTree([4, 2, 7], min, float('inf'))
-    seg.prod(0, 2) -> 2。空区間の結果はidentity。
-    演算と値は副作用なしで使う（渡された値を破壊的に変更しない）。
+    初期値の長さだけ指定する場合はMoguraSegTree([0] * n, mode="sum")。
+    空区間の値はmin:inf、max:-inf、sum/gcd:0。GCDは非負の値を返す。
+    all_query()は全体、get(i)は現在の要素を取得する。
+    max_rightは単調な判定で境界を探す上級操作。通常はqueryを使う。
+
+    任意の結合的演算は従来どおりMoguraSegTree(a, op, identity)で指定可能。
+    opに結合則と左右の単位元が必要。交換則は不要。
+    演算は値を破壊的に変更しないこと。
     """
 
-    def __init__(self, values, op, identity):
-        """初期配列・結合演算op・単位元identityから木を構築する。"""
+    def __init__(self, values, op=None, identity=None, *, mode="min"):
+        """配列とmodeから構築。省略はRMQ。op指定時は従来の汎用設定。"""
+        if op is None:
+            settings = {
+                "min": (min, float("inf")),
+                "max": (max, -float("inf")),
+                "sum": (lambda a, b: a + b, 0),
+                "gcd": (gcd, 0),
+            }
+            if mode not in settings:
+                raise ValueError("modeはmin/max/sum/gcdから選んでください")
+            op, identity = settings[mode]
+        elif not callable(op):
+            raise TypeError("演算はmode=で選ぶか、opに関数を指定してください")
         values = list(values)
         self.n = len(values)
         self.op = op
         self.identity = identity
-        self.size = 1 << max(0, (self.n - 1).bit_length())
+        self.size = 1 << (max(1, self.n) - 1).bit_length()
         self.data = [identity] * (2 * self.size)
         self.data[self.size:self.size + self.n] = values
         for index in range(self.size - 1, 0, -1):
@@ -80,7 +119,19 @@ class MoguraSegTree:
 
     def all_prod(self):
         """全要素の集約値を返す。"""
-        return self.data[1]
+        return self.op(self.identity, self.data[1])
+
+    def add(self, index, delta):
+        """A[index]にdeltaを加算する。O(log n)。"""
+        self.set(index, self.get(index) + delta)
+
+    def query(self, left, right):
+        """[left,right)の最小値/和/GCD等を返す。O(log n)。prodと同じ。"""
+        return self.prod(left, right)
+
+    def all_query(self):
+        """全体の最小値/和/GCD等を返す。O(1)。"""
+        return self.all_prod()
 
     def max_right(self, left, predicate):
         """predicate(prod(left,r))が真の最大r。O(log n)。

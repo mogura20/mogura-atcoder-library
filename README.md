@@ -35,7 +35,7 @@ assert uf.size(0) == 2
 
 ## ライブラリ一覧
 
-全59 APIを分野別にまとめています。実装はすべて同じ`mogura/`階層にあり、一覧の「実装」から開けます。
+全60 APIを分野別にまとめています。実装はすべて同じ`mogura/`階層にあり、一覧の「実装」から開けます。
 
 [使用例・設定方法](docs/usage.md) / [Python基本操作メモ](docs/python_notes.md)
 
@@ -50,8 +50,9 @@ assert uf.size(0) == 2
 | データ構造 | `MoguraDSU` | Union-Find。併合成功判定unite、代表一覧roots、サイズ一覧group_sizes / [使い方](docs/usage.md#union-find) | [dsu.py](mogura/dsu.py) |
 | データ構造 | `MoguraWeightedDSU` | 差の制約と矛盾検出。diff(a,b)=p[b]-p[a] | [weighted_dsu.py](mogura/weighted_dsu.py) |
 | データ構造 | `MoguraFenwickTree` | 点加算・区間和・累積和境界 / O(log n) | [fenwick.py](mogura/fenwick.py) |
-| データ構造 | `MoguraSegTree` | 結合的演算の点更新・区間集約・境界探索 / O(log n) | [segtree.py](mogura/segtree.py) |
-| データ構造 | `MoguraLazySegTree` | 更新作用を指定する区間更新・集約 / O(log n) | [lazy_segtree.py](mogura/lazy_segtree.py) |
+| データ構造 | `MoguraSegTree` | 点代入・点加算。modeでRMQ/RSQ/GCDを選ぶ / [使い方](docs/segment_trees.md) | [segtree.py](mogura/segtree.py) |
+| データ構造 | `MoguraRangeSegTree` | 区間加算・区間代入。modeで和/最小値/最大値を選ぶ / [使い方](docs/segment_trees.md) | [lazy_segtree.py](mogura/lazy_segtree.py) |
+| データ構造 | `MoguraLazySegTree` | 任意の更新作用を指定する汎用版。基本用途はMoguraRangeSegTree | [lazy_segtree.py](mogura/lazy_segtree.py) |
 | グラフ・木 | `mogura_bfs` | 重みなし最短路。単一/複数始点 / O(V+E) | [graph.py](mogura/graph.py) |
 | グラフ・木 | `mogura_zero_one_bfs` | 0/1重み最短路。単一/複数始点 / O(V+E) | [graph_extra.py](mogura/graph_extra.py) |
 | グラフ・木 | `mogura_dijkstra` | 非負重み最短路。単一/複数始点 | [graph.py](mogura/graph.py) |
@@ -101,7 +102,7 @@ assert uf.size(0) == 2
 | 全探索・探索テンプレート | `mogura_beam_search` | ビームサーチ。評価・遷移・重複キーを差し替え | [heuristic.py](mogura/heuristic.py) |
 | 全探索・探索テンプレート | `MoguraInteractiveIO` | flush付き対話通信とローカル模擬の切替 | [interactive.py](mogura/interactive.py) |
 
-詳細な引数・戻り値・計算量・前提は、各クラス/関数のdocstringに記載しています。AtCoder形式の「入力形式・入力例・出力例・読み込みコード」は1アルゴリズムにつき1箇所です。クラスはクラス直下に代表例を置き、各メソッドは操作の説明を記載しています。単独の関数はその関数直下に例を置いています。入力の頂点番号は主に1始まり、配列の添字・半開区間は0始まりと各例に明記しています。これは使用方法を示す例で、ライブラリ自体が標準入力を読むわけではありません。全59箇所の入力例を実際に読み込ませ、出力例との一致を自動検証します。
+詳細な引数・戻り値・計算量・前提は、各クラス/関数のdocstringに記載しています。AtCoder形式の「入力形式・入力例・出力例・読み込みコード」は1アルゴリズムにつき1箇所です。クラスはクラス直下に代表例を置き、各メソッドは操作の説明を記載しています。単独の関数はその関数直下に例を置いています。入力の頂点番号は主に1始まり、配列の添字・半開区間は0始まりと各例に明記しています。これは使用方法を示す例で、ライブラリ自体が標準入力を読むわけではありません。全60箇所の入力例を実際に読み込ませ、出力例との一致を自動検証します。
 
 ## 提出用に1ファイルへ展開
 

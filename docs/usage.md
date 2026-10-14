@@ -59,41 +59,34 @@ assert uf.component_count == 1
 
 一つの成分のサイズだけ必要なら`size(vertex)`、成分数だけなら`component_count`を使います。`roots()`・`group_sizes()`は全頂点を走査するので、各クエリで呼び出すとO(nQ)になります。メンバー一覧が必要なときは従来の`groups()`を使います。`MoguraDSU(0)`でも3つの一覧取得はすべて`[]`を返します。
 
-### 区間最小値・最大値・和・GCD
+### セグメント木：点更新・区間更新
+
+詳しい操作・RMQ/RSQ/GCDの例は[セグメント木の使い方](segment_trees.md)へまとめています。
+
+| 用途 | 初期化 | 更新 | 取得 |
+|---|---|---|---|
+| 点更新・最小値（RMQ） | `MoguraSegTree(a, mode="min")` | `set(i,x)` / `add(i,d)` | `query(l,r)` |
+| 点更新・和（RSQ） | `MoguraSegTree(a, mode="sum")` | 同上 | 同上 |
+| 点更新・GCD | `MoguraSegTree(a, mode="gcd")` | 同上 | 同上 |
+| 区間更新・和（RSQ） | `MoguraRangeSegTree(a, mode="sum")` | `range_add(l,r,d)` / `range_assign(l,r,x)` | `query(l,r)` |
+| 区間更新・最小値（RMQ） | `MoguraRangeSegTree(a, mode="min")` | 同上 | 同上 |
 
 ```python
-from math import gcd
 from mogura.segtree import MoguraSegTree
+from mogura.lazy_segtree import MoguraRangeSegTree
 
-minimum = MoguraSegTree([8, 3, 5], min, float('inf'))
-maximum = MoguraSegTree([8, 3, 5], max, -float('inf'))
-total = MoguraSegTree([8, 3, 5], lambda a, b: a + b, 0)
-divisor = MoguraSegTree([8, 3, 5], gcd, 0)
-minimum.set(1, 10)
-assert minimum.prod(0, 2) == 8
+point = MoguraSegTree([12, 18, 6], mode="gcd")
+point.set(1, 20)
+assert point.query(0, 2) == 4
+
+ranges = MoguraRangeSegTree([1, 2, 3, 4], mode="sum")
+ranges.range_add(0, 2, 5)
+assert ranges.query(0, 3) == 16
+ranges.range_assign(1, 4, 0)
+assert ranges.all_query() == 6
 ```
 
-非可換な演算でも左右の順序を保持します。ただし減算のように結合則を満たさない演算は指定できません。
-
-`max_right(left, predicate)`では、単位元の判定が真で、区間を延ばすと真から偽へ一度だけ変わる必要があります。負数を含む配列で「和が上限以下」は一般にこの条件を満たしません。Fenwick Treeの`lower_bound`も非負要素が前提です。
-
-### 区間更新
-
-[lazy_recipes.py](../examples/lazy_recipes.py)に3通りの設定があります。
-
-| 設定 | `apply(l,r,action)`のaction | 和の取得 |
-|---|---|---|
-| 区間加算・和 | 加算量 | `seg.prod(l,r)[0]` |
-| 区間代入・和 | 代入値（Noneは更新なし） | 同上 |
-| 一次変換・和mod | `(a,b)`でx→a*x+b | 同上 |
-
-値は`(区間和, 区間長)`を保持します。単位元は`(0,0)`。更新の合成は`composition(new, old)`で**oldを先、newを後**に適用します。加算だけでは気づきにくい合成順の誤りも、一次変換の差分テストで確認しています。
-
-```sh
-python3 -m examples.lazy_recipes
-```
-
-設定例を提出へコピーする場合、設定例ファイルの参照URLも添付してください。bundleツールの`--main examples/lazy_recipes.py`では、その出典コメントも生成します。
+すべて0始まり・半開区間`[l,r)`です。`set`/`range_assign`は代入、`add`/`range_add`は加算です。区間GCDは点更新版を使います。任意の演算・作用を指定する従来の汎用APIも利用できます。
 
 ### 重み付きUnion-Find
 

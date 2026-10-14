@@ -35,6 +35,21 @@ assert uf.size(0) == 2
 
 ## ライブラリ一覧
 
+Desktopの追加分は[追加API一覧・使用例](docs/desktop_additions.md)を参照してください。
+
+| 分類 | 追加内容 |
+|---|---|
+| データ構造 | 重み付きUnion-Find、2次元累積和 |
+| グラフ | 反復DFS、0–1 BFS、Bellman–Ford、Floyd–Warshall、Kruskal、Prim、Hopcroft–Karp |
+| DP | LIS/LCS復元、Hamiltonian path/TSP、区間DP、グリッドDP、木の独立集合、期待値 |
+| 数学・幾何 | Osa–K、約数、切り上げ、基数、人数配分、線分交差、回転、行列操作 |
+| 文字列 | Trie、二重ローリングハッシュ、ランレングス、Z検索 |
+| テンプレート | 重複なし順列、状態列挙、焼きなまし、ビームサーチ、対話問題 |
+
+[元ファイルと移行先の対応表](docs/desktop_inventory.md) / [Python基本操作メモ](docs/python_notes.md)
+
+以下は初版からの基本APIです。
+
 | モジュール | API | 用途・計算量 |
 |---|---|---|
 | [basic](mogura/basic.py) | `mogura_compress` | 座標圧縮 O(n log n)、元の値と辞書も返す |
@@ -128,9 +143,9 @@ python3 submission.py < input.txt
 
 `<公開済みの40桁コミットSHA>`は実際の値へ置き換えてください。展開後は`submission.py`を提出します。ツールはAIを呼ばず、指定したソースの連結とmogura importの除去だけを行います。コードの難読化・圧縮はしません。
 
-対応するimportは、トップレベルの`from mogura.graph import mogura_dijkstra`のような形式です。別名import、`*`、`import mogura.graph`、同じ行に別の文を置いたimportには対応せず、エラーにします。必要モジュールの自動推測はしません。
+対応するimportは、トップレベルの`from mogura.graph import mogura_dijkstra`のような形式です。別名import、`*`、`import mogura.graph`、同じ行に別の文を置いたimportには対応せず、エラーにします。mainで使うモジュールを指定してください。ライブラリ内部の依存（例: mst→dsu）は自動展開します。
 
-`--source-ref`なしでも開発用に出力できますが、未公開の注意コメントが付き、出典URLは付きません。指定したSHAの公開状況はツールが自動確認しません。
+`--source-ref`なしでも開発用に出力できますが、未公開の注意コメントが付き、出典URLは付きません。指定時は手元のコードとそのローカルGitコミットの一致を検査し、古いURLで修正版を引用することを防ぎます。GitHubでの公開状況や公開時刻は自動確認しません。Git履歴のないZIP取得ではこの検査が使えないためgit cloneしてください。
 
 公開済みのexamplesファイルを`--main`へ指定した場合は、そのファイルの出典も出力します。自分の解答を任意のファイルへ書いた場合、その解答は自分で記述する前提です。別のAI生成コードを加える場合は別途、事前公開と参照URLが必要です。
 

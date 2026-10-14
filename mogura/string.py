@@ -1,5 +1,25 @@
 """mogura library: 文字列（比較可能な列）に対するZ/LCPと回文判定補助。"""
 
+from itertools import groupby
+
+
+def mogura_run_length(values):
+    """連続する同じ値を(value,count)へ圧縮。O(n)。空なら[]。"""
+    return [(value, sum(1 for _ in group)) for value, group in groupby(values)]
+
+
+def mogura_z_search(text, pattern):
+    """パターンの全出現位置（重なり含む）。O(len(text)+len(pattern))。
+
+    空パターンは全境界0..len(text)。専用objectを区切りとして使うので
+    '$'等が文字列に含まれていても動作する。文字列または通常の値の列用。
+    """
+    if not pattern:
+        return list(range(len(text)+1))
+    m = len(pattern)
+    z = mogura_z_algorithm(list(pattern) + [object()] + list(text))
+    return [i for i in range(len(text)-m+1) if z[m+1+i] >= m]
+
 
 def mogura_z_algorithm(sequence):
     """z[i]=先頭とi番目からの接尾辞の最長共通接頭辞長。O(n)。

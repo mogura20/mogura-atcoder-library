@@ -6,11 +6,15 @@
 
 import argparse
 import ast
+import subprocess
 from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-MODULES = ("basic", "dsu", "fenwick", "segtree", "lazy_segtree", "graph", "lca", "number_theory", "string")
+MODULES = ("basic", "dsu", "fenwick", "segtree", "lazy_segtree", "graph", "lca", "number_theory", "string",
+           "weighted_dsu", "graph_extra", "mst", "matching", "dp", "range_utils", "math_extra",
+           "geometry", "trie", "rolling_hash", "enumeration", "heuristic", "interactive")
+DEPENDENCIES = {"mst": ("dsu",)}
 
 
 def mogura_bundle(modules, main_text="", repository="mogura20/mogura-atcoder-library", source_ref=None):
@@ -23,6 +27,19 @@ def mogura_bundle(modules, main_text="", repository="mogura20/mogura-atcoder-lib
     modules = list(dict.fromkeys(modules))
     if any(module not in MODULES for module in modules):
         raise ValueError("未対応のモジュール名です")
+    # 指定したモジュールの依存だけを先に展開。現在はmst→dsu。
+    ordered = []
+
+    def include(module):
+        if module in ordered:
+            return
+        for dependency in DEPENDENCIES.get(module, ()):
+            include(dependency)
+        ordered.append(module)
+
+    for module in modules:
+        include(module)
+    modules = ordered
     tree = ast.parse(main_text)
     lines = main_text.splitlines(keepends=True)
     removed = set()
@@ -52,7 +69,16 @@ def mogura_bundle(modules, main_text="", repository="mogura20/mogura-atcoder-lib
         output.append("\n# === mogura: " + module + " ===\n")
         if source_ref:
             output.append("# Source: https://github.com/" + repository + "/blob/" + source_ref + "/mogura/" + module + ".py\n")
-        output.append((ROOT / "mogura" / (module + ".py")).read_text(encoding="utf-8"))
+        module_text = (ROOT / "mogura" / (module + ".py")).read_text(encoding="utf-8")
+        module_lines = module_text.splitlines(keepends=True)
+        import_lines = set()
+        for node in ast.parse(module_text).body:
+            if isinstance(node, ast.ImportFrom) and node.module and node.module.startswith('mogura.'):
+                dependency = node.module.split('.')[-1]
+                if dependency not in modules:
+                    raise ValueError('DEPENDENCIESに内部依存を登録してください: ' + dependency)
+                import_lines.update(range(node.lineno-1, node.end_lineno))
+        output.extend(line for index,line in enumerate(module_lines) if index not in import_lines)
     output.append("\n# === 自分で書く問題固有の処理 ===\n")
     output.extend(line for index, line in enumerate(lines) if index not in removed)
     result = "".join(output)
@@ -70,6 +96,26 @@ def main():
     args = parser.parse_args()
     if args.source_ref and (len(args.source_ref) != 40 or any(c not in "0123456789abcdefABCDEF" for c in args.source_ref)):
         parser.error("--source-refは40桁のコミットSHAで指定してください")
+    if args.source_ref:
+        # 未コミットの修正版を古い公開URLで引用することを防ぐ。
+        required = set(args.modules)
+        for module in list(required):
+            required.update(DEPENDENCIES.get(module, ()))
+        paths = ['mogura/' + module + '.py' for module in sorted(required)] + ['LICENSE']
+        if args.main:
+            try:
+                example = args.main.resolve().relative_to(ROOT / 'examples')
+            except ValueError:
+                pass
+            else:
+                paths.append('examples/' + example.as_posix())
+        for path in paths:
+            result = subprocess.run(['git', 'show', args.source_ref + ':' + path],
+                                    cwd=ROOT, capture_output=True)
+            if result.returncode:
+                parser.error('指定SHAのソースがローカルにありません。git fetchで取得してください: ' + path)
+            if result.stdout != (ROOT / path).read_bytes():
+                parser.error('手元のコードと指定SHAが一致しません。公開済みの同じ版を使ってください: ' + path)
     main_text = args.main.read_text(encoding="utf-8") if args.main else ""
     if args.main and args.source_ref:
         try:
@@ -78,7 +124,10 @@ def main():
             pass
         else:
             main_text = "# Source: https://github.com/" + args.repository + "/blob/" + args.source_ref + "/examples/" + relative.as_posix() + "\n" + main_text
-    code = mogura_bundle(args.modules, main_text, args.repository, args.source_ref)
+    try:
+        code = mogura_bundle(args.modules, main_text, args.repository, args.source_ref)
+    except (ValueError, SyntaxError) as error:
+        parser.error(str(error))
     if args.output:
         args.output.write_text(code, encoding="utf-8")
     else:

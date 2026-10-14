@@ -1,0 +1,392 @@
+{
+  "review_date": "2026-10-14",
+  "baseline_commit": "5d47aeaf46e9bbbe3ecafcc0ddb855e8cfdefe21",
+  "file_count": 55,
+  "files": [
+    {
+      "source_file": "*コンテスト用 copy.py",
+      "sha256": "089f3020ee68f1babc823d6f72a5878e7aba17358b47e1e57347772a104663dc",
+      "bytes": 92,
+      "status": "対象外",
+      "target": "問題専用の入出力・BMI判定。汎用ライブラリではない"
+    },
+    {
+      "source_file": "*コンテスト用.py",
+      "sha256": "1c7aedf78164187303e870547b266410d6c45c563a42efd466ac067576befac9",
+      "bytes": 2017,
+      "status": "既存＋追加",
+      "target": "DSUは既存。Kruskalはmogura/mst.pyへ"
+    },
+    {
+      "source_file": "*迷った時に01",
+      "sha256": "d24a9d8cc07662ec811b1baa33f1db74b32092875a1100631e584f0632c1e8f9",
+      "bytes": 10209,
+      "status": "説明へ整理",
+      "target": "docs/python_notes.mdの選択表。名前だけの高度手法は未実装と明記"
+    },
+    {
+      "source_file": "*迷った時に02",
+      "sha256": "21d51ce20b43e5cacd2669153ffc4d13095235546fe8272f17186d13b3fcbc29",
+      "bytes": 4973,
+      "status": "説明へ整理",
+      "target": "docs/python_notes.md。問題番号・秒数による固定的な目安は転載しない"
+    },
+    {
+      "source_file": "DP_グリッドDP(2次元DP).py",
+      "sha256": "f0065610b11a2b231120537e5f50fb9899fcdcdb3487589e843eafdd3e8f80ef",
+      "bytes": 994,
+      "status": "追加",
+      "target": "mogura/dp.py: mogura_grid_path_count"
+    },
+    {
+      "source_file": "DP_ビットDP.py",
+      "sha256": "5305db5d370821ebb7b84b6dbb9d15d0e0eefeefa29c4f65810fa7d7cf401571",
+      "bytes": 944,
+      "status": "追加",
+      "target": "mogura/dp.py: mogura_hamiltonian_cost（任意始点）"
+    },
+    {
+      "source_file": "DP_区間DP.py",
+      "sha256": "22d722a9d050ab1202bae5ff03a9ef77e6e57022ecca2f3ccbfb87c225dd3b1c",
+      "bytes": 1347,
+      "status": "追加",
+      "target": "mogura/dp.py: mogura_interval_dp（追加コスト関数を指定）"
+    },
+    {
+      "source_file": "DP_巡回セールスマン問題(TSP).py",
+      "sha256": "aeba36f8240066beadadb9c514c476af0ead0c71206821245b1d3722fdc1f198",
+      "bytes": 1482,
+      "status": "追加",
+      "target": "mogura/dp.py: mogura_hamiltonian_cost（cycle=True）"
+    },
+    {
+      "source_file": "DP_最長共通部分列(LCS).py",
+      "sha256": "9669ac9f24fc9902391d8defa3efd56d329c98de466e2dd3ef3d29f509893cd9",
+      "bytes": 1387,
+      "status": "追加",
+      "target": "mogura/dp.py: mogura_lcs（復元、デバッグ出力除去）"
+    },
+    {
+      "source_file": "DP_最長増加部分列(LIS).py",
+      "sha256": "9ad0dd1cbe1c9360264a73c77d2a4c1233fe9b24c8e38a57d403e3dac733e149",
+      "bytes": 1227,
+      "status": "追加",
+      "target": "mogura/dp.py: mogura_lis（復元、非減少も対応）"
+    },
+    {
+      "source_file": "DP_木DP.py",
+      "sha256": "6b7151acf97aacdc4ce27f29ee6c401e5fb167ad1ef66910e2ef0558307b46a3",
+      "bytes": 1533,
+      "status": "追加",
+      "target": "mogura/dp.py: mogura_tree_independent_set（反復処理・復元）"
+    },
+    {
+      "source_file": "DP_確率DP.py",
+      "sha256": "713b5d9c7a917f9ec63c77a815bc29f1a9c02a7948ada78c50de4d6b0559728d",
+      "bytes": 955,
+      "status": "追加",
+      "target": "mogura/dp.py: mogura_expected_steps（移動量・確率を指定）"
+    },
+    {
+      "source_file": "インタラクティブ問題_デバッグ用コードなど.py",
+      "sha256": "1d4b0fb0104d6432b1689cf3ba5e7cc74f32dffae1fe8349a9dcbf90a6e2ebcc",
+      "bytes": 881,
+      "status": "追加＋説明",
+      "target": "mogura/interactive.pyとdocs/python_notes.md。問題固有の解答は移行しない"
+    },
+    {
+      "source_file": "グラフ理論_BFS.py",
+      "sha256": "3142b8326c714e7d9c0130fc7f5bc50b5162677905aafb05338fbc67e4b528f4",
+      "bytes": 3050,
+      "status": "既存＋追加",
+      "target": "BFSは既存graph.py。0–1 BFSはgraph_extra.pyへ"
+    },
+    {
+      "source_file": "グラフ理論_DFS.py",
+      "sha256": "e31af25bdddfcffe716d094a4840df21738d7ed1f791e2956ce6b6268fb2c542",
+      "bytes": 4204,
+      "status": "追加＋説明",
+      "target": "graph_extra.pyのmogura_dfs_orders。経路は親配列で復元。問題専用/第三者スニペットは転載しない"
+    },
+    {
+      "source_file": "グラフ理論_トポロジカルソート.py",
+      "sha256": "06455c80da4779886ee8c7b94c83b0f5571aa56586ee85065f71753891cc3213",
+      "bytes": 497,
+      "status": "既存",
+      "target": "mogura/graph.py: mogura_toposort"
+    },
+    {
+      "source_file": "グラフ理論_最大2部マッチング.py",
+      "sha256": "da9f139409741e4fdbbec8b838ac1c0a7cc08913aa34f5d18cf35925124afcd5",
+      "bytes": 2630,
+      "status": "追加",
+      "target": "mogura/matching.py: MoguraHopcroftKarp、読みやすいBFS増加路法も用意"
+    },
+    {
+      "source_file": "グラフ理論_最小全域木_クラスカル法.py",
+      "sha256": "a965e33bf32bf3a30a908ad1a8da4614406290fb034b52f92abfed45af70fad4",
+      "bytes": 1297,
+      "status": "追加",
+      "target": "mogura/mst.py: mogura_kruskal（入力を変更しない、非連結も明示）"
+    },
+    {
+      "source_file": "グラフ理論_最小全域木_プリム法.py",
+      "sha256": "018454fb5763b6a321af173545822b932025093e10e1db6bcd64c0f38ce60311",
+      "bytes": 1080,
+      "status": "追加",
+      "target": "mogura/mst.py: mogura_prim（全成分を処理）"
+    },
+    {
+      "source_file": "グラフ理論_最短経路_ダイクストラ.py",
+      "sha256": "fb7b7848374326cfbdf4810e912a24b7e90a16db83c2e06061f33c5faa98cdb6",
+      "bytes": 1349,
+      "status": "既存",
+      "target": "mogura/graph.py: mogura_dijkstra"
+    },
+    {
+      "source_file": "グラフ理論_最短経路_ベルマンフォード.py",
+      "sha256": "2509cc76f95a703cf8bbbce693331b0f12477c5d0e419bc5807904eab5c76780",
+      "bytes": 1650,
+      "status": "追加",
+      "target": "mogura/graph_extra.py: mogura_bellman_ford"
+    },
+    {
+      "source_file": "グラフ理論_最短経路_ワーシャルフロイド.py",
+      "sha256": "b055eb6dcf1ef4868193f35cb57881e251f668702d592303550b80b345b65fa1",
+      "bytes": 1304,
+      "status": "追加",
+      "target": "mogura/graph_extra.py: mogura_floyd_warshall"
+    },
+    {
+      "source_file": "データ構造_UnionFind.py",
+      "sha256": "ae78bc90512af1104397b65ec7399bfc3119aa1b3e7c3f775d271d7fdb18b680",
+      "bytes": 2828,
+      "status": "既存＋追加",
+      "target": "通常DSUは既存。weighted_dsu.pyへ重み付き版を追加（差の符号を変更）"
+    },
+    {
+      "source_file": "データ構造_heapq_SortedSet copy.py",
+      "sha256": "81c094e9fdacdaa2e2b98a4347e167f68d9b695d8512ef49580329b207f08d11",
+      "bytes": 1345,
+      "status": "説明へ整理",
+      "target": "docs/python_notes.md。外部SortedContainersは依存として取り込まない"
+    },
+    {
+      "source_file": "データ構造_セグメントツリー.py",
+      "sha256": "3ca523dd78889643be44ff1cb24456e842070f506644de56b3921ee7b16ed324",
+      "bytes": 2133,
+      "status": "既存",
+      "target": "mogura/segtree.py、lazy_segtree.py。誤った呼出しや問題別入出力は転載しない"
+    },
+    {
+      "source_file": "データ構造_セグメントツリー2.py",
+      "sha256": "095b17388c578a244d866bfef113ea5b70af8c5890ffec483f6a5ee730c3f35e",
+      "bytes": 3796,
+      "status": "既存＋説明",
+      "target": "汎用演算は既存MoguraSegTreeへ統一。XOR/AND/OR設定例を追加"
+    },
+    {
+      "source_file": "データ構造_フェンウィックツリー.py",
+      "sha256": "84ac1cb89ea70d75fa2f4d2a97f8c3abb5e81a1a4f5d67adf44f468f8b828d6b",
+      "bytes": 991,
+      "status": "既存",
+      "target": "mogura/fenwick.py（0始まり・半開区間へ統一）"
+    },
+    {
+      "source_file": "ヒューリスティック_ビームサーチ_chatgpt.py",
+      "sha256": "177968dbe8d55b14de6de01bf7aa8d4d2ba858adcaff0b41fe453b77cd456775",
+      "bytes": 5574,
+      "status": "追加",
+      "target": "mogura/heuristic.pyとexamples/heuristic_recipes.py"
+    },
+    {
+      "source_file": "ヒューリスティック_焼きなまし.py",
+      "sha256": "8bf99580716cc849137feda3a3b7725927c3041b2ad7b07933e290042cfe5842",
+      "bytes": 1956,
+      "status": "追加",
+      "target": "mogura/heuristic.pyへ汎用化。例の点巡回の専用入出力は取り込まない"
+    },
+    {
+      "source_file": "ヒューリスティック_焼きなまし_chatgpt.py",
+      "sha256": "10f79492b07fd4f25d1e0d90550a3dc8f2df917710433db56667c44a807b5711",
+      "bytes": 4703,
+      "status": "追加",
+      "target": "mogura/heuristic.pyとexamples/heuristic_recipes.py"
+    },
+    {
+      "source_file": "基本型_ビット全探索.py",
+      "sha256": "3b81d51c6217e050c139df6acbe1366add3e6126b101e1490e0a8e50b1a237c0",
+      "bytes": 335,
+      "status": "追加＋説明",
+      "target": "mogura/enumeration.pyとdocs/python_notes.md"
+    },
+    {
+      "source_file": "基本型_メモ化再帰.py",
+      "sha256": "3eadff407238fc55de70fba8b9e8a0654f6f776f9070ab43eaa109c06b896772",
+      "bytes": 341,
+      "status": "説明へ整理",
+      "target": "docs/python_notes.md: cacheの使い方と終了条件"
+    },
+    {
+      "source_file": "基本型_二分探索_*基本.py",
+      "sha256": "e3554fa3ab6a73ef35e4ffe927127916c57b044e243ac79c079abe355611f329",
+      "bytes": 323,
+      "status": "既存",
+      "target": "mogura/basic.py: mogura_bisect_int。問題固有判定は呼び出し側で記述"
+    },
+    {
+      "source_file": "基本型_二分探索_しゃくとり法.py",
+      "sha256": "57d7c5329568605d3b8536962b7d56a9ea035dc26392b60cbb48fbce95a04598",
+      "bytes": 3145,
+      "status": "追加＋説明",
+      "target": "range_utils.py: 非負和のしゃくとり/連続区間。第三者の問題専用例は転載しない"
+    },
+    {
+      "source_file": "基本型_再帰関数.py",
+      "sha256": "cff2da6dc173ede847c171d395e18ff583a96a34bc6b3db45d4f16a8fb0d0e82",
+      "bytes": 177,
+      "status": "説明へ整理",
+      "target": "docs/python_notes.mdの再帰・反復の使い分けとFibonacci例"
+    },
+    {
+      "source_file": "基本型_累積和_二次元累積和.py",
+      "sha256": "7d5d375d70a510e330548d250f038588d5eccaac861c48f7976dfb80928ed863",
+      "bytes": 1563,
+      "status": "追加",
+      "target": "range_utils.py: MoguraPrefixSum2D"
+    },
+    {
+      "source_file": "数学_ビットシフト演算_進数.py",
+      "sha256": "87337bb26a75526e82bcb03f9f96891cfc44280c5868b4a0d6937b2597fd0c0f",
+      "bytes": 1070,
+      "status": "追加＋説明",
+      "target": "math_extra.py: mogura_base_digits、docs/python_notes.md"
+    },
+    {
+      "source_file": "数学_冪乗(pow).py",
+      "sha256": "118d15d87350d0666670a6b265808b62b037afed420a18c2efba698d20b8b054",
+      "bytes": 106,
+      "status": "説明へ整理",
+      "target": "docs/python_notes.md: 標準pow"
+    },
+    {
+      "source_file": "数学_切り上げ_切り捨て.py",
+      "sha256": "b49f40eef43b2f5e0e4b219510c05ac43cd71babb57b8abfd54da0d6affe0c05",
+      "bytes": 337,
+      "status": "追加＋説明",
+      "target": "math_extra.py: mogura_ceil_div、docs/python_notes.md"
+    },
+    {
+      "source_file": "数学_座標回転.py",
+      "sha256": "23c5e095f2d62161383b9dd1f462879654b6984e9dbcafee32143525b54f8c00",
+      "bytes": 361,
+      "status": "追加",
+      "target": "geometry.py: mogura_rotate_point（中心指定可）"
+    },
+    {
+      "source_file": "数学_最大公約数_最小公倍数.py",
+      "sha256": "3611bbf4b621112657e76a323f4cf057358ac39809006033eb5ec469956fce47",
+      "bytes": 403,
+      "status": "説明へ整理",
+      "target": "docs/python_notes.md: 標準gcd/lcm"
+    },
+    {
+      "source_file": "数学_直線の交差判定.py",
+      "sha256": "94a4ab8331878392e95213dcbd612994ce06f2f59d0f41e2d61d68d486e1084f",
+      "bytes": 2167,
+      "status": "追加",
+      "target": "geometry.py: 閉線分交差、外積/内積/距離二乗。無限直線とは区別"
+    },
+    {
+      "source_file": "数学_約数列挙.py",
+      "sha256": "b5a2c05ad12f017a2f20a9f7e0c6fdf6e5e61f57eb9edac237a44fbe1716339e",
+      "bytes": 319,
+      "status": "追加",
+      "target": "math_extra.py: mogura_divisors"
+    },
+    {
+      "source_file": "数学_素因数分解(Osa_k法).py",
+      "sha256": "6c6eb64881989e1fb269e35450129b83fb7b88465b5254d38439651e0bb9c7d6",
+      "bytes": 1233,
+      "status": "追加",
+      "target": "math_extra.py: MoguraOsaK"
+    },
+    {
+      "source_file": "数学_素因数分解.py",
+      "sha256": "d5eade6a75296142b92b774209287b27ae5a06b1818475ada75ee816b6d31279",
+      "bytes": 301,
+      "status": "既存",
+      "target": "number_theory.py: mogura_factorize。リスト形式ならMoguraOsaK.factor_list"
+    },
+    {
+      "source_file": "数学_素数列挙.py",
+      "sha256": "fa0b08aa005294da9a565d41b13684ddde7b45df40246f42bc8d28c3d905a0c4",
+      "bytes": 366,
+      "status": "既存",
+      "target": "number_theory.py: mogura_sieve"
+    },
+    {
+      "source_file": "数学_組合せ(N人をTチームに分ける) チームを区別しない.py",
+      "sha256": "8068a9e779323d941adc3bdd4f6862daad0fd72b004d32408ac2af295d0a6549",
+      "bytes": 868,
+      "status": "追加",
+      "target": "math_extra.py: mogura_team_sizes（整数分割）"
+    },
+    {
+      "source_file": "数学_組合せ(N人をTチームに分ける)チームを区別する.py",
+      "sha256": "86b105ae747e8d3326504e91bf96b34d0fe2e007f37815c0723e729303867447",
+      "bytes": 853,
+      "status": "追加",
+      "target": "math_extra.py: mogura_team_sizes（labeled=True、整数組成）"
+    },
+    {
+      "source_file": "数学_転置行列.py",
+      "sha256": "c02420dfdcb2f08450cf9f758f8bc47b019b42d142a702fd5d5fb503684b1f20",
+      "bytes": 460,
+      "status": "追加",
+      "target": "geometry.py: mogura_transpose/mogura_rotate_grid、NumPy不要"
+    },
+    {
+      "source_file": "数学_集合演算.py",
+      "sha256": "558f006541731dec8b28a7b947e49c2d1ae42304cda789233b706d0f7a1460b7",
+      "bytes": 663,
+      "status": "説明へ整理",
+      "target": "docs/python_notes.md: set"
+    },
+    {
+      "source_file": "数学_順列_組合せ(itertools_math).py",
+      "sha256": "de18d7556c01e80ff24f7d944e402c9a31c24db9a88e637ae9e883d0eec956b6",
+      "bytes": 1820,
+      "status": "追加＋説明",
+      "target": "enumeration.py: 重複なし順列、docs/python_notes.mdのitertools/math"
+    },
+    {
+      "source_file": "文字列処理_ランレングス圧縮.py",
+      "sha256": "448041f9b9a8541ae4a6a7224be1d9233696d7047aa3dfb3b93a8e38c8a0ae40",
+      "bytes": 179,
+      "status": "追加",
+      "target": "string.py: mogura_run_length"
+    },
+    {
+      "source_file": "文字列検索_Trie木.py",
+      "sha256": "6676c6162ea6fbf3411ab77e1693ecc98df433bdf36ab430f2c451ae4d2b7865",
+      "bytes": 948,
+      "status": "追加",
+      "target": "trie.py: MoguraTrie（空文字/重複/前方一致/LCP総和）"
+    },
+    {
+      "source_file": "文字列検索_Zアルゴリズム.py",
+      "sha256": "f7d018d634b850c216d862ba528588219dbfcc1379630a6de81f0d418537edc2",
+      "bytes": 825,
+      "status": "既存＋追加",
+      "target": "Z本体は既存。string.pyへmogura_z_searchを追加"
+    },
+    {
+      "source_file": "文字列検索_ローリングハッシュ.py",
+      "sha256": "eb8b7968b89702c1d0def1347200c39dd1ca4770d93f3a722fa568d08aa69442",
+      "bytes": 762,
+      "status": "追加",
+      "target": "rolling_hash.py: MoguraRollingHash（二重化、区間取得O(1)）"
+    }
+  ]
+}

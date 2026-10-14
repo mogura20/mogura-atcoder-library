@@ -4,7 +4,12 @@ from math import isqrt
 
 
 def mogura_sieve(limit):
-    """limit以下の素数リスト。O(limit log log limit)、領域O(limit)。"""
+    """limit以下の素数リスト。O(limit log log limit)、領域O(limit)。
+
+    入力例・結果:
+    >>> mogura_sieve(10)
+    [2, 3, 5, 7]
+    """
     if limit < 2:
         return []
     flags = bytearray(b'\x01') * (limit + 1)
@@ -18,6 +23,10 @@ def mogura_sieve(limit):
 
 def mogura_factorize(number):
     """正整数を{素因数:指数}に分解。試し割りO(sqrt(number))。
+
+    入力例・結果:
+    >>> mogura_factorize(60)
+    {2: 2, 3: 1, 5: 1}
 
     1なら{}。大量の問い合わせ・巨大な整数には適さない。
     """
@@ -36,7 +45,13 @@ def mogura_factorize(number):
 
 
 def mogura_extgcd(a, b):
-    """(g,x,y)を返す。g=gcd(a,b)>=0、a*x+b*y=g。負数・0も可。"""
+    """(g,x,y)を返す。g=gcd(a,b)>=0、a*x+b*y=g。負数・0も可。
+
+    入力例・結果:
+    >>> g, x, y = mogura_extgcd(12, 18)
+    >>> g, 12 * x + 18 * y
+    (6, 6)
+    """
     old_r, remainder = a, b
     old_x, x, old_y, y = 1, 0, 0, 1
     while remainder:
@@ -52,12 +67,24 @@ def mogura_extgcd(a, b):
 class MoguraComb:
     """階乗・逆階乗によるnCr/nPr。前計算O(limit+log mod)、問合せO(1)。
 
+    入力例・結果:
+    >>> comb = MoguraComb(10, mod=998244353)
+    >>> comb.ncr(5, 2)
+    10
+
     前提: modは素数、0 <= limit < mod。素数判定は行わない。
     例: comb=MoguraComb(200000, 998244353); comb.ncr(5,2) -> 10
     n>limitはValueError。r<0/r>nの答えは0。領域O(limit)。
     """
 
     def __init__(self, limit, mod=998244353):
+        """limitまでの階乗と逆階乗を素数modで前計算する。
+
+        入力例・結果:
+        >>> comb = MoguraComb(10, mod=998244353)
+        >>> comb.ncr(5, 2)
+        10
+        """
         if mod < 2 or not 0 <= limit < mod:
             raise ValueError("素数modと0 <= limit < modを指定してください")
         self.limit, self.mod = limit, mod
@@ -70,6 +97,13 @@ class MoguraComb:
             self.invfact[number - 1] = self.invfact[number] * number % mod
 
     def ncr(self, n, r):
+        """n個からr個を選ぶ組合せ数をmodで返す。
+
+        入力例・結果:
+        >>> comb = MoguraComb(10)
+        >>> comb.ncr(5, 2), comb.ncr(5, 6)
+        (10, 0)
+        """
         if n < 0 or r < 0 or r > n:
             return 0
         if n > self.limit:
@@ -77,6 +111,13 @@ class MoguraComb:
         return self.fact[n] * self.invfact[r] % self.mod * self.invfact[n-r] % self.mod
 
     def npr(self, n, r):
+        """n個からr個を順に選ぶ順列数をmodで返す。
+
+        入力例・結果:
+        >>> comb = MoguraComb(10)
+        >>> comb.npr(5, 2)
+        20
+        """
         if n < 0 or r < 0 or r > n:
             return 0
         if n > self.limit:

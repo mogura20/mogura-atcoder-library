@@ -4,12 +4,24 @@
 class MoguraRollingHash:
     """文字列の区間[left,right)を二つのmodでハッシュ化する。
 
+    入力例・結果:
+    >>> rh = MoguraRollingHash('abcabc')
+    >>> rh.same(0, 3, rh, 3, 6)
+    True
+
     等しい区間は同じ値。ただし一致しても衝突の可能性があり、確定判定ではない。
     別インスタンスを比較するときはbase/modsを同じにし、長さも比較する。
     固定baseは再現性用。厳密な答えが必要なら元文字列で確認すること。
     """
 
     def __init__(self, text, base=911382323, mods=(1000000007, 1000000009)):
+        """文字列のハッシュとbaseの累乗を各modで前計算する。
+
+        入力例・結果:
+        >>> rh = MoguraRollingHash('abcabc')
+        >>> rh.same(0, 3, rh, 3, 6)
+        True
+        """
         mods = tuple(mods)
         if not mods or not 1 < base < min(mods):
             raise ValueError('1 < base < 各modが必要です')
@@ -24,11 +36,27 @@ class MoguraRollingHash:
             self.powers.append(powers)
 
     def get(self, left, right):
-        """[left,right)のハッシュタプル。空区間は全て0。"""
+        """[left,right)のハッシュタプル。空区間は全て0。
+
+        入力例・結果:
+        >>> rh = MoguraRollingHash('abcabc')
+        >>> rh.get(0, 3) == rh.get(3, 6)
+        True
+        >>> rh.get(2, 2)
+        (0, 0)
+        """
         assert 0 <= left <= right <= self.n
         return tuple((h[right]-h[left]*p[right-left]) % mod for h,p,mod in zip(self.hashes,self.powers,self.mods))
 
     def same(self, left, right, other, other_left, other_right):
+        """同じ長さの区間をハッシュで比較する。一致しても衝突の可能性がある。
+
+        入力例・結果:
+        >>> left = MoguraRollingHash('abcabc')
+        >>> right = MoguraRollingHash('abc')
+        >>> left.same(3, 6, right, 0, 3)
+        True
+        """
         if (self.base, self.mods) != (other.base, other.mods):
             raise ValueError('ハッシュのbase/modsを揃えてください')
         assert 0 <= left <= right <= self.n and 0 <= other_left <= other_right <= other.n

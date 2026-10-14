@@ -10,6 +10,12 @@ def mogura_anneal(initial, score, propose, copy_state, iterations=10000,
                   time_limit=None, start_temp=100.0, end_temp=0.1, seed=0):
     """(best_state,best_score,stats)を返す。評価は大きいほど良い。
 
+    入力例・結果:
+    >>> best, value, stats = mogura_anneal(0, lambda x: x, lambda x, rng: x + 1,
+    ...                                  copy_state=lambda x: x, iterations=3)
+    >>> best, value, stats['iterations']
+    (3, 3, 3)
+
     score(state): 有限数の評価値。
     propose(state,rng): 元を変更せず候補を返す。候補の合法性は呼び出し側。
     copy_state(state): 最良解を保存できる独立コピー（不変値ならlambda x:x）。
@@ -59,6 +65,13 @@ def mogura_anneal(initial, score, propose, copy_state, iterations=10000,
 def mogura_beam_search(initial, expand, evaluate, is_complete, final_score=None,
                        key=None, width=100, max_depth=100, time_limit=None):
     """(best_complete,score,stats)を返す。完成解なしは(None,None,stats)。
+
+    入力例・結果:
+    >>> best, value, stats = mogura_beam_search(0, lambda x: [x + 1, x + 2],
+    ...                                       lambda x: x, lambda x: x >= 3,
+    ...                                       width=2, max_depth=3)
+    >>> best, value
+    (4, 4)
 
     expand(state)は新しい子状態のiterable。元の状態を変更しないこと。
     evaluateは途中順位、final_scoreは完成解の評価（省略時evaluate）。

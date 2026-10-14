@@ -6,6 +6,12 @@ from bisect import bisect_left, bisect_right
 def mogura_lis(values, strict=True):
     """(長さ, 元配列の添字列)を返すLIS。O(n log n)、領域O(n)。
 
+    入力例・結果:
+    >>> a = [3, 1, 2, 4]
+    >>> length, indices = mogura_lis(a)
+    >>> length, [a[i] for i in indices]
+    (3, [1, 2, 4])
+
     strict=Trueは狭義増加、Falseは非減少。空なら(0,[])。
     値の列は[values[i] for i in indices]で取得。同長の解の選択は未保証。
     """
@@ -32,6 +38,10 @@ def mogura_lis(values, strict=True):
 def mogura_lcs(left, right):
     """(長さ, 共通部分列の要素リスト)を返す。O(nm)時間・領域。
 
+    入力例・結果:
+    >>> mogura_lcs('abc', 'ac')
+    (2, ['a', 'c'])
+
     文字列も列も可。文字列へ戻す場合は''.join(sequence)。
     デバッグ出力なし。長さだけ必要なら2行DPへの変更で領域を削減できる。
     """
@@ -55,6 +65,13 @@ def mogura_lcs(left, right):
 
 def mogura_hamiltonian_cost(cost, start=None, cycle=False):
     """全頂点を1回ずつ訪問する最小コスト。O(n²2^n)、領域O(n2^n)。
+
+    入力例・結果:
+    >>> cost = [[0, 2, 5], [2, 0, 1], [5, 1, 0]]
+    >>> mogura_hamiltonian_cost(cost)  # 始点自由、戻らない
+    3
+    >>> mogura_hamiltonian_cost(cost, start=0, cycle=True)
+    8
 
     cost[u][v]は直接移動のコスト。辺なしはfloat('inf')。負辺も可。
     start=Noneは任意始点の最短Hamiltonian path。start指定で始点固定。
@@ -89,6 +106,12 @@ def mogura_hamiltonian_cost(cost, start=None, cycle=False):
 def mogura_interval_dp(n, merge_cost, singleton=None):
     """区間を分割して最小化するDPテーブル。O(n³)時間、O(n²)領域。
 
+    入力例・結果:
+    >>> prefix = [0, 10, 30, 60]
+    >>> dp = mogura_interval_dp(3, lambda l, m, r: prefix[r] - prefix[l])
+    >>> dp[0][3]  # [10, 20, 30]を1つに併合
+    90
+
     dp[l][r]は[l,r)の最小コスト。merge_cost(l,m,r)を追加コストとして
     dp[l][m]+dp[m][r]+merge_cost(l,m,r)を最小化する。
     singleton(i)は1要素のコスト（省略は0）。空区間も0。
@@ -111,6 +134,12 @@ def mogura_interval_dp(n, merge_cost, singleton=None):
 
 def mogura_grid_path_count(grid, blocked='#', mod=1000000007):
     """左上→右下へ右/下だけ移動する経路数。O(HW)、領域O(W)。
+
+    入力例・結果:
+    >>> mogura_grid_path_count(['..', '..'])
+    2
+    >>> mogura_grid_path_count(['.#', '..'])
+    1
 
     blockedと等しいマスは通れない。他の値は通行可。mod=Noneなら整数。
     空グリッド・幅0は0。不揃いな行はValueError。
@@ -139,6 +168,11 @@ def mogura_grid_path_count(grid, blocked='#', mod=1000000007):
 
 def mogura_tree_independent_set(graph, weights, root=0):
     """木の最大重み独立集合。(最適値, 選択頂点)を返す。O(n)。
+
+    入力例・結果:
+    >>> value, vertices = mogura_tree_independent_set([[1], [0, 2], [1]], [3, 5, 4])
+    >>> value, sorted(vertices)
+    (7, [0, 2])
 
     graphは連結な無向木、weightsは頂点重み。負の重み・空の選択も可。
     反復の木DPと復元なので再帰不要。同点の解は選ばない側を優先。
@@ -178,6 +212,12 @@ def mogura_tree_independent_set(graph, weights, root=0):
 
 def mogura_expected_steps(goal, outcomes):
     """前進してgoal以上へ到達するまでの期待試行回数。O(goal*K)。
+
+    入力例・結果:
+    >>> mogura_expected_steps(3, [(1, 1.0)])  # 必ず1進む
+    3.0
+    >>> mogura_expected_steps(2, [(1, 0.5), (2, 0.5)])
+    1.5
 
     outcomes=[(正の移動量, 確率), ...]。確率和は1、計算はfloat。
     goal<=0なら0。自己ループ・後退・一般の確率過程には対応しない。

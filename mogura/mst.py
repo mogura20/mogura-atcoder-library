@@ -7,6 +7,11 @@ from mogura.dsu import MoguraDSU
 def mogura_kruskal(n, edges):
     """(total_weight, chosen_edges, component_count)を返す。
 
+    入力例・結果:
+    >>> total, edges, count = mogura_kruskal(3, [(0, 1, 2), (1, 2, 1), (0, 2, 5)])
+    >>> total, edges, count
+    (3, [(1, 2, 1), (0, 1, 2)], 1)
+
     edges=(u,v,weight)、入力を並べ替えない。負辺・多重辺・自己ループ可。
     O(V+E log(E+2))。連結ならchosen_edgesはn-1本。空なら(0,[],0)。
     component_count>1なら全域木ではなく全域森であることを明示する。
@@ -23,6 +28,12 @@ def mogura_kruskal(n, edges):
 
 def mogura_prim(graph):
     """Kruskalと同じ戻り値。graph[v]=[(to,weight),...]は無向。
+
+    入力例・結果:
+    >>> graph = [[(1, 2), (2, 5)], [(0, 2), (2, 1)], [(0, 5), (1, 1)]]
+    >>> total, edges, count = mogura_prim(graph)
+    >>> total, edges, count
+    (3, [(0, 1, 2), (1, 2, 1)], 1)
 
     各成分からPrimを実行。O(V+E log(E+2))、領域O(V+E)。
     辺は両方向追加すること。負辺も可。辺集合の順序は保証しない。

@@ -7,6 +7,10 @@ from heapq import heappop, heappush
 def mogura_bfs(graph, sources):
     """単一/複数始点の重みなし最短距離。O(V+E)、領域O(V)。
 
+    入力例・結果:
+    >>> mogura_bfs([[1], [2], [], []], 0)
+    ([0, 1, 2, -1], [-1, 0, 1, -1])
+
     graph[v] = [行き先, ...]。sourcesは頂点番号または頂点の iterable。
     戻り値は(dist, parent)。到達不能はdist=-1、始点のparentも-1。
     複数始点は距離0で開始。親は最初に見つけた経路を記録する。
@@ -32,6 +36,11 @@ def mogura_bfs(graph, sources):
 
 def mogura_dijkstra(graph, sources):
     """非負重みの最短距離。graph[v]=[(to, weight), ...]。
+
+    入力例・結果:
+    >>> graph = [[(1, 2), (2, 8)], [(2, 3)], [], []]
+    >>> mogura_dijkstra(graph, 0)
+    ([0, 2, 5, inf], [-1, 0, 1, -1])
 
     sourcesは頂点番号または頂点の iterable（各始点の初期距離は0）。
     戻り値(dist,parent)。到達不能はfloat('inf')、始点parent=-1。
@@ -65,6 +74,10 @@ def mogura_dijkstra(graph, sources):
 def mogura_restore_path(parent, target):
     """parentを辿って始点からtargetまで復元。O(経路長)。
 
+    入力例・結果:
+    >>> mogura_restore_path([-1, 0, 1], 2)
+    [0, 1, 2]
+
     前提: BFS/Dijkstraが返すような循環のないparent。
     到達不能かどうかは呼ぶ前にdistで判定すること。
     parent[target]=-1だけでは始点と到達不能を区別できない。
@@ -80,6 +93,12 @@ def mogura_restore_path(parent, target):
 
 def mogura_toposort(graph):
     """Kahn法。O(V+E)。DAGなら全頂点の順序、閉路があればNone。
+
+    入力例・結果:
+    >>> mogura_toposort([[1], [2], []])
+    [0, 1, 2]
+    >>> mogura_toposort([[1], [0]]) is None  # 閉路
+    True
 
     同順位の順序は保証しない。辞書順最小が必要ならqueueをheapへ変更。
     """
@@ -101,6 +120,11 @@ def mogura_toposort(graph):
 
 def mogura_scc(graph):
     """反復版Kosaraju法。O(V+E)、領域O(V+E)、深い再帰なし。
+
+    入力例・結果:
+    >>> groups, ids = mogura_scc([[1], [0, 2], []])
+    >>> [sorted(group) for group in groups], ids
+    ([[0, 1], [2]], [0, 0, 1])
 
     戻り値(groups, component_id)。異なる成分間の辺u→vについて
     component_id[u] < component_id[v]となるトポロジカル順。

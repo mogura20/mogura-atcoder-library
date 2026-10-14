@@ -5,7 +5,12 @@ from math import isqrt
 
 
 def mogura_divisors(number):
-    """正整数の約数を昇順で返す。O(√N)、領域O(約数数)。"""
+    """正整数の約数を昇順で返す。O(√N)、領域O(約数数)。
+
+    入力例・結果:
+    >>> mogura_divisors(12)
+    [1, 2, 3, 4, 6, 12]
+    """
     if number <= 0:
         raise ValueError('正整数が必要です')
     small, large = [], []
@@ -20,12 +25,24 @@ def mogura_divisors(number):
 class MoguraOsaK:
     """最小素因数を前計算して大量の素因数分解に対応する。
 
+    入力例・結果:
+    >>> osa = MoguraOsaK(100)
+    >>> osa.factorize(12)
+    {2: 2, 3: 1}
+
     前計算O(M log log M)、領域O(M)、factorizeはO(log n)。
     factorizeは既存mogura_factorizeと同じ{素因数:指数}を返す。
     factor_listは重複を含む素因数リスト。1は{}または[]。
     """
 
     def __init__(self, limit):
+        """limitまでの最小素因数を前計算する。
+
+        入力例・結果:
+        >>> osa = MoguraOsaK(100)
+        >>> osa.factorize(12)
+        {2: 2, 3: 1}
+        """
         if limit < 1:
             raise ValueError('limitは1以上')
         self.limit = limit
@@ -37,6 +54,12 @@ class MoguraOsaK:
                         self.spf[multiple] = prime
 
     def factorize(self, number):
+        """numberを{素因数:指数}へ分解する。1なら空辞書。
+
+        入力例・結果:
+        >>> MoguraOsaK(100).factorize(60)
+        {2: 2, 3: 1, 5: 1}
+        """
         if not 1 <= number <= self.limit:
             raise ValueError('1 <= number <= limitが必要です')
         factors = {}
@@ -47,16 +70,31 @@ class MoguraOsaK:
         return factors
 
     def factor_list(self, number):
+        """numberの素因数を重複を含む昇順リストで返す。
+
+        入力例・結果:
+        >>> MoguraOsaK(100).factor_list(60)
+        [2, 2, 3, 5]
+        """
         return [prime for prime, exponent in self.factorize(number).items() for _ in range(exponent)]
 
 
 def mogura_ceil_div(numerator, denominator):
-    """整数のceil(a/b)。負数にも対応しfloatに変換しない。b=0は例外。"""
+    """整数のceil(a/b)。負数にも対応しfloatに変換しない。b=0は例外。
+
+    入力例・結果:
+    >>> mogura_ceil_div(7, 3), mogura_ceil_div(-7, 3)
+    (3, -2)
+    """
     return -(-numerator // denominator)
 
 
 def mogura_base_digits(number, base):
     """非負整数をbase進法の桁リスト（上位から）へ。0は[0]。
+
+    入力例・結果:
+    >>> mogura_base_digits(10, 3)
+    [1, 0, 1]
 
     base>=2。10以上の桁も整数として返すので文字への変換は呼び出し側。
     """
@@ -71,6 +109,12 @@ def mogura_base_digits(number, base):
 
 def mogura_team_sizes(total, teams, labeled=False):
     """正の人数配分をタプルで逐次列挙する。人の割当ての列挙ではない。
+
+    入力例・結果:
+    >>> list(mogura_team_sizes(4, 2))
+    [(1, 3), (2, 2)]
+    >>> list(mogura_team_sizes(4, 2, labeled=True))
+    [(1, 3), (2, 2), (3, 1)]
 
     labeled=False: 非減少な整数分割。True: 順序を区別する整数組成。
     例: (4,2) -> [(1,3),(2,2)]、labeled=Trueでは(3,1)も返す。

@@ -4,6 +4,14 @@
 class MoguraLazySegTree:
     """op, identity, mapping, composition, identity_actionを指定。
 
+    入力例・結果:
+    >>> seg = MoguraLazySegTree([2, 5], min, float('inf'),
+    ...                          lambda delta, value: value + delta,
+    ...                          lambda new, old: new + old, 0)
+    >>> seg.apply(0, 2, 3)  # 区間加算・区間最小値
+    >>> seg.all_prod()
+    5
+
     mapping(action, value): 区間集約値に更新を作用させた値。
     composition(new, old): oldを先に、newを後に作用させる合成。
     mapping(f, op(a,b)) == op(mapping(f,a), mapping(f,b))が必要。
@@ -14,6 +22,16 @@ class MoguraLazySegTree:
     """
 
     def __init__(self, values, op, identity, mapping, composition, identity_action):
+        """初期配列・集約演算・更新作用・作用の合成を指定して構築する。
+
+        入力例・結果:
+        >>> seg = MoguraLazySegTree([2, 5], min, float('inf'),
+        ...                          lambda delta, value: value + delta,
+        ...                          lambda new, old: new + old, 0)
+        >>> seg.apply(0, 2, 3)  # 区間加算・区間最小値
+        >>> seg.all_prod()
+        5
+        """
         values = list(values)
         self.n = len(values)
         self.size = 1 << max(0, (self.n - 1).bit_length())
@@ -41,7 +59,16 @@ class MoguraLazySegTree:
         self.lazy[index] = self.identity_action
 
     def apply(self, left, right, action):
-        """[left,right)へ作用actionを適用する。空区間は何もしない。"""
+        """[left,right)へ作用actionを適用する。空区間は何もしない。
+
+        入力例・結果:
+        >>> seg = MoguraLazySegTree([2, 5], min, float('inf'),
+        ...                          lambda delta, value: value + delta,
+        ...                          lambda new, old: new + old, 0)
+        >>> seg.apply(0, 1, 10)  # [12, 5]に変化
+        >>> seg.all_prod()
+        5
+        """
         assert 0 <= left <= right <= self.n
 
         def visit(index, start, end):
@@ -59,6 +86,15 @@ class MoguraLazySegTree:
         visit(1, 0, self.size)
 
     def prod(self, left, right):
+        """半開区間[left,right)を指定した演算で集約する。
+
+        入力例・結果:
+        >>> seg = MoguraLazySegTree([2, 5], min, float('inf'),
+        ...                          lambda delta, value: value + delta,
+        ...                          lambda new, old: new + old, 0)
+        >>> seg.prod(0, 1), seg.prod(0, 2)
+        (2, 2)
+        """
         assert 0 <= left <= right <= self.n
 
         def visit(index, start, end):
@@ -74,13 +110,41 @@ class MoguraLazySegTree:
         return visit(1, 0, self.size)
 
     def all_prod(self):
+        """全要素の集約値を返す。
+
+        入力例・結果:
+        >>> seg = MoguraLazySegTree([2, 5], min, float('inf'),
+        ...                          lambda delta, value: value + delta,
+        ...                          lambda new, old: new + old, 0)
+        >>> seg.all_prod()
+        2
+        """
         return self.data[1]
 
     def get(self, index):
+        """添字indexの要素を返す。
+
+        入力例・結果:
+        >>> seg = MoguraLazySegTree([2, 5], min, float('inf'),
+        ...                          lambda delta, value: value + delta,
+        ...                          lambda new, old: new + old, 0)
+        >>> seg.get(1)
+        5
+        """
         assert 0 <= index < self.n
         return self.prod(index, index + 1)
 
     def set(self, index, value):
+        """添字indexの要素をvalueに代入する。
+
+        入力例・結果:
+        >>> seg = MoguraLazySegTree([2, 5], min, float('inf'),
+        ...                          lambda delta, value: value + delta,
+        ...                          lambda new, old: new + old, 0)
+        >>> seg.set(0, 9)  # [9, 5]に変化
+        >>> seg.all_prod()
+        5
+        """
         assert 0 <= index < self.n
 
         def visit(node, start, end):

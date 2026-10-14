@@ -4,12 +4,21 @@ from itertools import groupby
 
 
 def mogura_run_length(values):
-    """連続する同じ値を(value,count)へ圧縮。O(n)。空なら[]。"""
+    """連続する同じ値を(value,count)へ圧縮。O(n)。空なら[]。
+
+    入力例・結果:
+    >>> mogura_run_length('aaabbc')
+    [('a', 3), ('b', 2), ('c', 1)]
+    """
     return [(value, sum(1 for _ in group)) for value, group in groupby(values)]
 
 
 def mogura_z_search(text, pattern):
     """パターンの全出現位置（重なり含む）。O(len(text)+len(pattern))。
+
+    入力例・結果:
+    >>> mogura_z_search('ababa', 'aba')
+    [0, 2]
 
     空パターンは全境界0..len(text)。専用objectを区切りとして使うので
     '$'等が文字列に含まれていても動作する。文字列または通常の値の列用。
@@ -23,6 +32,10 @@ def mogura_z_search(text, pattern):
 
 def mogura_z_algorithm(sequence):
     """z[i]=先頭とi番目からの接尾辞の最長共通接頭辞長。O(n)。
+
+    入力例・結果:
+    >>> mogura_z_algorithm('ababa')
+    [5, 0, 3, 0, 1]
 
     z[0]=n、空列は[]。文字列以外のリスト等にも使える。
     パターン照合で区切りを入れる際は入力に現れない値を選ぶこと。
@@ -45,6 +58,10 @@ def mogura_z_algorithm(sequence):
 
 def mogura_manacher(sequence):
     """各中心の奇数/偶数回文の半径(odd,even)。O(n)。
+
+    入力例・結果:
+    >>> mogura_manacher('abba')
+    ([1, 1, 1, 1], [0, 0, 2, 0])
 
     odd[i]=中心iで長さ2*odd[i]-1の最大回文の半径（中心を含む）。
     even[i]=i-1とiの間を中心とする長さ2*even[i]の最大回文の半径。

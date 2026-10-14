@@ -6,6 +6,10 @@ from collections import deque
 def mogura_dfs_orders(graph, sources=None):
     """(行きがけ順, 帰りがけ順, 親)を返す反復DFS。O(V+E)。
 
+    入力例・結果:
+    >>> mogura_dfs_orders([[1, 2], [3], [], []], 0)
+    ([0, 1, 3, 2], [3, 1, 2, 0], [-1, 0, 0, 1])
+
     graph[v]=[to,...]。sources=Noneは全頂点を根候補にし非連結も探索。
     sourcesが整数ならその始点、iterableなら指定始点からだけ探索。
     隣接リスト順に探索し、親は根と未到達の両方で-1。再帰不要。
@@ -44,6 +48,11 @@ def mogura_dfs_orders(graph, sources=None):
 def mogura_zero_one_bfs(graph, sources):
     """辺重みが0/1の最短距離。(dist,parent)を返す。O(V+E)。
 
+    入力例・結果:
+    >>> graph = [[(1, 0), (2, 1)], [(2, 0)], [], []]
+    >>> mogura_zero_one_bfs(graph, 0)
+    ([0, 0, 0, inf], [-1, 0, 1, -1])
+
     graph[v]=[(to,weight),...]、始点は整数かiterable。未到達はinf。
     古い距離のキュー項目を無視する。到達辺の重みが0/1以外ならValueError。
     """
@@ -75,6 +84,12 @@ def mogura_zero_one_bfs(graph, sources):
 
 def mogura_bellman_ford(n, edges, start):
     """負辺可。(dist,parent)を返す。O(VE+V+E)、領域O(V+E)。
+
+    入力例・結果:
+    >>> mogura_bellman_ford(4, [(0, 1, 2), (1, 2, -3)], 0)
+    ([0, 2, -1, inf], [-1, 0, 1, -1])
+    >>> mogura_bellman_ford(3, [(0, 1, 1), (1, 1, -1), (1, 2, 2)], 0)[0]
+    [0, -inf, -inf]
 
     edgesは有向辺(u,v,weight)。未到達はinf、始点から到達する負閉路の
     影響で最短距離が定まらない頂点は-inf（parentも-1）。
@@ -115,6 +130,10 @@ def mogura_bellman_ford(n, edges, start):
 
 def mogura_floyd_warshall(n, edges, directed=True):
     """全点対最短距離の行列。O(V³)、領域O(V²)。負辺・多重辺可。
+
+    入力例・結果:
+    >>> mogura_floyd_warshall(3, [(0, 1, 2), (1, 2, 3)])
+    [[0, 2, 5], [inf, 0, 3], [inf, inf, 0]]
 
     未到達はinf。負閉路を経由して行ける組(u,v)は-inf。
     edges=(u,v,weight)、directed=Falseなら逆向きも追加する。

@@ -4,11 +4,23 @@
 class MoguraFenwickTree:
     """整数nまたは初期値の iterable から構築。構築O(n)、操作O(log n)。
 
+    入力例・結果:
+    >>> bit = MoguraFenwickTree([2, 3, 1])
+    >>> bit.sum(0, 3)
+    6
+
     使用例: bit = MoguraFenwickTree([2, 3, 1]); bit.add(1, 4)
     bit.sum(0, 2) -> 9。負の加算も可能。modは自動では取らない。
     """
 
     def __init__(self, values):
+        """長さnまたは初期配列から点加算・区間和の木を構築する。
+
+        入力例・結果:
+        >>> bit = MoguraFenwickTree([2, 3, 1])
+        >>> bit.sum(0, 3)
+        6
+        """
         if isinstance(values, int):
             if values < 0:
                 raise ValueError("長さは非負で指定してください")
@@ -23,6 +35,14 @@ class MoguraFenwickTree:
                 self.data[parent] += self.data[index]
 
     def add(self, index, delta):
+        """添字indexの要素にdeltaを加算する。
+
+        入力例・結果:
+        >>> bit = MoguraFenwickTree([2, 3, 1])
+        >>> bit.add(1, 4)  # [2, 7, 1]に変化
+        >>> bit.sum(0, 3)
+        10
+        """
         assert 0 <= index < self.n
         index += 1
         while index <= self.n:
@@ -30,7 +50,13 @@ class MoguraFenwickTree:
             index += index & -index
 
     def prefix_sum(self, right):
-        """[0, right)の和。right=0なら0。"""
+        """[0, right)の和。right=0なら0。
+
+        入力例・結果:
+        >>> bit = MoguraFenwickTree([2, 3, 1])
+        >>> bit.prefix_sum(2)  # 添字0,1の和
+        5
+        """
         assert 0 <= right <= self.n
         result = 0
         while right:
@@ -39,11 +65,23 @@ class MoguraFenwickTree:
         return result
 
     def sum(self, left, right):
+        """半開区間[left,right)の和を返す。
+
+        入力例・結果:
+        >>> bit = MoguraFenwickTree([2, 3, 1])
+        >>> bit.sum(1, 3)
+        4
+        """
         assert 0 <= left <= right <= self.n
         return self.prefix_sum(right) - self.prefix_sum(left)
 
     def lower_bound(self, target):
         """prefix_sum(i+1) >= targetを満たす最小の添字i、なければn。
+
+        入力例・結果:
+        >>> bit = MoguraFenwickTree([2, 3, 1])
+        >>> bit.lower_bound(4), bit.lower_bound(7)
+        (1, 3)
 
         前提: 各要素が非負（累積和が単調）。target<=0なら0。
         O(log n)。頻度配列からk番目の要素を求める用途など。

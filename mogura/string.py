@@ -1,0 +1,51 @@
+"""mogura library: 文字列（比較可能な列）に対するZ/LCPと回文判定補助。"""
+
+
+def mogura_z_algorithm(sequence):
+    """z[i]=先頭とi番目からの接尾辞の最長共通接頭辞長。O(n)。
+
+    z[0]=n、空列は[]。文字列以外のリスト等にも使える。
+    パターン照合で区切りを入れる際は入力に現れない値を選ぶこと。
+    """
+    n = len(sequence)
+    if not n:
+        return []
+    z = [0] * n
+    z[0] = n
+    left = right = 0
+    for index in range(1, n):
+        if index < right:
+            z[index] = min(right - index, z[index - left])
+        while index + z[index] < n and sequence[z[index]] == sequence[index + z[index]]:
+            z[index] += 1
+        if index + z[index] > right:
+            left, right = index, index + z[index]
+    return z
+
+
+def mogura_manacher(sequence):
+    """各中心の奇数/偶数回文の半径(odd,even)。O(n)。
+
+    odd[i]=中心iで長さ2*odd[i]-1の最大回文の半径（中心を含む）。
+    even[i]=i-1とiの間を中心とする長さ2*even[i]の最大回文の半径。
+    例: 'abba' -> odd=[1,1,1,1], even=[0,0,2,0]。
+    """
+    n = len(sequence)
+    odd, even = [0] * n, [0] * n
+    left, right = 0, -1
+    for index in range(n):
+        radius = 1 if index > right else min(odd[left + right - index], right - index + 1)
+        while index - radius >= 0 and index + radius < n and sequence[index-radius] == sequence[index+radius]:
+            radius += 1
+        odd[index] = radius
+        if index + radius - 1 > right:
+            left, right = index - radius + 1, index + radius - 1
+    left, right = 0, -1
+    for index in range(n):
+        radius = 0 if index > right else min(even[left + right - index + 1], right - index + 1)
+        while index - radius - 1 >= 0 and index + radius < n and sequence[index-radius-1] == sequence[index+radius]:
+            radius += 1
+        even[index] = radius
+        if index + radius - 1 > right:
+            left, right = index - radius, index + radius - 1
+    return odd, even

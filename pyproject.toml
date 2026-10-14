@@ -1,0 +1,8 @@
+[project]
+name = "mogura-atcoder-library"
+version = "0.1.0"
+description = "日本語コメント付きPython競技プログラミングライブラリ"
+requires-python = ">=3.9"
+
+# パッケージ公開用ではなく、リポジトリ内のimport/コピーで使用する。
+# 実行・テストに外部パッケージは必要ない。

@@ -406,7 +406,7 @@ class MoguraDesktopTests(unittest.TestCase):
 
     def test_documentation_examples(self):
         root = Path(__file__).resolve().parents[1]
-        for filename in ('docs/desktop_additions.md','docs/python_notes.md'):
+        for filename in ('docs/usage.md','docs/python_notes.md'):
             source = (root/filename).read_text(encoding='utf-8')
             for index,code in enumerate(re.findall(r'```python\n(.*?)```',source,re.S)):
                 with self.subTest(file=filename,example=index):

@@ -35,101 +35,73 @@ assert uf.size(0) == 2
 
 ## ライブラリ一覧
 
-Desktopの追加分は[追加API一覧・使用例](docs/desktop_additions.md)を参照してください。
+全59 APIを分野別にまとめています。実装はすべて同じ`mogura/`階層にあり、一覧の「実装」から開けます。
 
-| 分類 | 追加内容 |
-|---|---|
-| データ構造 | 重み付きUnion-Find、2次元累積和 |
-| グラフ | 反復DFS、0–1 BFS、Bellman–Ford、Floyd–Warshall、Kruskal、Prim、Hopcroft–Karp |
-| DP | LIS/LCS復元、Hamiltonian path/TSP、区間DP、グリッドDP、木の独立集合、期待値 |
-| 数学・幾何 | Osa–K、約数、切り上げ、基数、人数配分、線分交差、回転、行列操作 |
-| 文字列 | Trie、二重ローリングハッシュ、ランレングス、Z検索 |
-| テンプレート | 重複なし順列、状態列挙、焼きなまし、ビームサーチ、対話問題 |
+[使用例・設定方法](docs/usage.md) / [Python基本操作メモ](docs/python_notes.md)
 
-[元ファイルと移行先の対応表](docs/desktop_inventory.md) / [Python基本操作メモ](docs/python_notes.md)
+| 分野 | API | 用途・条件 | 実装 |
+|---|---|---|---|
+| 基本・区間処理 | `mogura_compress` | 座標圧縮。元の値と辞書も返す / O(n log n) | [basic.py](mogura/basic.py) |
+| 基本・区間処理 | `mogura_prefix_sum` | 1次元累積和 / O(n) | [basic.py](mogura/basic.py) |
+| 基本・区間処理 | `mogura_bisect_int` | 整数二分探索。判定の単調性が必要 | [basic.py](mogura/basic.py) |
+| 基本・区間処理 | `MoguraPrefixSum2D` | 2次元累積和。長方形の和 / 前処理O(HW)、問合せO(1) | [range_utils.py](mogura/range_utils.py) |
+| 基本・区間処理 | `mogura_subarrays_sum_leq` | 非負配列のしゃくとり。区間数と最長長 / O(n) | [range_utils.py](mogura/range_utils.py) |
+| 基本・区間処理 | `mogura_true_runs` | 要素条件が真の連続区間一覧 / O(n) | [range_utils.py](mogura/range_utils.py) |
+| データ構造 | `MoguraDSU` | Union-Find。連結成分の管理 / 償却O(α(n)) | [dsu.py](mogura/dsu.py) |
+| データ構造 | `MoguraWeightedDSU` | 差の制約と矛盾検出。diff(a,b)=p[b]-p[a] | [weighted_dsu.py](mogura/weighted_dsu.py) |
+| データ構造 | `MoguraFenwickTree` | 点加算・区間和・累積和境界 / O(log n) | [fenwick.py](mogura/fenwick.py) |
+| データ構造 | `MoguraSegTree` | 結合的演算の点更新・区間集約・境界探索 / O(log n) | [segtree.py](mogura/segtree.py) |
+| データ構造 | `MoguraLazySegTree` | 更新作用を指定する区間更新・集約 / O(log n) | [lazy_segtree.py](mogura/lazy_segtree.py) |
+| グラフ・木 | `mogura_bfs` | 重みなし最短路。単一/複数始点 / O(V+E) | [graph.py](mogura/graph.py) |
+| グラフ・木 | `mogura_zero_one_bfs` | 0/1重み最短路。単一/複数始点 / O(V+E) | [graph_extra.py](mogura/graph_extra.py) |
+| グラフ・木 | `mogura_dijkstra` | 非負重み最短路。単一/複数始点 | [graph.py](mogura/graph.py) |
+| グラフ・木 | `mogura_bellman_ford` | 負辺最短路。負閉路の影響を-infで返す / O(VE+V+E) | [graph_extra.py](mogura/graph_extra.py) |
+| グラフ・木 | `mogura_floyd_warshall` | 全点対最短路。負閉路の影響も判定 / O(V³) | [graph_extra.py](mogura/graph_extra.py) |
+| グラフ・木 | `mogura_restore_path` | 親配列から経路を復元 / O(経路長) | [graph.py](mogura/graph.py) |
+| グラフ・木 | `mogura_dfs_orders` | 反復DFS。行きがけ順・帰りがけ順・親 / O(V+E) | [graph_extra.py](mogura/graph_extra.py) |
+| グラフ・木 | `mogura_toposort` | 有向グラフの順序。閉路ならNone / O(V+E) | [graph.py](mogura/graph.py) |
+| グラフ・木 | `mogura_scc` | 強連結成分。成分番号はトポロジカル順 / O(V+E) | [graph.py](mogura/graph.py) |
+| グラフ・木 | `MoguraLCA` | 木のLCA・祖先・距離 / 前処理O(n log n)、問合せO(log n) | [lca.py](mogura/lca.py) |
+| グラフ・木 | `mogura_kruskal` | 辺リストから最小全域森。成分数も返す | [mst.py](mogura/mst.py) |
+| グラフ・木 | `mogura_prim` | 隣接リストから最小全域森。全成分を処理 | [mst.py](mogura/mst.py) |
+| グラフ・木 | `MoguraHopcroftKarp` | 最大二部マッチング。反復DFS / O((V+E)√V) | [matching.py](mogura/matching.py) |
+| グラフ・木 | `MoguraBipartiteMatching` | 最大二部マッチング。BFS増加路法 / O(L*(L+R+E)) | [matching.py](mogura/matching.py) |
+| 動的計画法 | `mogura_lis` | LISと添字復元。狭義増加/非減少 / O(n log n) | [dp.py](mogura/dp.py) |
+| 動的計画法 | `mogura_lcs` | LCSと要素列復元 / O(nm) | [dp.py](mogura/dp.py) |
+| 動的計画法 | `mogura_hamiltonian_cost` | Hamiltonian path/TSP。始点・巡回を指定 / O(n²2^n) | [dp.py](mogura/dp.py) |
+| 動的計画法 | `mogura_interval_dp` | 二つの区間を結合する区間DP。追加コストを指定 / O(n³) | [dp.py](mogura/dp.py) |
+| 動的計画法 | `mogura_grid_path_count` | 右/下移動の経路数。壁とmodを指定 / O(HW) | [dp.py](mogura/dp.py) |
+| 動的計画法 | `mogura_tree_independent_set` | 木の最大重み独立集合と頂点復元 / O(n) | [dp.py](mogura/dp.py) |
+| 動的計画法 | `mogura_expected_steps` | 正の前進量・確率から到達までの期待回数 | [dp.py](mogura/dp.py) |
+| 数学・数論 | `mogura_sieve` | 素数列挙 / O(N log log N) | [number_theory.py](mogura/number_theory.py) |
+| 数学・数論 | `mogura_factorize` | 単発の素因数分解 / O(√N) | [number_theory.py](mogura/number_theory.py) |
+| 数学・数論 | `MoguraOsaK` | 最小素因数を前計算し大量の素因数分解に対応 | [math_extra.py](mogura/math_extra.py) |
+| 数学・数論 | `mogura_divisors` | 正整数の約数を昇順で列挙 / O(√N) | [math_extra.py](mogura/math_extra.py) |
+| 数学・数論 | `mogura_extgcd` | 拡張Euclid。(g,x,y)、a*x+b*y=g | [number_theory.py](mogura/number_theory.py) |
+| 数学・数論 | `MoguraComb` | 素数modのnCr/nPr。n<modが前提 / 問合せO(1) | [number_theory.py](mogura/number_theory.py) |
+| 数学・数論 | `mogura_ceil_div` | floatを使わない整数切り上げ。負数も可 | [math_extra.py](mogura/math_extra.py) |
+| 数学・数論 | `mogura_base_digits` | 任意基数の桁リスト。上位から返す | [math_extra.py](mogura/math_extra.py) |
+| 数学・数論 | `mogura_team_sizes` | 人数配分の整数分割/組成を逐次列挙 | [math_extra.py](mogura/math_extra.py) |
+| 幾何・行列 | `mogura_cross` | 2次元ベクトルの外積 | [geometry.py](mogura/geometry.py) |
+| 幾何・行列 | `mogura_dot` | 2次元ベクトルの内積 | [geometry.py](mogura/geometry.py) |
+| 幾何・行列 | `mogura_distance_squared` | 距離の二乗。平方根を取らず比較できる | [geometry.py](mogura/geometry.py) |
+| 幾何・行列 | `mogura_segments_intersect` | 整数座標の閉線分交差。端点・重なり・長さ0も可 | [geometry.py](mogura/geometry.py) |
+| 幾何・行列 | `mogura_rotate_point` | 中心指定の反時計回り回転。角度は度 | [geometry.py](mogura/geometry.py) |
+| 幾何・行列 | `mogura_transpose` | 行列の転置。リストのリストで返す | [geometry.py](mogura/geometry.py) |
+| 幾何・行列 | `mogura_rotate_grid` | 行列の時計回り90度回転。回数指定可 | [geometry.py](mogura/geometry.py) |
+| 文字列 | `mogura_z_algorithm` | 先頭との最長共通接頭辞長 / O(n) | [string.py](mogura/string.py) |
+| 文字列 | `mogura_z_search` | 重なりを含む全出現位置。固定区切り文字不要 | [string.py](mogura/string.py) |
+| 文字列 | `mogura_manacher` | 奇数/偶数回文の半径 / O(n) | [string.py](mogura/string.py) |
+| 文字列 | `mogura_run_length` | 連続する同じ値を(value,count)へ圧縮 / O(n) | [string.py](mogura/string.py) |
+| 文字列 | `MoguraTrie` | 文字列挿入・前方一致数・全ペアのLCP長総和 | [trie.py](mogura/trie.py) |
+| 文字列 | `MoguraRollingHash` | 二重ハッシュ。区間取得O(1)、衝突の可能性あり | [rolling_hash.py](mogura/rolling_hash.py) |
+| 全探索・探索テンプレート | `mogura_states` | 2/3値などの状態列を逐次列挙 | [enumeration.py](mogura/enumeration.py) |
+| 全探索・探索テンプレート | `mogura_distinct_permutations` | 重複なし順列。外部依存なし | [enumeration.py](mogura/enumeration.py) |
+| 全探索・探索テンプレート | `mogura_anneal` | 焼きなまし。評価・近傍・コピーを差し替え | [heuristic.py](mogura/heuristic.py) |
+| 全探索・探索テンプレート | `mogura_beam_search` | ビームサーチ。評価・遷移・重複キーを差し替え | [heuristic.py](mogura/heuristic.py) |
+| 全探索・探索テンプレート | `MoguraInteractiveIO` | flush付き対話通信とローカル模擬の切替 | [interactive.py](mogura/interactive.py) |
 
-以下は初版からの基本APIです。
-
-| モジュール | API | 用途・計算量 |
-|---|---|---|
-| [basic](mogura/basic.py) | `mogura_compress` | 座標圧縮 O(n log n)、元の値と辞書も返す |
-| basic | `mogura_prefix_sum` | 累積和 O(n) |
-| basic | `mogura_bisect_int` | 整数二分探索、判定O(log範囲)回 |
-| [dsu](mogura/dsu.py) | `MoguraDSU` | Union-Find、併合・判定は償却O(α(n)) |
-| [fenwick](mogura/fenwick.py) | `MoguraFenwickTree` | 点加算・区間和・累積和境界 O(log n) |
-| [segtree](mogura/segtree.py) | `MoguraSegTree` | 任意の結合的演算、点代入・区間集約・境界探索 O(log n) |
-| [lazy_segtree](mogura/lazy_segtree.py) | `MoguraLazySegTree` | 任意の整合する更新作用、区間更新・集約 O(log n) |
-| [graph](mogura/graph.py) | `mogura_bfs` | 単一/複数始点、重みなし最短距離 O(V+E) |
-| graph | `mogura_dijkstra` | 非負重み、単一/複数始点 O(V+(V+E)log(V+E+2)) |
-| graph | `mogura_restore_path` | 親配列からの経路復元 O(経路長) |
-| graph | `mogura_toposort` | 有向グラフの順序、閉路ならNone O(V+E) |
-| graph | `mogura_scc` | 強連結成分、成分番号はトポロジカル順 O(V+E) |
-| [lca](mogura/lca.py) | `MoguraLCA` | 木のLCA・祖先・辺数距離、前処理O(n log n)、問合せO(log n) |
-| [number_theory](mogura/number_theory.py) | `mogura_sieve` | 素数列挙 O(N log log N) |
-| number_theory | `mogura_factorize` | 単発の素因数分解 O(√N) |
-| number_theory | `mogura_extgcd` | 拡張Euclid |
-| number_theory | `MoguraComb` | 素数modの組合せ・順列、問合せO(1) |
-| [string](mogura/string.py) | `mogura_z_algorithm` | 接頭辞との共通部分長 O(n) |
-| string | `mogura_manacher` | 奇数・偶数回文の半径 O(n) |
-
-詳細な引数・戻り値・前提は各クラス/関数のdocstringに記載しています。
-
-## 問題に合わせた変更
-
-### 区間最小値・最大値・和・GCD
-
-```python
-from math import gcd
-from mogura.segtree import MoguraSegTree
-
-minimum = MoguraSegTree([8, 3, 5], min, float('inf'))
-maximum = MoguraSegTree([8, 3, 5], max, -float('inf'))
-total = MoguraSegTree([8, 3, 5], lambda a, b: a + b, 0)
-divisor = MoguraSegTree([8, 3, 5], gcd, 0)
-minimum.set(1, 10)
-assert minimum.prod(0, 2) == 8
-```
-
-非可換な演算でも左右の順序を保持します。ただし減算のように結合則を満たさない演算は指定できません。
-
-`max_right(left, predicate)`では、単位元の判定が真で、区間を延ばすと真から偽へ一度だけ変わる必要があります。負数を含む配列で「和が上限以下」は一般にこの条件を満たしません。Fenwick Treeの`lower_bound`も非負要素が前提です。
-
-### 区間更新
-
-[lazy_recipes.py](examples/lazy_recipes.py)に3通りの設定があります。
-
-| 設定 | `apply(l,r,action)`のaction | 和の取得 |
-|---|---|---|
-| 区間加算・和 | 加算量 | `seg.prod(l,r)[0]` |
-| 区間代入・和 | 代入値（Noneは更新なし） | 同上 |
-| 一次変換・和mod | `(a,b)`でx→a*x+b | 同上 |
-
-値は`(区間和, 区間長)`を保持します。単位元は`(0,0)`。更新の合成は`composition(new, old)`で**oldを先、newを後**に適用します。加算だけでは気づきにくい合成順の誤りも、一次変換の差分テストで確認しています。
-
-```sh
-python3 -m examples.lazy_recipes
-```
-
-設定例を提出へコピーする場合、設定例ファイルの参照URLも添付してください。bundleツールの`--main examples/lazy_recipes.py`では、その出典コメントも生成します。
-
-### グラフ
-
-- BFS: `graph[v] = [to, ...]`。到達不能の距離は`-1`。
-- Dijkstra: `graph[v] = [(to, weight), ...]`。到達不能は`float('inf')`。負辺は不可。
-- 無向グラフは両方向の辺を追加。グリッドは必要なら頂点番号を`row * width + column`へ変換する。
-- 始点引数に整数または始点リストを指定できる。リストならすべて距離0。
-- 経路復元前に距離で到達可能性を判定する。親の`-1`は始点と到達不能の両方に使う。
-- LCAは連結な無向木用。一般グラフ・森・重み付き距離にはそのまま使わない。
-
-使用例: [shortest_path.py](examples/shortest_path.py)。例の入力は0始まりです。
-
-### 数学・文字列
-
-- `MoguraComb`は**素数modかつn<mod**が前提。合成数modやLucasの定理は未対応。
-- 試し割りの素因数分解は小さな整数の単発処理向け。巨大整数や大量の問い合わせには別の方法が必要。
-- 座標圧縮は大小関係を保持し、距離は保持しない。
-- Zアルゴリズムは文字列以外の列にも使用可能。パターンと文字列を連結する区切りは入力に現れない値を選ぶ。
-- Manacherは奇数・偶数半径を別々に返す。添字の意味はdocstringの例を参照。
+詳細な引数・戻り値・計算量・前提は、各クラス/関数のdocstringに記載しています。
 
 ## 提出用に1ファイルへ展開
 
@@ -160,6 +132,10 @@ python3 submission.py < input.txt
 5. 開催中のABC/ARC/AGCではAI補完・AIデバッグ等を使用しない。
 
 参照URLのコメント記載とコミット固定URLは、このリポジトリで採用する運用方法です。AtCoderが特定のコメント形式やGitHub利用を要求しているわけではありません。ライブラリの利用判断・問題への適用は自分で行います。ルール変更時には公式告知を確認してください。
+
+## 補足資料
+
+[元ファイルと移行先の対応表](docs/desktop_inventory.md) / [更新履歴](CHANGELOG.md)
 
 ## 検証と性能
 

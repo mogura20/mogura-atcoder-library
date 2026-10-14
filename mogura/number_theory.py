@@ -133,28 +133,7 @@ class MoguraComb:
     """
 
     def __init__(self, limit, mod=998244353):
-        """limitまでの階乗と逆階乗を素数modで前計算する。
-
-        この入出力は使用方法を示す例。関数自体は標準入力を読みません。
-        Mまで前計算し、N個からR個を選ぶ組合せ数を出力。
-
-        入力形式:
-            M MOD
-            N R
-
-        入力例:
-            10 998244353
-            5 2
-
-        出力例:
-            10
-
-        読み込み・呼び出し例:
-            limit, mod = map(int, input().split())
-            n, r = map(int, input().split())
-            comb = MoguraComb(limit, mod)
-            print(comb.ncr(n, r))
-        """
+        """limitまでの階乗と逆階乗を素数modで前計算する。"""
         if mod < 2 or not 0 <= limit < mod:
             raise ValueError("素数modと0 <= limit < modを指定してください")
         self.limit, self.mod = limit, mod
@@ -167,28 +146,7 @@ class MoguraComb:
             self.invfact[number - 1] = self.invfact[number] * number % mod
 
     def ncr(self, n, r):
-        """n個からr個を選ぶ組合せ数をmodで返す。
-
-        この入出力は使用方法を示す例。関数自体は標準入力を読みません。
-        MODは素数、N<=M<MOD。
-
-        入力形式:
-            M MOD
-            N R
-
-        入力例:
-            10 998244353
-            5 2
-
-        出力例:
-            10
-
-        読み込み・呼び出し例:
-            limit, mod = map(int, input().split())
-            n, r = map(int, input().split())
-            comb = MoguraComb(limit, mod)
-            print(comb.ncr(n, r))
-        """
+        """n個からr個を選ぶ組合せ数をmodで返す。"""
         if n < 0 or r < 0 or r > n:
             return 0
         if n > self.limit:
@@ -196,28 +154,7 @@ class MoguraComb:
         return self.fact[n] * self.invfact[r] % self.mod * self.invfact[n-r] % self.mod
 
     def npr(self, n, r):
-        """n個からr個を順に選ぶ順列数をmodで返す。
-
-        この入出力は使用方法を示す例。関数自体は標準入力を読みません。
-        MODは素数、N<=M<MOD。
-
-        入力形式:
-            M MOD
-            N R
-
-        入力例:
-            10 998244353
-            5 2
-
-        出力例:
-            20
-
-        読み込み・呼び出し例:
-            limit, mod = map(int, input().split())
-            n, r = map(int, input().split())
-            comb = MoguraComb(limit, mod)
-            print(comb.npr(n, r))
-        """
+        """n個からr個を順に選ぶ順列数をmodで返す。"""
         if n < 0 or r < 0 or r > n:
             return 0
         if n > self.limit:

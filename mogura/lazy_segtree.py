@@ -5,19 +5,21 @@
 class MoguraLazySegTree:
     """op, identity, mapping, composition, identity_actionを指定。
 
-    この入出力は使用方法を示す例。関数自体は標準入力を読みません。
-    区間加算・区間最小値の設定例。
+    この入出力は使用方法を示す例。クラス自体は標準入力を読みません。
+    区間加算・区間最小値の設定。添字は0始まり、区間は[L,R)。
 
     入力形式:
         N
         A_0 ... A_{N-1}
+        L R D
 
     入力例:
         2
         2 5
+        0 1 10
 
     出力例:
-        2
+        5
 
     読み込み・呼び出し例:
         n = int(input())
@@ -25,6 +27,8 @@ class MoguraLazySegTree:
         seg = MoguraLazySegTree(a, min, float("inf"),
                                 lambda delta, value: value + delta,
                                 lambda new, old: new + old, 0)
+        left, right, delta = map(int, input().split())
+        seg.apply(left, right, delta)
         print(seg.all_prod())
 
     mapping(action, value): 区間集約値に更新を作用させた値。
@@ -37,30 +41,7 @@ class MoguraLazySegTree:
     """
 
     def __init__(self, values, op, identity, mapping, composition, identity_action):
-        """初期配列・集約演算・更新作用・作用の合成を指定して構築する。
-
-        この入出力は使用方法を示す例。関数自体は標準入力を読みません。
-        区間加算・区間最小値の設定例。
-
-        入力形式:
-            N
-            A_0 ... A_{N-1}
-
-        入力例:
-            2
-            2 5
-
-        出力例:
-            2
-
-        読み込み・呼び出し例:
-            n = int(input())
-            a = list(map(int, input().split()))
-            seg = MoguraLazySegTree(a, min, float("inf"),
-                                    lambda delta, value: value + delta,
-                                    lambda new, old: new + old, 0)
-            print(seg.all_prod())
-        """
+        """初期配列・集約演算・更新作用・作用の合成を指定して構築する。"""
         values = list(values)
         self.n = len(values)
         self.size = 1 << max(0, (self.n - 1).bit_length())
@@ -88,34 +69,7 @@ class MoguraLazySegTree:
         self.lazy[index] = self.identity_action
 
     def apply(self, left, right, action):
-        """[left,right)へ作用actionを適用する。空区間は何もしない。
-
-        この入出力は使用方法を示す例。関数自体は標準入力を読みません。
-        区間加算・区間最小値の設定。添字は0始まり、区間は[L,R)。
-
-        入力形式:
-            N
-            A_0 ... A_{N-1}
-            L R D
-
-        入力例:
-            2
-            2 5
-            0 1 10
-
-        出力例:
-            5
-
-        読み込み・呼び出し例:
-            n = int(input())
-            a = list(map(int, input().split()))
-            seg = MoguraLazySegTree(a, min, float("inf"),
-                                    lambda delta, value: value + delta,
-                                    lambda new, old: new + old, 0)
-            left, right, delta = map(int, input().split())
-            seg.apply(left, right, delta)
-            print(seg.all_prod())
-        """
+        """[left,right)へ作用actionを適用する。空区間は何もしない。"""
         assert 0 <= left <= right <= self.n
 
         def visit(index, start, end):
@@ -133,33 +87,7 @@ class MoguraLazySegTree:
         visit(1, 0, self.size)
 
     def prod(self, left, right):
-        """半開区間[left,right)を指定した演算で集約する。
-
-        この入出力は使用方法を示す例。関数自体は標準入力を読みません。
-        区間加算・区間最小値の設定。添字は0始まり、区間は[L,R)。
-
-        入力形式:
-            N
-            A_0 ... A_{N-1}
-            L R
-
-        入力例:
-            2
-            2 5
-            0 1
-
-        出力例:
-            2
-
-        読み込み・呼び出し例:
-            n = int(input())
-            a = list(map(int, input().split()))
-            seg = MoguraLazySegTree(a, min, float("inf"),
-                                    lambda delta, value: value + delta,
-                                    lambda new, old: new + old, 0)
-            left, right = map(int, input().split())
-            print(seg.prod(left, right))
-        """
+        """半開区間[left,right)を指定した演算で集約する。"""
         assert 0 <= left <= right <= self.n
 
         def visit(index, start, end):
@@ -175,92 +103,16 @@ class MoguraLazySegTree:
         return visit(1, 0, self.size)
 
     def all_prod(self):
-        """全要素の集約値を返す。
-
-        この入出力は使用方法を示す例。関数自体は標準入力を読みません。
-        区間加算・区間最小値の設定。添字は0始まり、区間は[L,R)。
-
-        入力形式:
-            N
-            A_0 ... A_{N-1}
-
-        入力例:
-            2
-            2 5
-
-        出力例:
-            2
-
-        読み込み・呼び出し例:
-            n = int(input())
-            a = list(map(int, input().split()))
-            seg = MoguraLazySegTree(a, min, float("inf"),
-                                    lambda delta, value: value + delta,
-                                    lambda new, old: new + old, 0)
-            print(seg.all_prod())
-        """
+        """全要素の集約値を返す。"""
         return self.data[1]
 
     def get(self, index):
-        """添字indexの要素を返す。
-
-        この入出力は使用方法を示す例。関数自体は標準入力を読みません。
-        区間加算・区間最小値の設定。添字は0始まり、区間は[L,R)。
-
-        入力形式:
-            N
-            A_0 ... A_{N-1}
-            I
-
-        入力例:
-            2
-            2 5
-            1
-
-        出力例:
-            5
-
-        読み込み・呼び出し例:
-            n = int(input())
-            a = list(map(int, input().split()))
-            seg = MoguraLazySegTree(a, min, float("inf"),
-                                    lambda delta, value: value + delta,
-                                    lambda new, old: new + old, 0)
-            index = int(input())
-            print(seg.get(index))
-        """
+        """添字indexの要素を返す。"""
         assert 0 <= index < self.n
         return self.prod(index, index + 1)
 
     def set(self, index, value):
-        """添字indexの要素をvalueに代入する。
-
-        この入出力は使用方法を示す例。関数自体は標準入力を読みません。
-        区間加算・区間最小値の設定。添字は0始まり、区間は[L,R)。
-
-        入力形式:
-            N
-            A_0 ... A_{N-1}
-            I X
-
-        入力例:
-            2
-            2 5
-            0 9
-
-        出力例:
-            5
-
-        読み込み・呼び出し例:
-            n = int(input())
-            a = list(map(int, input().split()))
-            seg = MoguraLazySegTree(a, min, float("inf"),
-                                    lambda delta, value: value + delta,
-                                    lambda new, old: new + old, 0)
-            index, value = map(int, input().split())
-            seg.set(index, value)
-            print(seg.all_prod())
-        """
+        """添字indexの要素をvalueに代入する。"""
         assert 0 <= index < self.n
 
         def visit(node, start, end):

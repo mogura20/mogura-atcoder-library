@@ -5,54 +5,35 @@
 class MoguraPrefixSum2D:
     """前処理O(HW)、長方形の和O(1)、領域O(HW)。
 
-    この入出力は使用方法を示す例。関数自体は標準入力を読みません。
+    この入出力は使用方法を示す例。クラス自体は標準入力を読みません。
+    行[T,B)、列[L,R)。0始まり。例は右の列の和。
 
     入力形式:
         H W
         A_0,0 ... A_0,W-1
         ...
         A_H-1,0 ... A_H-1,W-1
+        T L B R
 
     入力例:
         2 2
         1 2
         3 4
+        0 1 2 2
 
     出力例:
-        10
+        6
 
     読み込み・呼び出し例:
         h, w = map(int, input().split())
         grid = [list(map(int, input().split())) for _ in range(h)]
         prefix = MoguraPrefixSum2D(grid)
-        print(prefix.sum(0, 0, h, w))
+        top, left, bottom, right = map(int, input().split())
+        print(prefix.sum(top, left, bottom, right))
     """
 
     def __init__(self, grid):
-        """長方形グリッドの2次元累積和を構築する。
-
-        この入出力は使用方法を示す例。関数自体は標準入力を読みません。
-
-        入力形式:
-            H W
-            A_0,0 ... A_0,W-1
-            ...
-            A_H-1,0 ... A_H-1,W-1
-
-        入力例:
-            2 2
-            1 2
-            3 4
-
-        出力例:
-            10
-
-        読み込み・呼び出し例:
-            h, w = map(int, input().split())
-            grid = [list(map(int, input().split())) for _ in range(h)]
-            prefix = MoguraPrefixSum2D(grid)
-            print(prefix.sum(0, 0, h, w))
-        """
+        """長方形グリッドの2次元累積和を構築する。"""
         self.height = len(grid)
         self.width = len(grid[0]) if grid else 0
         if any(len(row) != self.width for row in grid):
@@ -66,34 +47,7 @@ class MoguraPrefixSum2D:
         self.prefix = prefix
 
     def sum(self, top, left, bottom, right):
-        """行[top,bottom)、列[left,right)の和。空長方形は0。
-
-        この入出力は使用方法を示す例。関数自体は標準入力を読みません。
-        行[T,B)、列[L,R)。0始まり。例は右の列の和。
-
-        入力形式:
-            H W
-            A_0,0 ... A_0,W-1
-            ...
-            A_H-1,0 ... A_H-1,W-1
-            T L B R
-
-        入力例:
-            2 2
-            1 2
-            3 4
-            0 1 2 2
-
-        出力例:
-            6
-
-        読み込み・呼び出し例:
-            h, w = map(int, input().split())
-            grid = [list(map(int, input().split())) for _ in range(h)]
-            prefix = MoguraPrefixSum2D(grid)
-            top, left, bottom, right = map(int, input().split())
-            print(prefix.sum(top, left, bottom, right))
-        """
+        """行[top,bottom)、列[left,right)の和。空長方形は0。"""
         assert 0 <= top <= bottom <= self.height and 0 <= left <= right <= self.width
         p = self.prefix
         return p[bottom][right] - p[top][right] - p[bottom][left] + p[top][left]

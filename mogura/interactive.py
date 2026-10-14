@@ -34,28 +34,7 @@ class MoguraInteractiveIO:
     """
 
     def __init__(self, mock_query=None, query_prefix='?', answer_prefix='!', input_stream=None, output_stream=None):
-        """実通信の入出力、またはmock_queryによる模擬応答を設定する。
-
-        この入出力は使用方法を示す例。関数自体は標準入力を読みません。
-        ローカル模擬用の入力。Iは0始まり。本番の対話形式は問題ごとに異なる。
-
-        入力形式:
-            S
-            I
-
-        入力例:
-            0111
-            1
-
-        出力例:
-            1
-
-        読み込み・呼び出し例:
-            hidden = input().strip()
-            index = int(input())
-            io = MoguraInteractiveIO(mock_query=lambda i: hidden[i])
-            print(io.ask(index))
-        """
+        """実通信の入出力、またはmock_queryによる模擬応答を設定する。"""
         self.mock_query = mock_query
         self.query_prefix, self.answer_prefix = query_prefix, answer_prefix
         self.input_stream = sys.stdin if input_stream is None else input_stream
@@ -64,28 +43,7 @@ class MoguraInteractiveIO:
         self.last_answer = None
 
     def ask(self, *values):
-        """問合せを送って応答文字列を返す。模擬モードでは通信しない。
-
-        この入出力は使用方法を示す例。関数自体は標準入力を読みません。
-        ローカル模擬用。Iは0始まり。本番は問合せを送り、ジャッジの応答を読む。
-
-        入力形式:
-            S
-            I
-
-        入力例:
-            0111
-            1
-
-        出力例:
-            1
-
-        読み込み・呼び出し例:
-            hidden = input().strip()
-            index = int(input())
-            io = MoguraInteractiveIO(mock_query=lambda i: hidden[i])
-            print(io.ask(index))
-        """
+        """問合せを送って応答文字列を返す。模擬モードでは通信しない。"""
         self.query_count += 1
         if self.mock_query is not None:
             return str(self.mock_query(*values))
@@ -96,26 +54,7 @@ class MoguraInteractiveIO:
         return response.strip()
 
     def answer(self, *values):
-        """最終回答を送る。模擬モードではlast_answerへ保存する。
-
-        この入出力は使用方法を示す例。関数自体は標準入力を読みません。
-        ローカル模擬用。保存された回答を確認する。本番は! Xをflush付きで送信。
-
-        入力形式:
-            X
-
-        入力例:
-            3
-
-        出力例:
-            3
-
-        読み込み・呼び出し例:
-            answer = int(input())
-            io = MoguraInteractiveIO(mock_query=lambda i: 0)
-            io.answer(answer)
-            print(*io.last_answer)
-        """
+        """最終回答を送る。模擬モードではlast_answerへ保存する。"""
         self.last_answer = values
         if self.mock_query is None:
             print(self.answer_prefix, *values, file=self.output_stream, flush=True)

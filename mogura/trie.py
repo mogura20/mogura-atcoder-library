@@ -36,65 +36,13 @@ class MoguraTrie:
     """
 
     def __init__(self):
-        """空のTrieを初期化する。
-
-        この入出力は使用方法を示す例。関数自体は標準入力を読みません。
-        全ペアの共通接頭辞長の総和を出力。
-
-        入力形式:
-            N
-            S_1
-            ...
-            S_N
-
-        入力例:
-            3
-            ab
-            ac
-            ab
-
-        出力例:
-            4
-
-        読み込み・呼び出し例:
-            n = int(input())
-            trie = MoguraTrie()
-            for _ in range(n):
-                trie.insert(input().strip())
-            print(trie.pair_lcp_sum())
-        """
+        """空のTrieを初期化する。"""
         self.children = [{}]
         self.prefix_count = [0]
         self.terminal_count = [0]
 
     def insert(self, text):
-        """文字列textを1件挿入する。同じ文字列も別の1件として数える。
-
-        この入出力は使用方法を示す例。関数自体は標準入力を読みません。
-        文字列は1行ずつ読み込む。例では挿入後にabの件数を確認する。
-
-        入力形式:
-            N
-            S_1
-            ...
-            S_N
-
-        入力例:
-            3
-            ab
-            ac
-            ab
-
-        出力例:
-            2
-
-        読み込み・呼び出し例:
-            n = int(input())
-            trie = MoguraTrie()
-            for _ in range(n):
-                trie.insert(input().strip())
-            print(trie.count("ab"))
-        """
+        """文字列textを1件挿入する。同じ文字列も別の1件として数える。"""
         node = 0
         self.prefix_count[node] += 1
         for char in text:
@@ -116,99 +64,15 @@ class MoguraTrie:
         return node
 
     def count(self, text):
-        """文字列textと完全一致する挿入件数を返す。
-
-        この入出力は使用方法を示す例。関数自体は標準入力を読みません。
-        文字列は1行ずつ読み込む。
-
-        入力形式:
-            N
-            S_1
-            ...
-            S_N
-            T
-
-        入力例:
-            3
-            ab
-            ac
-            ab
-            ab
-
-        出力例:
-            2
-
-        読み込み・呼び出し例:
-            n = int(input())
-            trie = MoguraTrie()
-            for _ in range(n):
-                trie.insert(input().strip())
-            text = input().strip()
-            print(trie.count(text))
-        """
+        """文字列textと完全一致する挿入件数を返す。"""
         node = self._find(text)
         return 0 if node == -1 else self.terminal_count[node]
 
     def count_prefix(self, prefix):
-        """prefixから始まる挿入文字列の件数を返す。
-
-        この入出力は使用方法を示す例。関数自体は標準入力を読みません。
-        文字列は1行ずつ読み込む。
-
-        入力形式:
-            N
-            S_1
-            ...
-            S_N
-            P
-
-        入力例:
-            3
-            ab
-            ac
-            ab
-            a
-
-        出力例:
-            3
-
-        読み込み・呼び出し例:
-            n = int(input())
-            trie = MoguraTrie()
-            for _ in range(n):
-                trie.insert(input().strip())
-            prefix = input().strip()
-            print(trie.count_prefix(prefix))
-        """
+        """prefixから始まる挿入文字列の件数を返す。"""
         node = self._find(prefix)
         return 0 if node == -1 else self.prefix_count[node]
 
     def pair_lcp_sum(self):
-        """根以外の各ノードでcount choose 2を加算。O(ノード数)。
-
-        この入出力は使用方法を示す例。関数自体は標準入力を読みません。
-        文字列は1行ずつ読み込む。
-
-        入力形式:
-            N
-            S_1
-            ...
-            S_N
-
-        入力例:
-            3
-            ab
-            ac
-            ab
-
-        出力例:
-            4
-
-        読み込み・呼び出し例:
-            n = int(input())
-            trie = MoguraTrie()
-            for _ in range(n):
-                trie.insert(input().strip())
-            print(trie.pair_lcp_sum())
-        """
+        """根以外の各ノードでcount choose 2を加算。O(ノード数)。"""
         return sum(count*(count-1)//2 for count in self.prefix_count[1:])

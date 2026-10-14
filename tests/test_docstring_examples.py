@@ -29,10 +29,12 @@ class MoguraStandardInputExamples(unittest.TestCase):
                     targets.append((node.name, cls))
                     for method in node.body:
                         if isinstance(method, ast.FunctionDef) and (not method.name.startswith('_') or method.name == '__init__'):
-                            targets.append((node.name + '.' + method.name, getattr(cls, method.name)))
+                            method_doc = inspect.getdoc(getattr(cls, method.name)) or ''
+                            self.assertNotIn('入力例:', method_doc, node.name + '.' + method.name)
             for name, target in targets:
                 with self.subTest(module=path.stem, api=name):
                     doc = inspect.getdoc(target)
+                    self.assertEqual(doc.count('入力例:'), 1)
                     sample_input = textwrap.dedent(doc.split('入力例:\n', 1)[1].split('\n\n出力例:', 1)[0])
                     expected = textwrap.dedent(doc.split('出力例:\n', 1)[1].split('\n\n読み込み・呼び出し例:', 1)[0])
                     code_lines = []
@@ -46,4 +48,4 @@ class MoguraStandardInputExamples(unittest.TestCase):
                         exec(compile(code, str(path) + ':' + name, 'exec'), dict(vars(module)))
                     self.assertEqual(output.getvalue(), expected + '\n')
                     count += 1
-        self.assertEqual(count, 119)
+        self.assertEqual(count, 59)

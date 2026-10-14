@@ -62,27 +62,7 @@ class MoguraOsaK:
     """
 
     def __init__(self, limit):
-        """limitまでの最小素因数を前計算する。
-
-        この入出力は使用方法を示す例。関数自体は標準入力を読みません。
-        Mまで前計算し、Nを分解する。
-
-        入力形式:
-            M N
-
-        入力例:
-            100 12
-
-        出力例:
-            2 2
-            3 1
-
-        読み込み・呼び出し例:
-            limit, n = map(int, input().split())
-            osa = MoguraOsaK(limit)
-            for prime, exponent in osa.factorize(n).items():
-                print(prime, exponent)
-        """
+        """limitまでの最小素因数を前計算する。"""
         if limit < 1:
             raise ValueError('limitは1以上')
         self.limit = limit
@@ -94,28 +74,7 @@ class MoguraOsaK:
                         self.spf[multiple] = prime
 
     def factorize(self, number):
-        """numberを{素因数:指数}へ分解する。1なら空辞書。
-
-        この入出力は使用方法を示す例。関数自体は標準入力を読みません。
-        Mまで前計算する。1<=N<=M。
-
-        入力形式:
-            M N
-
-        入力例:
-            100 60
-
-        出力例:
-            2 2
-            3 1
-            5 1
-
-        読み込み・呼び出し例:
-            limit, n = map(int, input().split())
-            osa = MoguraOsaK(limit)
-            for prime, exponent in osa.factorize(n).items():
-                print(prime, exponent)
-        """
+        """numberを{素因数:指数}へ分解する。1なら空辞書。"""
         if not 1 <= number <= self.limit:
             raise ValueError('1 <= number <= limitが必要です')
         factors = {}
@@ -126,25 +85,7 @@ class MoguraOsaK:
         return factors
 
     def factor_list(self, number):
-        """numberの素因数を重複を含む昇順リストで返す。
-
-        この入出力は使用方法を示す例。関数自体は標準入力を読みません。
-        Mまで前計算する。1<=N<=M。
-
-        入力形式:
-            M N
-
-        入力例:
-            100 60
-
-        出力例:
-            2 2 3 5
-
-        読み込み・呼び出し例:
-            limit, n = map(int, input().split())
-            osa = MoguraOsaK(limit)
-            print(*osa.factor_list(n))
-        """
+        """numberの素因数を重複を含む昇順リストで返す。"""
         return [prime for prime, exponent in self.factorize(number).items() for _ in range(exponent)]
 
 

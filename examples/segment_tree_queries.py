@@ -1,3 +1,4 @@
+# Source: https://github.com/mogura20/mogura-atcoder-library/blob/0722a9a6b352a27e43e3ee2aa287ebf1e04f43ba/examples/segment_tree_queries.py
 """点代入・点加算・区間取得。入力仕様はMoguraSegTreeのクラス直下。
 
 python3 -m examples.segment_tree_queries < input.txt

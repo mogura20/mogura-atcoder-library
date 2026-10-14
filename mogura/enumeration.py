@@ -1,4 +1,4 @@
-# Source: https://github.com/mogura20/mogura-atcoder-library/blob/7d3ec971580db281f0653bafa17523fe1b75bcb4/mogura/enumeration.py
+# Source: https://github.com/mogura20/mogura-atcoder-library/blob/0722a9a6b352a27e43e3ee2aa287ebf1e04f43ba/mogura/enumeration.py
 """mogura: 小さな状態数の全探索。出力数を見積もって使う。"""
 
 from collections import Counter

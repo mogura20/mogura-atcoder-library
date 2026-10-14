@@ -1,4 +1,4 @@
-# Source: https://github.com/mogura20/mogura-atcoder-library/blob/7d3ec971580db281f0653bafa17523fe1b75bcb4/mogura/dp.py
+# Source: https://github.com/mogura20/mogura-atcoder-library/blob/0722a9a6b352a27e43e3ee2aa287ebf1e04f43ba/mogura/dp.py
 """mogura: 典型DPを入力/出力から分離した関数群。"""
 
 from bisect import bisect_left, bisect_right

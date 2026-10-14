@@ -1,4 +1,4 @@
-# Source: https://github.com/mogura20/mogura-atcoder-library/blob/7d3ec971580db281f0653bafa17523fe1b75bcb4/tools/bundle.py
+# Source: https://github.com/mogura20/mogura-atcoder-library/blob/0722a9a6b352a27e43e3ee2aa287ebf1e04f43ba/tools/bundle.py
 """mogura: 指定モジュールを提出用コードへ展開する非AIのツール。
 
 例: python3 tools/bundle.py dsu graph --main examples/shortest_path.py

@@ -60,6 +60,45 @@ class MoguraTests(unittest.TestCase):
             self.assertEqual({frozenset(group) for group in uf.groups()},
                              {frozenset(i for i in range(n) if labels[i] == label) for label in set(labels)})
 
+    def test_dsu_unite_and_component_summaries(self):
+        empty = MoguraDSU(0)
+        self.assertEqual(empty.roots(), [])
+        self.assertEqual(empty.group_sizes(), [])
+        for n in range(1, 25):
+            uf = MoguraDSU(n)
+            labels = list(range(n))
+            self.assertFalse(uf.unite(0, 0))
+            for _ in range(100):
+                a, b = self.rng.randrange(n), self.rng.randrange(n)
+                was_separate = labels[a] != labels[b]
+                if self.rng.randrange(2):
+                    result = uf.unite(a, b)
+                    self.assertIs(result, was_separate)
+                else:
+                    result = uf.merge(a, b)
+                    self.assertEqual(result, uf.leader(a))
+                old, new = labels[b], labels[a]
+                labels = [new if label == old else label for label in labels]
+                roots, sizes = uf.roots(), uf.group_sizes()
+                self.assertEqual(roots, sorted(roots))
+                self.assertEqual(len(roots), len(set(labels)))
+                self.assertEqual(len(roots), uf.component_count)
+                self.assertEqual(sizes, [uf.size(root) for root in roots])
+                self.assertEqual(sorted(sizes), sorted(labels.count(label) for label in set(labels)))
+                self.assertEqual(sum(sizes), n)
+                self.assertEqual(set(roots), {uf.leader(v) for v in range(n)})
+        # 代表0でも成功はTrue。代表番号は成分内の最小とは限らない。
+        uf = MoguraDSU(3)
+        self.assertTrue(uf.unite(0, 1))
+        self.assertEqual(uf.leader(1), 0)
+        saved_roots, saved_sizes = uf.roots(), uf.group_sizes()
+        uf.merge(0, 2)
+        self.assertEqual(saved_roots, [0, 2])
+        self.assertEqual(saved_sizes, [2, 1])
+        other = MoguraDSU(3)
+        other.merge(2, 0)
+        self.assertEqual(other.leader(0), 2)
+
     def test_fenwick(self):
         for n in range(31):
             values = [self.rng.randrange(-10, 11) for _ in range(n)]

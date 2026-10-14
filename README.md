@@ -47,7 +47,7 @@ assert uf.size(0) == 2
 | 基本・区間処理 | `MoguraPrefixSum2D` | 2次元累積和。長方形の和 / 前処理O(HW)、問合せO(1) | [range_utils.py](mogura/range_utils.py) |
 | 基本・区間処理 | `mogura_subarrays_sum_leq` | 非負配列のしゃくとり。区間数と最長長 / O(n) | [range_utils.py](mogura/range_utils.py) |
 | 基本・区間処理 | `mogura_true_runs` | 要素条件が真の連続区間一覧 / O(n) | [range_utils.py](mogura/range_utils.py) |
-| データ構造 | `MoguraDSU` | Union-Find。連結成分の管理 / 償却O(α(n)) | [dsu.py](mogura/dsu.py) |
+| データ構造 | `MoguraDSU` | Union-Find。併合成功判定unite、代表一覧roots、サイズ一覧group_sizes / [使い方](docs/usage.md#union-find) | [dsu.py](mogura/dsu.py) |
 | データ構造 | `MoguraWeightedDSU` | 差の制約と矛盾検出。diff(a,b)=p[b]-p[a] | [weighted_dsu.py](mogura/weighted_dsu.py) |
 | データ構造 | `MoguraFenwickTree` | 点加算・区間和・累積和境界 / O(log n) | [fenwick.py](mogura/fenwick.py) |
 | データ構造 | `MoguraSegTree` | 結合的演算の点更新・区間集約・境界探索 / O(log n) | [segtree.py](mogura/segtree.py) |

@@ -4,6 +4,61 @@
 
 ## データ構造・基本処理
 
+### Union-Find
+
+`merge`は代表頂点を返し、`unite`は新しく併合できたかをboolで返します。通常の併合判定には`unite`を使うと短く書けます。
+
+```python
+from mogura.dsu import MoguraDSU
+
+uf = MoguraDSU(5)
+assert uf.unite(0, 1) is True   # 別の成分を併合
+assert uf.unite(1, 0) is False  # すでに同じ成分
+assert uf.unite(2, 2) is False  # 自己併合
+root = uf.merge(2, 3)           # 代表頂点が必要ならmerge
+assert root == uf.leader(2)
+assert uf.component_count == 3
+assert uf.size(0) == 2
+
+roots = uf.roots()
+sizes = uf.group_sizes()
+assert len(roots) == len(sizes) == uf.component_count
+assert sizes == [uf.size(vertex) for vertex in roots]
+assert sorted(sizes) == [1, 2, 2]
+```
+
+| 操作 | 戻り値・用途 | 計算量 |
+|---|---|---|
+| `unite(a,b)` | 新しく併合したらTrue、同じ成分ならFalse | 償却O(α(n)) |
+| `merge(a,b)` | 併合後の代表頂点。既存の戻り値を維持 | 償却O(α(n)) |
+| `roots()` | 現在の代表頂点の一覧。頂点番号の昇順 | O(n) |
+| `group_sizes()` | rootsと同じ順序の成分サイズ一覧 | O(n) |
+| `component_count` | 現在の成分数。属性なので括弧は不要 | O(1) |
+
+`roots()`と`group_sizes()`は呼び出し時点の新しいリストを返します。後から併合しても、そのリストは自動更新されません。代表は成分の最小番号とは限らず、サイズの一覧もサイズ順ではありません。最大サイズは`max(uf.group_sizes(), default=0)`で取得できます。
+
+**`if uf.merge(a,b):`は成功判定になりません。** 代表が0だと偽になるため、`if uf.unite(a,b):`を使ってください。無向グラフで辺を追加するとき、`unite`がFalseなら両端がすでに接続しており、その辺で閉路が生じます（自己ループ・多重辺も含む）。
+
+クラスカル法と同じ、重みが小さい辺から採用する例です。
+
+```python
+from mogura.dsu import MoguraDSU
+
+edges = [(0, 1, 2), (1, 2, 1), (0, 2, 5)]
+uf = MoguraDSU(3)
+total = 0
+chosen = []
+for a, b, weight in sorted(edges, key=lambda edge: edge[2]):
+    if uf.unite(a, b):
+        total += weight
+        chosen.append((a, b, weight))
+assert total == 3
+assert len(chosen) == 2
+assert uf.component_count == 1
+```
+
+一つの成分のサイズだけ必要なら`size(vertex)`、成分数だけなら`component_count`を使います。`roots()`・`group_sizes()`は全頂点を走査するので、各クエリで呼び出すとO(nQ)になります。メンバー一覧が必要なときは従来の`groups()`を使います。`MoguraDSU(0)`でも3つの一覧取得はすべて`[]`を返します。
+
 ### 区間最小値・最大値・和・GCD
 
 ```python

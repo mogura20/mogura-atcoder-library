@@ -1,4 +1,4 @@
-# Source: https://github.com/mogura20/mogura-atcoder-library/blob/3c3652ff152a79f54e88806b9a261df05b2aa4bc/mogura/rolling_hash.py
+# Source: https://github.com/mogura20/mogura-atcoder-library/blob/9bfcc0557ab1f6feec0911de8c6cf5bd26c11a41/mogura/rolling_hash.py
 """mogura: 二重ローリングハッシュ。前計算O(n)、区間取得O(1)。"""
 
 

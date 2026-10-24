@@ -1,4 +1,4 @@
-# Source: https://github.com/mogura20/mogura-atcoder-library/blob/3c3652ff152a79f54e88806b9a261df05b2aa4bc/examples/range_segment_tree_queries.py
+# Source: https://github.com/mogura20/mogura-atcoder-library/blob/9bfcc0557ab1f6feec0911de8c6cf5bd26c11a41/examples/range_segment_tree_queries.py
 """区間加算・区間代入・区間取得。入力仕様はMoguraRangeSegTreeのクラス直下。
 
 python3 -m examples.range_segment_tree_queries < input.txt

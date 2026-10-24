@@ -1,4 +1,4 @@
-# Source: https://github.com/mogura20/mogura-atcoder-library/blob/3c3652ff152a79f54e88806b9a261df05b2aa4bc/examples/desktop_recipes.py
+# Source: https://github.com/mogura20/mogura-atcoder-library/blob/9bfcc0557ab1f6feec0911de8c6cf5bd26c11a41/examples/desktop_recipes.py
 """mogura: Desktop/atcoderから追加した機能の最小使用例。
 
 python3 -m examples.desktop_recipesで実行。全て0始まり・区間は半開。

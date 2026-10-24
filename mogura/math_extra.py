@@ -1,4 +1,4 @@
-# Source: https://github.com/mogura20/mogura-atcoder-library/blob/3c3652ff152a79f54e88806b9a261df05b2aa4bc/mogura/math_extra.py
+# Source: https://github.com/mogura20/mogura-atcoder-library/blob/9bfcc0557ab1f6feec0911de8c6cf5bd26c11a41/mogura/math_extra.py
 """mogura: 約数、Osa–K、整数切り上げ、基数変換、人数配分列挙。"""
 
 from itertools import combinations

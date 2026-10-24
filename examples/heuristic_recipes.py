@@ -1,4 +1,4 @@
-# Source: https://github.com/mogura20/mogura-atcoder-library/blob/3c3652ff152a79f54e88806b9a261df05b2aa4bc/examples/heuristic_recipes.py
+# Source: https://github.com/mogura20/mogura-atcoder-library/blob/9bfcc0557ab1f6feec0911de8c6cf5bd26c11a41/examples/heuristic_recipes.py
 """mogura: 焼きなまし/ビームサーチの最小動作例。問題固有の部分を差し替える。
 
 python3 -m examples.heuristic_recipes。探索中に標準出力を使わず、結果だけ表示。

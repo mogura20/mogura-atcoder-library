@@ -1,4 +1,4 @@
-# Source: https://github.com/mogura20/mogura-atcoder-library/blob/3c3652ff152a79f54e88806b9a261df05b2aa4bc/examples/shortest_path.py
+# Source: https://github.com/mogura20/mogura-atcoder-library/blob/9bfcc0557ab1f6feec0911de8c6cf5bd26c11a41/examples/shortest_path.py
 """有向重み付きグラフの例。python3 -m examples.shortest_pathで実行。
 
 入力: n m start target、その後m行のu v weight（全て0始まり）。

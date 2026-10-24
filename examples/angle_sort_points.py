@@ -1,4 +1,4 @@
-# Source: https://github.com/mogura20/mogura-atcoder-library/blob/3c3652ff152a79f54e88806b9a261df05b2aa4bc/examples/angle_sort_points.py
+# Source: https://github.com/mogura20/mogura-atcoder-library/blob/9bfcc0557ab1f6feec0911de8c6cf5bd26c11a41/examples/angle_sort_points.py
 """偏角ソートの実行例。Nと、N行の整数座標x yを読み込む。
 
 python3 -m examples.angle_sort_points < input.txt

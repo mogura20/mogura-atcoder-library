@@ -48,4 +48,4 @@ class MoguraStandardInputExamples(unittest.TestCase):
                         exec(compile(code, str(path) + ':' + name, 'exec'), dict(vars(module)))
                     self.assertEqual(output.getvalue(), expected + '\n')
                     count += 1
-        self.assertEqual(count, 60)
+        self.assertEqual(count, 61)

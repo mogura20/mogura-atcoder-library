@@ -164,6 +164,19 @@ assert mogura_hamiltonian_cost(cost, start=0, cycle=True) == 8
 
 TSPの領域はO(n2^n)。Pythonでは状態数だけでなくリストと整数のメモリも見積もります。辺がない場所には`float('inf')`を指定します。
 
+## 整数座標の偏角ソート
+
+`mogura_angle_sort`は整数の外積・内積だけで並べるため、`atan2`による丸め誤差を避けられます。既定は正のx軸から反時計回り。同方向は入力順、中心と一致する点は末尾です。
+
+```python
+from mogura.angle_sort import mogura_angle_sort
+
+points = [(0, -1), (0, 1), (1, 0), (-1, 0)]
+assert mogura_angle_sort(points) == [(1, 0), (0, 1), (-1, 0), (0, -1)]
+```
+
+中心・開始方向・時計回り・距離順・ID付きデータの例は[偏角ソートの使い方](angle_sort.md)を参照してください。
+
 ## 数学・文字列
 
 - `MoguraComb`は**素数modかつn<mod**が前提。合成数modやLucasの定理は未対応。

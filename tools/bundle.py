@@ -14,7 +14,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 MODULES = ("basic", "dsu", "fenwick", "segtree", "lazy_segtree", "graph", "lca", "number_theory", "string",
            "weighted_dsu", "graph_extra", "mst", "matching", "dp", "range_utils", "math_extra",
-           "geometry", "trie", "rolling_hash", "enumeration", "heuristic", "interactive")
+           "geometry", "angle_sort", "trie", "rolling_hash", "enumeration", "heuristic", "interactive")
 DEPENDENCIES = {"mst": ("dsu",)}
 
 

@@ -35,7 +35,7 @@ assert uf.size(0) == 2
 
 ## ライブラリ一覧
 
-全60 APIを分野別にまとめています。実装はすべて同じ`mogura/`階層にあり、一覧の「実装」から開けます。
+全61 APIを分野別にまとめています。実装はすべて同じ`mogura/`階層にあり、一覧の「実装」から開けます。
 
 [使用例・設定方法](docs/usage.md) / [Python基本操作メモ](docs/python_notes.md)
 
@@ -83,6 +83,7 @@ assert uf.size(0) == 2
 | 数学・数論 | `mogura_ceil_div` | floatを使わない整数切り上げ。負数も可 | [math_extra.py](mogura/math_extra.py) |
 | 数学・数論 | `mogura_base_digits` | 任意基数の桁リスト。上位から返す | [math_extra.py](mogura/math_extra.py) |
 | 数学・数論 | `mogura_team_sizes` | 人数配分の整数分割/組成を逐次列挙 | [math_extra.py](mogura/math_extra.py) |
+| 幾何・行列 | `mogura_angle_sort` | 整数の外積による偏角ソート。中心・方向・同角の順を指定 / [使い方](docs/angle_sort.md) | [angle_sort.py](mogura/angle_sort.py) |
 | 幾何・行列 | `mogura_cross` | 2次元ベクトルの外積 | [geometry.py](mogura/geometry.py) |
 | 幾何・行列 | `mogura_dot` | 2次元ベクトルの内積 | [geometry.py](mogura/geometry.py) |
 | 幾何・行列 | `mogura_distance_squared` | 距離の二乗。平方根を取らず比較できる | [geometry.py](mogura/geometry.py) |
@@ -102,7 +103,7 @@ assert uf.size(0) == 2
 | 全探索・探索テンプレート | `mogura_beam_search` | ビームサーチ。評価・遷移・重複キーを差し替え | [heuristic.py](mogura/heuristic.py) |
 | 全探索・探索テンプレート | `MoguraInteractiveIO` | flush付き対話通信とローカル模擬の切替 | [interactive.py](mogura/interactive.py) |
 
-詳細な引数・戻り値・計算量・前提は、各クラス/関数のdocstringに記載しています。AtCoder形式の「入力形式・入力例・出力例・読み込みコード」は1アルゴリズムにつき1箇所です。クラスはクラス直下に代表例を置き、各メソッドは操作の説明を記載しています。単独の関数はその関数直下に例を置いています。入力の頂点番号は主に1始まり、配列の添字・半開区間は0始まりと各例に明記しています。これは使用方法を示す例で、ライブラリ自体が標準入力を読むわけではありません。全60箇所の入力例を実際に読み込ませ、出力例との一致を自動検証します。
+詳細な引数・戻り値・計算量・前提は、各クラス/関数のdocstringに記載しています。AtCoder形式の「入力形式・入力例・出力例・読み込みコード」は1アルゴリズムにつき1箇所です。クラスはクラス直下に代表例を置き、各メソッドは操作の説明を記載しています。単独の関数はその関数直下に例を置いています。入力の頂点番号は主に1始まり、配列の添字・半開区間は0始まりと各例に明記しています。これは使用方法を示す例で、ライブラリ自体が標準入力を読むわけではありません。全61箇所の入力例を実際に読み込ませ、出力例との一致を自動検証します。
 
 ## 提出用に1ファイルへ展開
 

@@ -1,4 +1,4 @@
-# Source: https://github.com/mogura20/mogura-atcoder-library/blob/0722a9a6b352a27e43e3ee2aa287ebf1e04f43ba/mogura/mst.py
+# Source: https://github.com/mogura20/mogura-atcoder-library/blob/3c3652ff152a79f54e88806b9a261df05b2aa4bc/mogura/mst.py
 """mogura: 無向グラフの最小全域森。非連結も成分ごとに処理する。"""
 
 from heapq import heappop, heappush

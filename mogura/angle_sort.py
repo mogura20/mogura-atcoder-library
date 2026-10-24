@@ -1,3 +1,4 @@
+# Source: https://github.com/mogura20/mogura-atcoder-library/blob/3c3652ff152a79f54e88806b9a261df05b2aa4bc/mogura/angle_sort.py
 """mogura: 整数座標の外積・内積だけで比較する偏角ソート。"""
 
 from functools import cmp_to_key as _mogura_cmp_to_key

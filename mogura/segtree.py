@@ -1,4 +1,4 @@
-# Source: https://github.com/mogura20/mogura-atcoder-library/blob/0722a9a6b352a27e43e3ee2aa287ebf1e04f43ba/mogura/segtree.py
+# Source: https://github.com/mogura20/mogura-atcoder-library/blob/3c3652ff152a79f54e88806b9a261df05b2aa4bc/mogura/segtree.py
 """mogura: 点更新のRMQ(min)・RSQ(sum)・区間GCD。区間は[l,r)。"""
 
 from math import gcd

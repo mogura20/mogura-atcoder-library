@@ -19,6 +19,27 @@ def diamond_position(x, y):
 
 
 class MoguraAngleSortTests(unittest.TestCase):
+    def test_small_case_fast_paths_with_all_options(self):
+        points = [(0, 0), (1, 0), (-1, 0), (0, 1), (0, -1), (2, 2), (1, 1)]
+        for a in points:
+            for b in points:
+                for clockwise in (False, True):
+                    for tie in ("stable", "near", "far"):
+                        for zero in ("first", "last"):
+                            original = [a, b]
+                            nonzero = [p for p in original if p != (0, 0)]
+                            centers = [p for p in original if p == (0, 0)]
+                            def reference(p):
+                                x, y = p
+                                distance = 0 if tie == "stable" else x*x + y*y
+                                if tie == "far":
+                                    distance = -distance
+                                return diamond_position(x, -y if clockwise else y), distance
+                            expected = sorted(nonzero, key=reference)
+                            expected = centers + expected if zero == "first" else expected + centers
+                            self.assertEqual(mogura_angle_sort(original, clockwise=clockwise,
+                                                               tie=tie, zero=zero), expected)
+
     def test_axes_and_directions(self):
         points = [(0, -1), (-1, -1), (-1, 0), (-1, 1),
                   (0, 1), (1, 1), (1, 0), (1, -1)]

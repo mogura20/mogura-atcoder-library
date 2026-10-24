@@ -5,6 +5,20 @@ from functools import cmp_to_key as _mogura_cmp_to_key
 from operator import index as _mogura_integer_index
 
 
+def _mogura_compare_angles(a, b):
+    """内部用。半平面・向き調整済みの外積・符号付き距離の順で比較。"""
+    if a[0] != b[0]:
+        return -1 if a[0] < b[0] else 1
+    turn = a[1] * b[2] - a[2] * b[1]
+    if turn:
+        return -1 if turn > 0 else 1
+    return (a[3] > b[3]) - (a[3] < b[3])
+
+
+# PyPyではcmp_to_keyが比較用クラスを作る。呼び出しごとの生成を避ける。
+_mogura_angle_key = _mogura_cmp_to_key(_mogura_compare_angles)
+
+
 def mogura_angle_sort(items, *, key=None, origin=(0, 0), start=(1, 0),
                       clockwise=False, tie="stable", zero="last"):
     """整数座標を偏角順に並べ、新しいリストを返す。O(n log n)、領域O(n)。
@@ -97,22 +111,15 @@ def mogura_angle_sort(items, *, key=None, origin=(0, 0), start=(1, 0),
         # startから180度未満が前半。正反対の方向は後半へ分ける。
         half = 0 if side > 0 or (side == 0 and dot > 0) else 1
         distance = dx * dx + dy * dy if tie != "stable" else 0
-        directions.append((half, dx, dy, distance, item))
+        if tie == "far":
+            distance = -distance
+        # 時計回りはyを反転して、共通の比較関数で扱う。
+        directions.append((half, dx, -dy if clockwise else dy, distance, item))
 
-    def compare(a, b):
-        if a[0] != b[0]:
-            return -1 if a[0] < b[0] else 1
-        turn = a[1] * b[2] - a[2] * b[1]
-        if clockwise:
-            turn = -turn
-        if turn:
-            return -1 if turn > 0 else 1
-        # 同じ半平面で外積0なら同方向。Pythonの安定ソートを利用する。
-        if tie != "stable" and a[3] != b[3]:
-            nearer = a[3] < b[3]
-            return -1 if (nearer if tie == "near" else not nearer) else 1
-        return 0
-
-    directions.sort(key=_mogura_cmp_to_key(compare))
+    if len(directions) == 2:
+        if _mogura_compare_angles(directions[0], directions[1]) > 0:
+            directions[0], directions[1] = directions[1], directions[0]
+    elif len(directions) > 2:
+        directions.sort(key=_mogura_angle_key)
     result = [entry[4] for entry in directions]
     return centers + result if zero == "first" else result + centers

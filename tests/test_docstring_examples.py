@@ -22,7 +22,7 @@ class MoguraStandardInputExamples(unittest.TestCase):
             module = importlib.import_module('mogura.' + path.stem)
             targets = []
             for node in ast.parse(path.read_text(encoding='utf-8')).body:
-                if isinstance(node, ast.FunctionDef):
+                if isinstance(node, ast.FunctionDef) and not node.name.startswith('_'):
                     targets.append((node.name, getattr(module, node.name)))
                 elif isinstance(node, ast.ClassDef):
                     cls = getattr(module, node.name)
